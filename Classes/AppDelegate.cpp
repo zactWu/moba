@@ -24,6 +24,9 @@
 
 #include "AppDelegate.h"
 #include "Startscene.h"
+#include "SettingScene.h"
+#include "HelpScene.h"
+#include "UnitClass.h"
 
 USING_NS_CC;
 
