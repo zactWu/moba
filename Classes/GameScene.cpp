@@ -24,8 +24,6 @@ bool GameScene::init() {
 	//Êó±ê¼àÌı
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->onTouchBegan = [=](Touch * Touch, Event * Event) {
-
-		log("lis");
 		auto touchPosition = Touch->getLocation();
 		auto mapPosition = map->getPosition();
 		auto nowPosition = hero->getPosition();
@@ -35,9 +33,6 @@ bool GameScene::init() {
 		return true;
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-
-	
-	log("hereB");
 	return true;
 }
 
@@ -64,7 +59,6 @@ bool GameScene::MapInit()
 
 bool GameScene::HeroInit()
 {
-	log("yes here!!");
 	hero = Unit::create("soldier/0.png", "soldier");
 	map->addChild(hero);
 	return false;
