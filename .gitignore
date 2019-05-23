@@ -1,3 +1,5 @@
 *.obj
-cocos2d/cocos/2d/Debug.win32
+cocos2d/
 proj.win32/Debug.win32
+*Debug.win32*/
+proj.win32/.vs
