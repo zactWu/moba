@@ -7,8 +7,8 @@
 #define GOAL 1000
 USING_NS_CC;
 
-#define across 62
-#define movemarknums 177
+#define across 55
+#define movemarknums 199
 
 
 
