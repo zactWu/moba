@@ -24,6 +24,7 @@
 
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
+#include "GameScene.h"
 
 USING_NS_CC;
 
@@ -122,8 +123,10 @@ bool HelloWorld::init()
 void HelloWorld::menuCloseCallback(Ref* pSender)
 {
     //Close the cocos2d-x game scene and quit the application
-    Director::getInstance()->end();
+ //   Director::getInstance()->end();
+	Scene* scene = GameScene::createScene();
 
+	Director::getInstance()->replaceScene(scene);
     /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() as given above,instead trigger a custom event created in RootViewController.mm as below*/
 
     //EventCustom customEndEvent("game_scene_close_event");

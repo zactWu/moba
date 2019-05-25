@@ -16,9 +16,10 @@ struct route {
 };
 bool ObjHit(Vec2 p0, TMXTiledMap* map);
 bool canto(Vec2 p1, Vec2 p2, TMXTiledMap* map);
-bool MapInit(std::vector<MapPoint>& movemarks, TMXTiledMap* map);
+
+bool PointInit(std::vector<MapPoint>& movemarks, TMXTiledMap* map);			//初始化map中障碍物旁边的point，用于寻路
 bool operator < (const route c1, const route c2);
-std::vector<Vec2> MoveFind(const Vec2 startpoint, const Vec2& pos_target, std::vector<MapPoint> movemark, TMXTiledMap* map);
+
 
 
 #define MOVEFIND

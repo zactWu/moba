@@ -19,5 +19,5 @@ public:
     void menuCloseCallback(cocos2d::Ref* pSender);
     
     // implement the "static create()" method manually
-    CREATE_FUNC(HelpScene);
+//    CREATE_FUNC(HelpScene);		//这一行有问题，以后再改
 };
