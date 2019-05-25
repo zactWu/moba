@@ -3,6 +3,7 @@
 #include <windows.h>
 #include "MoveFind.h"
 
+int num = 1;	//num用来记录场景中已经加入了多少unit，用于tag标签及unitMap
 
 cocos2d::Scene* GameScene::createScene()
 {
@@ -21,6 +22,8 @@ bool GameScene::init() {
 	HeroInit();
 	PointInit();
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
+	this->schedule(schedule_selector(GameScene::AddSoldiers), 5.0f);		//五秒出一波兵
+	this->schedule(schedule_selector(GameScene::AttackSearch));
 	//鼠标监听
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->onTouchBegan = [=](Touch * Touch, Event * Event) {
@@ -54,14 +57,16 @@ bool GameScene::MapInit()
 	mapMoveDowm_y = viewSize.height - map->getMapSize().height * map->getTileSize().height;
 
 	
-	return false;
+	return true;
 }
 
 bool GameScene::HeroInit()
 {
 	hero = Unit::create("soldier/0.png", "soldier");
-	map->addChild(hero);
-	return false;
+	map->addChild(hero, 1, num);
+	unitMap[num] = hero;			//map中英雄
+	num++;
+	return true;
 }
 
 
@@ -103,5 +108,25 @@ void GameScene::AllActionsTakenEachF(float dt)
 	}
 }
 
+void GameScene::AddSoldiers(float dt)
+{
+	this->schedule(schedule_selector(GameScene::AddOneSoldier), 1.0f, 1, 0);
+}
 
+void GameScene::AddOneSoldier(float dt)
+{
+	auto soldier = Unit::create("soldier/0.png", "soldier");
+	map->addChild(soldier, 1, num);
+	enemyUintMap[num] = soldier;
+	num++;
+	log("add one soldier");
+	soldier->moveTo_directly(Vec2(1000, 1000));
+}
 
+void GameScene::AttackSearch(float dt) {
+	//std::map<int, Unit*>::iterator iter;
+	//Vec2 HerpPosition = hero->getPosition();
+	//for (iter = enemyUintMap.begin(); iter != enemyUintMap.end(); iter++) {
+	//	if()
+	//}
+}
