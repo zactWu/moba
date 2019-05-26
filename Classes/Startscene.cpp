@@ -7,6 +7,7 @@
 
 #include "Startscene.h"
 #include "SimpleAudioEngine.h"
+#include "ui/CocosGUI.h"
 
 USING_NS_CC;
 
@@ -35,11 +36,27 @@ bool Startscene::init()
 }
 
 
-void Startscene::menuCloseCallback(Ref* pSender)
+/*Gamescene接口
+void Startscene::menuPlayCallback(cocos2d::Ref * pSender) {
+    const auto scene = GameScene::createScene();
+    Director::getInstance()->pushScene(scene);
+}
+*/
+
+
+void Startscene::menuSettingCallback(cocos2d::Ref * pSender) {
+    const auto scene = SettingScene::createScene();
+    Director::getInstance()->pushScene(scene);
+}
+
+void Startscene::menuHelpCallback(cocos2d::Ref * pSender) {
+    const auto scene = HelpScene::createScene();
+    Director::getInstance()->pushScene(scene);
+}
+
+void Startscene::menuExitCallback(Ref* pSender)
 {
-    //Close the cocos2d-x game scene and quit the application
     Director::getInstance()->end();
-    
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     exit(0);
 #endif
@@ -49,19 +66,17 @@ void Startscene::menuCloseCallback(Ref* pSender)
 cocos2d::Menu* Startscene::createText() {
     auto buttons = Menu::create();
     
-    auto title = MenuItemLabel::create(Label::createWithTTF("Glory", "fonts/Marker Felt.ttf", 45));
-    auto label1 = MenuItemLabel::create(Label::createWithTTF("Play", "fonts/Marker Felt.ttf", 37));
-    auto label2 = MenuItemLabel::create(Label::createWithTTF("Settings", "fonts/arial.ttf", 25));
-    auto label3 = MenuItemLabel::create(Label::createWithTTF("Help", "fonts/arial.ttf", 25));
-    auto closeItem = MenuItemLabel::create(
-                                        Label::createWithTTF("Exit", "fonts/arial.ttf", 25),
-                                           CC_CALLBACK_1(Startscene::menuCloseCallback, this));
+    auto title = MenuItemLabel::create(Label::createWithTTF("Glory", "fonts/KingArthurLegend.ttf", 45));
+    auto label1 = MenuItemLabel::create(Label::createWithTTF("Play", "fonts/Quicksand-Bold.ttf", 39)/*,CC_CALLBACK_1(Startscene::menuPlayCallback, this)*/);
+    auto label2 = MenuItemLabel::create(Label::createWithTTF("Setting", "fonts/OpenSans-Regular.ttf", 25),CC_CALLBACK_1(Startscene::menuSettingCallback, this));
+    auto label3 = MenuItemLabel::create(Label::createWithTTF("Help", "fonts/OpenSans-Regular.ttf", 25),CC_CALLBACK_1(Startscene::menuHelpCallback, this));
+    auto closeItem = MenuItemLabel::create(Label::createWithTTF("Exit", "fonts/OpenSans-Regular.ttf", 25),CC_CALLBACK_1(Startscene::menuExitCallback, this));
     
     title->setPosition(570, 600);
     label1->setPosition(570, 430);
-    label2->setPosition(label2->getContentSize().width / 2 + 200, 75);
-    label3->setPosition(label3->getContentSize().width / 2 + 550, 75);
-    closeItem->setPosition(closeItem->getContentSize().width / 2 + 900, 75);
+    label3->setPosition(570, 75);
+    label2->setPosition(370, 75);
+    closeItem->setPosition(770, 75);
     
     ccColor3B color = ccc3(0,0,0);
     title->setColor(ccc3(0,0,0));
