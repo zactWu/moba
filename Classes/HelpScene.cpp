@@ -5,9 +5,6 @@
 //  Created by 武信庭 on 2019/5/23.
 //
 
-<<<<<<< HEAD
-#include "Help.hpp"
-=======
 #include "HelpScene.h"
 
 USING_NS_CC;
@@ -78,4 +75,3 @@ void HelpScene::menuBackCallback(Ref* pSender)
 }
 
 
->>>>>>> startscene

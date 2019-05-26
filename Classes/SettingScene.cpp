@@ -5,9 +5,6 @@
 //  Created by 武信庭 on 2019/5/23.
 //
 
-<<<<<<< HEAD
-#include "SettingScene.hpp"
-=======
 #include "SettingScene.h"
 
 USING_NS_CC;
@@ -77,4 +74,3 @@ void SettingScene::menuBackCallback(Ref* pSender)
     Director::getInstance()->popScene();
 }
 
->>>>>>> startscene

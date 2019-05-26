@@ -58,6 +58,12 @@
 		989410722296CEBF00FBC077 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989410642296CEBF00FBC077 /* AppDelegate.cpp */; };
 		989410732296CEBF00FBC077 /* UnitClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989410652296CEBF00FBC077 /* UnitClass.cpp */; };
 		989410742296CEBF00FBC077 /* UnitClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989410652296CEBF00FBC077 /* UnitClass.cpp */; };
+		98941179229AC42100FBC077 /* SettingScene.h in Sources */ = {isa = PBXBuildFile; fileRef = 9894105C2296CEBF00FBC077 /* SettingScene.h */; };
+		9894117A229AC42100FBC077 /* HelloWorldScene.h in Sources */ = {isa = PBXBuildFile; fileRef = 9894105E2296CEBF00FBC077 /* HelloWorldScene.h */; };
+		9894117B229AC42100FBC077 /* AppDelegate.h in Sources */ = {isa = PBXBuildFile; fileRef = 9894105F2296CEBF00FBC077 /* AppDelegate.h */; };
+		9894117C229AC42100FBC077 /* Startscene.h in Sources */ = {isa = PBXBuildFile; fileRef = 989410602296CEBF00FBC077 /* Startscene.h */; };
+		9894117D229AC42100FBC077 /* UnitClass.h in Sources */ = {isa = PBXBuildFile; fileRef = 989410662296CEBF00FBC077 /* UnitClass.h */; };
+		9894117E229AC42100FBC077 /* HelpScene.h in Sources */ = {isa = PBXBuildFile; fileRef = 989410672296CEBF00FBC077 /* HelpScene.h */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
@@ -490,6 +496,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98941179229AC42100FBC077 /* SettingScene.h in Sources */,
+				9894117A229AC42100FBC077 /* HelloWorldScene.h in Sources */,
+				9894117B229AC42100FBC077 /* AppDelegate.h in Sources */,
+				9894117C229AC42100FBC077 /* Startscene.h in Sources */,
+				9894117D229AC42100FBC077 /* UnitClass.h in Sources */,
+				9894117E229AC42100FBC077 /* HelpScene.h in Sources */,
 				1AF87B781F6F77F7007BE51C /* AppController.mm in Sources */,
 				1AF87B8B1F6F782A007BE51C /* RootViewController.mm in Sources */,
 				989410712296CEBF00FBC077 /* AppDelegate.cpp in Sources */,
