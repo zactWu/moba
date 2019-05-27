@@ -27,7 +27,8 @@ bool GameScene::init() {
 	spa->setPosition(pos);
 	map->addChild(spa);
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
-	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),1.0);
+	
+	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.1);
 																			//鼠标监听
 	/*
 	auto bloodBg = Sprite::create(p_bloodline);	
@@ -43,14 +44,13 @@ bool GameScene::init() {
 		auto newPosition = touchPosition - mapPosition;
 		std::vector<Vec2> route = MoveFind(hero->getPosition(), newPosition);
 		hero->moveTo_directly(route);
-		auto skill = Skill::create("soldier/0.png", 300, 10);
+		auto skill = Skill::create("soldier/0.png", 300, 10,300,50);
 		skill->setPosition(hero->getPosition());
 		skill->_st_pos = hero->getPosition();
 		skill_map[skill_num] = skill;
 		skill_num++;
 		map->addChild(skill);
-		auto move = MoveTo::create(nowPosition.getDistance(newPosition) / skill->_speed, newPosition);
-		skill->runAction(move);
+		skill->move(skill->_st_pos, newPosition);
 		return true;
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
@@ -59,6 +59,22 @@ bool GameScene::init() {
 }
 void GameScene::AllActionsTakenEachSecond(float dt) {
 	hero->_money++;
+	auto j = skill_map.begin();
+	clock_t start = clock();
+	static int times = 0;
+	times++;
+	while (j != skill_map.end()) {
+		int dis = j->second->getPosition().getDistance(j->second->_st_pos);
+		if (dis > j->second->move_range - 50) {
+			map->removeChild(j->second);
+			j = skill_map.erase(j);
+		}
+		else {
+			++j;
+		}
+	}
+	float spend = clock() - start;
+	if (skill_map.size())log("map spend %f with exist skill %d", spend, skill_map.size());
 }
 bool GameScene::MapInit()
 {
@@ -126,22 +142,6 @@ void GameScene::AllActionsTakenEachF(float dt)
 		auto MapMove = MoveBy::create(1 / 60, Vec2(x, y));	//1/60是一帧所需要的时间（目前一秒60帧）
 		map->runAction(MapMove);
 		// 
-		auto j = skill_map.begin();
-		log("check one time");
-		while (j!=skill_map.end()) {
-			int dis = j->second->getPosition().getDistance(j->second->_st_pos);
-			log("this is %d", dis);
-			if (dis >500) {
-				map->removeChild(j->second);
-				j = skill_map.erase(j);
-
-			}
-			else {
-				j++;
-
-			}
-		}
-		
 		
 		
 		//

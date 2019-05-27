@@ -4,7 +4,7 @@
 #include <cocos-ext.h>
 USING_NS_CC;
 Skill* Skill::create(const std::string& filename,
-	int speed,int damage) {
+	int speed,int damage,int moverange,int hitrange) {
 
 	auto unit = new (std::nothrow) Skill;
 	if (unit && unit->initWithFile(filename)) {
@@ -12,6 +12,8 @@ Skill* Skill::create(const std::string& filename,
 		//初始化unit各项属性
 		unit->_speed = speed;
 		unit->_damage = damage;
+		unit->move_range = moverange;
+		unit->hit_range = hitrange;
 		unit->autorelease();
 		return unit;
 	}
@@ -27,4 +29,13 @@ bool GameScene::SkillHit(Skill *sk,Unit *un) {
 		return 1;
 	}
 	return 0;
+}
+void Skill::move(Vec2 from, Vec2 to) {
+	float times = move_range / from.getDistance(to);
+	Vec2 should;
+	should.x = (to.x - from.x) * times + from.x;
+	should.y = (to.y - from.y) * times + from.y;
+	auto move = MoveTo::create(move_range / _speed, should);
+	this->runAction(move);
+	return;
 }
