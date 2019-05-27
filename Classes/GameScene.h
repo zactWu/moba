@@ -38,6 +38,7 @@ private:
 public:
 	static cocos2d::Scene* createScene();
 	virtual bool init();
+	void AllActionsTakenEachSecond(float dt);
 	bool MapInit();
 	bool HeroInit();
 	void AllActionsTakenEachF(float dt);			//每一帧都调用，监测鼠标位置，判断是否移动地图（后续可能会添加其他功能）

@@ -20,9 +20,19 @@ bool GameScene::init() {
 	MapInit();			//map初始化
 	HeroInit();
 	PointInit();
-	
+	Vec2 pos = { 400,400 };
+	auto spa = Unit::create("soldier/0.png", "soldier");
+	spa->setPosition(pos);
+	map->addChild(spa);
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
-	//鼠标监听
+	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),1.0);
+																			//鼠标监听
+	/*
+	auto bloodBg = Sprite::create(p_bloodline);	
+	bloodBg->setPosition(Point(npc->getContentSize().width / 2, npc->getContentSize().height - 10));
+	npc->addChild(bloodBg, 1);
+	auto bloodBlue = Sprite::create(p_bloodlinehong);
+	*/
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->onTouchBegan = [=](Touch * Touch, Event * Event) {
 		auto touchPosition = Touch->getLocation();
@@ -34,9 +44,13 @@ bool GameScene::init() {
 		return true;
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
 	return true;
 }
-
+void GameScene::AllActionsTakenEachSecond(float dt) {
+	log("get money");
+	hero->_money++;
+}
 bool GameScene::MapInit()
 {
 	map = TMXTiledMap::create("map.tmx");		//创建map
@@ -103,7 +117,8 @@ void GameScene::AllActionsTakenEachF(float dt)
 		auto MapMove = MoveBy::create(1 / 60, Vec2(x, y));	//1/60是一帧所需要的时间（目前一秒60帧）
 		map->runAction(MapMove);
 		//
-
+		Vec2 pos = { 400,400 };
+		
 		
 		//
 	}

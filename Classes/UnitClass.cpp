@@ -27,6 +27,8 @@ Unit* Unit::create(const std::string &filename, const std::string &unitType,
 		return unit;
 	}
 
+
+
 	CC_SAFE_DELETE(unit);
 	return nullptr;
 }
