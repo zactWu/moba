@@ -153,7 +153,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\GameScene.cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
+    <ClCompile Include="..\Classes\HelpScene.cpp" />
     <ClCompile Include="..\Classes\MoveFind.cpp" />
+    <ClCompile Include="..\Classes\SettingScene.cpp" />
+    <ClCompile Include="..\Classes\SkillClass.cpp" />
+    <ClCompile Include="..\Classes\Startscene.cpp" />
     <ClCompile Include="..\Classes\UnitClass.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -162,7 +166,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\GameScene.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\helper.h" />
+    <ClInclude Include="..\Classes\HelpScene.h" />
     <ClInclude Include="..\Classes\MoveFind.h" />
+    <ClInclude Include="..\Classes\SettingScene.h" />
+    <ClInclude Include="..\Classes\skillClass.h" />
+    <ClInclude Include="..\Classes\Startscene.h" />
     <ClInclude Include="..\Classes\UnitClass.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>

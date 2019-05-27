@@ -10,6 +10,7 @@
 #include "cocos2d.h"
 #include "SettingScene.h"
 #include "HelpScene.h"
+#include "GameScene.h"
 
 class Startscene : public cocos2d::Layer
 {
@@ -20,10 +21,12 @@ public:
     cocos2d::Sprite* createBGImage();
     void menuCloseCallback(cocos2d::Ref* pSender);
     void menuExitCallback(cocos2d::Ref* pSender);
-    //void menuPlayCallback(cocos2d::Ref* pSender);
+    void menuPlayCallback(cocos2d::Ref* pSender);
     void menuHelpCallback(cocos2d::Ref * pSender);
     void menuSettingCallback(cocos2d::Ref * pSender);
     CREATE_FUNC(Startscene);
+private:
+	int _test;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

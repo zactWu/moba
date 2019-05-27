@@ -9,6 +9,7 @@
 #include "SimpleAudioEngine.h"
 #include "ui/CocosGUI.h"
 
+
 USING_NS_CC;
 
 Scene* Startscene::createScene()
@@ -36,12 +37,12 @@ bool Startscene::init()
 }
 
 
-/*Gamescene接口
+
 void Startscene::menuPlayCallback(cocos2d::Ref * pSender) {
+	log("play");
     const auto scene = GameScene::createScene();
     Director::getInstance()->pushScene(scene);
 }
-*/
 
 
 void Startscene::menuSettingCallback(cocos2d::Ref * pSender) {
@@ -67,7 +68,7 @@ cocos2d::Menu* Startscene::createText() {
     auto buttons = Menu::create();
     
     auto title = MenuItemLabel::create(Label::createWithTTF("Glory", "fonts/KingArthurLegend.ttf", 45));
-    auto label1 = MenuItemLabel::create(Label::createWithTTF("Play", "fonts/Quicksand-Bold.ttf", 39)/*,CC_CALLBACK_1(Startscene::menuPlayCallback, this)*/);
+    auto label1 = MenuItemLabel::create(Label::createWithTTF("Play", "fonts/Quicksand-Bold.ttf", 39),CC_CALLBACK_1(Startscene::menuPlayCallback, this));
     auto label2 = MenuItemLabel::create(Label::createWithTTF("Setting", "fonts/OpenSans-Regular.ttf", 25),CC_CALLBACK_1(Startscene::menuSettingCallback, this));
     auto label3 = MenuItemLabel::create(Label::createWithTTF("Help", "fonts/OpenSans-Regular.ttf", 25),CC_CALLBACK_1(Startscene::menuHelpCallback, this));
     auto closeItem = MenuItemLabel::create(Label::createWithTTF("Exit", "fonts/OpenSans-Regular.ttf", 25),CC_CALLBACK_1(Startscene::menuExitCallback, this));

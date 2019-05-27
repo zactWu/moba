@@ -20,6 +20,7 @@ bool GameScene::init() {
 	MapInit();			//map初始化
 	HeroInit();
 	PointInit();
+	
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
 	//鼠标监听
 	auto listener = EventListenerTouchOneByOne::create();
@@ -68,6 +69,7 @@ bool GameScene::HeroInit()
 
 void GameScene::AllActionsTakenEachF(float dt)
 {
+
 	int RectWidth = viewSize.width;		//窗口宽
 	int RectHeight = viewSize.height;	//窗口高
 	//以下几行获取鼠标位于窗口的坐标
@@ -100,6 +102,10 @@ void GameScene::AllActionsTakenEachF(float dt)
 		}
 		auto MapMove = MoveBy::create(1 / 60, Vec2(x, y));	//1/60是一帧所需要的时间（目前一秒60帧）
 		map->runAction(MapMove);
+		//
+
+		
+		//
 	}
 }
 

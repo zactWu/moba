@@ -44,6 +44,7 @@ public:
 	std::vector<Vec2> MoveFind(const Vec2 startpoint, const Vec2& pos_target);		//Ѱ·
 	bool PointInit();
 	CREATE_FUNC(GameScene);
+	void SkillHit();
 };
 
 
