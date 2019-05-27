@@ -23,9 +23,15 @@ Skill* Skill::create(const std::string& filename,
 }
 
 bool GameScene::SkillHit(Skill *sk,Unit *un) {
-	if (un->getPosition().getDistance(sk->getPosition()) < 50) {
+	if (sk->_side == un->_side) {
+		log("unit side is %d", sk ->_side);
+		return 0;
+	}
+	if (un->getPosition().getDistance(sk->getPosition()) < sk->hit_range) {
+		float dis = un->getPosition().getDistance(sk->getPosition());
+		log("dis is %f", dis);
 		un->_life_current -= 10;
-		log("dead!");
+		//log("dead!");
 		return 1;
 	}
 	return 0;

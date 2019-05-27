@@ -25,7 +25,7 @@ public:
 	int getDirByTargetPos(const Vec2 &pos_current, const Vec2 &pos_target)const;
 	int getMoveDir() { return _moveDir; }
 	int _money = 0;
-
+	int _side;
 	int _life_current;
 	int _tag_attackTarget;
 private:

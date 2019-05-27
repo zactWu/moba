@@ -18,7 +18,7 @@ public:
 	int _range;
 	int move_range;
 	int hit_range;
-
+	int _side;
 	clock_t _release_time;
 	Vec2 _st_pos;
 	int _test = 0;

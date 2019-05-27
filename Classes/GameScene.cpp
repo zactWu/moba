@@ -2,8 +2,8 @@
 #include "cocos2d.h"
 #include <windows.h>
 #include "MoveFind.h"
-
-
+#define MESIDE 0
+#define ENEMYSIDE 1
 cocos2d::Scene* GameScene::createScene()
 {
 	auto scene = Scene::create();
@@ -24,6 +24,7 @@ bool GameScene::init() {
 	auto spa = Unit::create("soldier/0.png", "soldier");
 	unit_map[unit_num] = spa;
 	unit_num++;
+	spa->_side = ENEMYSIDE;
 	spa->setPosition(pos);
 	map->addChild(spa);
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
@@ -49,6 +50,8 @@ bool GameScene::init() {
 		skill->_st_pos = hero->getPosition();
 		skill_map[skill_num] = skill;
 		skill_num++;
+		skill->_side = 0;
+		skill->_release_time = clock();
 		map->addChild(skill);
 		skill->move(skill->_st_pos, newPosition);
 		return true;
@@ -58,23 +61,40 @@ bool GameScene::init() {
 	return true;
 }
 void GameScene::AllActionsTakenEachSecond(float dt) {
-	hero->_money++;
-	auto j = skill_map.begin();
+	hero->_money++;// 加钱
+
+	auto skill = skill_map.begin();
 	clock_t start = clock();
 	static int times = 0;
 	times++;
-	while (j != skill_map.end()) {
-		int dis = j->second->getPosition().getDistance(j->second->_st_pos);
-		if (dis > j->second->move_range - 50) {
-			map->removeChild(j->second);
-			j = skill_map.erase(j);
+	while (skill != skill_map.end()) {
+		int dis = skill->second->getPosition().getDistance(skill->second->_st_pos);
+		if (dis > skill->second->move_range - 50) {
+			map->removeChild(skill->second);
+			skill = skill_map.erase(skill);
+			continue;
 		}
 		else {
-			++j;
+			bool flag = 1;
+			auto unit = unit_map.begin();
+			while (unit != unit_map.end()) {
+				if (this->SkillHit(skill->second, unit->second)) {
+					log("HIT!!");
+					// 还有伤害加进去
+					map->removeChild(skill->second);
+					skill = skill_map.erase(skill);
+					flag = 0;
+					break;
+				}
+				else
+				{
+					++unit;
+				}
+			}
+			if(flag)++skill;
 		}
+		
 	}
-	float spend = clock() - start;
-	if (skill_map.size())log("map spend %f with exist skill %d", spend, skill_map.size());
 }
 bool GameScene::MapInit()
 {
@@ -100,6 +120,10 @@ bool GameScene::MapInit()
 bool GameScene::HeroInit()
 {
 	hero = Unit::create("soldier/0.png", "soldier");
+	hero->_side = MESIDE;
+	this->unit_map[unit_num] = hero;
+	unit_num++;
+
 	map->addChild(hero);
 	return false;
 }
