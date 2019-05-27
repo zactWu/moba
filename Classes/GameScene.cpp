@@ -22,6 +22,8 @@ bool GameScene::init() {
 	PointInit();
 	Vec2 pos = { 400,400 };
 	auto spa = Unit::create("soldier/0.png", "soldier");
+	unit_map[unit_num] = spa;
+	unit_num++;
 	spa->setPosition(pos);
 	map->addChild(spa);
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
@@ -41,6 +43,14 @@ bool GameScene::init() {
 		auto newPosition = touchPosition - mapPosition;
 		std::vector<Vec2> route = MoveFind(hero->getPosition(), newPosition);
 		hero->moveTo_directly(route);
+		auto skill = Skill::create("soldier/0.png", 300, 10);
+		skill->setPosition(hero->getPosition());
+		skill->_st_pos = hero->getPosition();
+		skill_map[skill_num] = skill;
+		skill_num++;
+		map->addChild(skill);
+		auto move = MoveTo::create(nowPosition.getDistance(newPosition) / skill->_speed, newPosition);
+		skill->runAction(move);
 		return true;
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
@@ -48,7 +58,6 @@ bool GameScene::init() {
 	return true;
 }
 void GameScene::AllActionsTakenEachSecond(float dt) {
-	log("get money");
 	hero->_money++;
 }
 bool GameScene::MapInit()
@@ -116,8 +125,23 @@ void GameScene::AllActionsTakenEachF(float dt)
 		}
 		auto MapMove = MoveBy::create(1 / 60, Vec2(x, y));	//1/60是一帧所需要的时间（目前一秒60帧）
 		map->runAction(MapMove);
-		//
-		Vec2 pos = { 400,400 };
+		// 
+		auto j = skill_map.begin();
+		log("check one time");
+		while (j!=skill_map.end()) {
+			int dis = j->second->getPosition().getDistance(j->second->_st_pos);
+			log("this is %d", dis);
+			if (dis >500) {
+				map->removeChild(j->second);
+				j = skill_map.erase(j);
+
+			}
+			else {
+				j++;
+
+			}
+		}
+		
 		
 		
 		//
