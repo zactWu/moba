@@ -75,6 +75,11 @@ void GameScene::AllActionsTakenEachSecond(float dt) {
 				if (this->SkillHit(skill->second, unit->second)) {
 					log("HIT!!");
 					// 还有伤害加进去
+					unit->second->getDamaged(skill->second->_damage);
+					if (unit->second->_life_current <= 0) {
+						map->removeChild(unit->second);
+						unit_map.erase(unit);
+					}
 					map->removeChild(skill->second);
 					skill = skill_map.erase(skill);
 					flag = 0;

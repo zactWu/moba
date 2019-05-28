@@ -267,7 +267,11 @@ void Unit::update_follow_attack(float dt) {
 }
 
 inline void Unit::getDamaged(int damage) {
+
 	_life_current -= damage;
+	if (_life_current <= 0) {
+		return;
+	}
 	_lifeBank->setScaleX(static_cast<double>(_life_current) / _life_max);
 	//±äºì¶¯»­
 	auto cf_intoRed = CallFunc::create([=]() {
