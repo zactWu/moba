@@ -4,6 +4,8 @@
 #include "MoveFind.h"
 #define MESIDE 0
 #define ENEMYSIDE 1
+#define MAPZERO 10
+#define HEROZERO 15
 cocos2d::Scene* GameScene::createScene()
 {
 	auto scene = Scene::create();
@@ -45,15 +47,7 @@ bool GameScene::init() {
 		auto newPosition = touchPosition - mapPosition;
 		std::vector<Vec2> route = MoveFind(hero->getPosition(), newPosition);
 		hero->moveTo_directly(route);
-		auto skill = Skill::create("soldier/0.png", 300, 10,300,50);
-		skill->setPosition(hero->getPosition());
-		skill->_st_pos = hero->getPosition();
-		skill_map[skill_num] = skill;
-		skill_num++;
-		skill->_side = 0;
-		skill->_release_time = clock();
-		map->addChild(skill);
-		skill->move(skill->_st_pos, newPosition);
+		UsingFireBoll(hero, newPosition);
 		return true;
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
@@ -101,7 +95,7 @@ bool GameScene::MapInit()
 	map = TMXTiledMap::create("map.tmx");		//创建map
 	map->setAnchorPoint(Vec2(0, 0));			//设置锚点为左下角
 	map->setPosition(Vec2(0, 0));				//设置位置为窗口左下角
-	this->addChild(map);
+	this->addChild(map,MAPZERO);
 
 	viewSize = Director::getInstance()->getOpenGLView()->getVisibleRect().size;		//初始化窗口大小
 	mapSize = map->getMapSize();													//初始化map大小（单位：块）
@@ -124,7 +118,7 @@ bool GameScene::HeroInit()
 	this->unit_map[unit_num] = hero;
 	unit_num++;
 
-	map->addChild(hero);
+	map->addChild(hero,HEROZERO);
 	return false;
 }
 
