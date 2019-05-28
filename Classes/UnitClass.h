@@ -11,23 +11,24 @@ enum Tag { move = 2001, animate_move };
 class Unit : public Sprite {
 public:
 
-	static Unit* create(const std::string &filename, const std::string &unitType,
-		int maxLife = 300, int attack = 20, int defense = 3, int speed = 100,
+	static Unit* create(const std::string& filename, const std::string& unitType,
+		int maxLife = 100, int attack = 20, int defense = 3, int speed = 100,
 		float rotate_speed = 90.0f, float attackInterval = 2.f, float attackRange = 50.f);
 
-	void moveTo_directly(const Vec2 &pos_target);
+	void moveTo_directly(const Vec2& pos_target);
 	void moveTo_directly(const std::vector<Vec2> pos_list);
 	void attack_once(Unit* sp_enemy);
 	void update_follow_attack(float dt);
 	virtual void animate_move_forever(int dir);
 
-	int getDirByTargetPos(const Vec2 &pos_target)const;
-	int getDirByTargetPos(const Vec2 &pos_current, const Vec2 &pos_target)const;
+	int getDirByTargetPos(const Vec2& pos_target)const;
+	int getDirByTargetPos(const Vec2& pos_current, const Vec2& pos_target)const;
 	int getMoveDir() { return _moveDir; }
-	int _money = 0;
-	int _side;
+
 	int _life_current;
 	int _tag_attackTarget;
+	void getDamaged(int damage);
+	cocos2d::Sprite* _lifeBank;
 private:
 	bool _onAttack;
 	int _life_max;

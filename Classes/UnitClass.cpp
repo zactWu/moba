@@ -4,12 +4,12 @@
 USING_NS_CC;
 
 //Unit的create函数，调用：myUnit = Unit::create(...)
-Unit* Unit::create(const std::string &filename, const std::string &unitType,
+Unit* Unit::create(const std::string& filename, const std::string& unitType,
 	int maxLife, int attack, int defense, int speed,
 	float rotate_speed, float attackInterval, float attackRange) {
 
 	auto unit = new (std::nothrow) Unit;
-	if (unit&&unit->initWithFile(filename)) {
+	if (unit && unit->initWithFile(filename)) {
 
 		//初始化unit各项属性
 		unit->_life_max = maxLife;
@@ -23,11 +23,15 @@ Unit* Unit::create(const std::string &filename, const std::string &unitType,
 		unit->_tag_attackTarget = -1;
 		unit->_onAttack = false;
 
+		//创建血条
+		unit->_lifeBank = Sprite::create("lifeBank.jpg");
+
+		unit->_lifeBank->setPosition(unit->getPosition() + Vec2(30.f, 60.f));
+		unit->addChild(unit->_lifeBank, 1);
 		unit->autorelease();
+
 		return unit;
 	}
-
-
 
 	CC_SAFE_DELETE(unit);
 	return nullptr;
@@ -67,11 +71,11 @@ inline void Unit::animate_move_forever(int dir) {
 }
 
 
-inline int Unit::getDirByTargetPos(const Vec2 &pos_target)const {
+inline int Unit::getDirByTargetPos(const Vec2& pos_target)const {
 	return Unit::getDirByTargetPos(getPosition(), pos_target);
 }
 
-inline int Unit::getDirByTargetPos(const Vec2 &pos_current, const Vec2 &pos_target)const {
+inline int Unit::getDirByTargetPos(const Vec2& pos_current, const Vec2& pos_target)const {
 	Vec2 vecDir = pos_target - pos_current;
 	float angleDir = RTOD(vecDir.getAngle());
 	int iDir;
@@ -104,7 +108,7 @@ inline int Unit::getDirByTargetPos(const Vec2 &pos_current, const Vec2 &pos_targ
 }
 
 //自动停止当前移动、修改_pos_moveTarget和_moveDir。
-void Unit::moveTo_directly(const Vec2 &pos_target) {
+void Unit::moveTo_directly(const Vec2& pos_target) {
 	_pos_moveTarget = pos_target;
 	stopActionByTag(Tag::move);
 	float distance = pos_target.distance(getPosition());
@@ -112,7 +116,7 @@ void Unit::moveTo_directly(const Vec2 &pos_target) {
 	auto move = MoveTo::create(duration, pos_target);
 	auto cf_stopAnimation = CallFunc::create([=]() {
 		stopActionByTag(Tag::animate_move);
-	});
+		});
 
 	auto seq_moveThenStopAnimation = Sequence::create(move, cf_stopAnimation, nullptr);
 	seq_moveThenStopAnimation->setTag(Tag::move);
@@ -148,13 +152,13 @@ void Unit::moveTo_directly(const std::vector<Vec2> pos_list) {
 			this->_pos_moveTarget = pos_target;
 			this->animate_move_forever(iDir);
 
-		});
+			});
 		actionListToOnePoint.pushBack(cf);
 		actionListToOnePoint.pushBack(move);
 	}
 	auto cf_stopAnimate = CallFunc::create([=]()mutable {
 		this->stopActionByTag(Tag::animate_move);
-	});
+		});
 	actionListToOnePoint.pushBack(cf_stopAnimate);
 	auto actionList = Sequence::create(actionListToOnePoint);
 
@@ -172,7 +176,7 @@ void Unit::attack_once(Unit* sp_enemy) {
 
 	auto cf_onAttack = CallFunc::create([=]() {
 		_onAttack = true;
-	});
+		});
 
 
 	Vector<SpriteFrame*> animFrames1;
@@ -189,7 +193,7 @@ void Unit::attack_once(Unit* sp_enemy) {
 			this->_onAttack = false;
 			return;
 		}
-	});
+		});
 
 	Vector<SpriteFrame*> animFrames2;
 	animFrames2.reserve(1);
@@ -205,11 +209,8 @@ void Unit::attack_once(Unit* sp_enemy) {
 			this->_onAttack = false;
 			return;
 		}
-		sp_enemy->_life_current -= this->_attack;
-
-		//debug
-		cocos2d::log("%d", sp_enemy->_life_current);
-	});
+		sp_enemy->getDamaged(this->_attack);
+		});
 
 	Vector<SpriteFrame*> animFrames3;
 	animFrames3.reserve(1);
@@ -222,7 +223,7 @@ void Unit::attack_once(Unit* sp_enemy) {
 
 	auto cf_notOnAttack = CallFunc::create([=]() {
 		this->_onAttack = false;
-	});
+		});
 
 	auto seq_oneAttack = Sequence::create(cf_onAttack, animate1, cf_stopIfEnemyIsDead,
 		animate2, cf_damage, animate3, cf_notOnAttack, nullptr);
@@ -248,24 +249,33 @@ void Unit::update_follow_attack(float dt) {
 	if (sp_target == nullptr) {
 		return;
 	}
-	auto sp_enemy = static_cast<Unit*>(sp_target);
+	auto sp_enemy = dynamic_cast<Unit*>(sp_target);
 
 	float distance = getPosition().distance(sp_target->getPosition());
 	if (distance > _attackRange) {
 		moveTo_directly(sp_target->getPosition());  //未考虑寻路
-
-		//debug
-		cocos2d::log("%f %f", distance, _attackRange);
 	}
 	else {
 		if (!_onAttack) {
 
 			//debug
 			stopAllActions();//这个不知道需不需要加
-			cocos2d::log("not on attack!");
-
 			attack_once(sp_enemy);
 		}
 	}
 
+}
+
+inline void Unit::getDamaged(int damage) {
+	_life_current -= damage;
+	_lifeBank->setScaleX(static_cast<double>(_life_current) / _life_max);
+	//变红动画
+	auto cf_intoRed = CallFunc::create([=]() {
+		this->setColor(cocos2d::Color3B::RED);
+		});
+	auto cf_back = CallFunc::create([=]() {
+		this->setColor(cocos2d::Color3B(255, 255, 255));
+		});
+	auto switchColor = Sequence::create(cf_intoRed, DelayTime::create(0.15), cf_back, nullptr);
+	getParent()->runAction(switchColor);
 }
