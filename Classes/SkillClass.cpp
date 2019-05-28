@@ -45,3 +45,24 @@ void Skill::move(Vec2 from, Vec2 to) {
 	this->runAction(move);
 	return;
 }
+
+void GameScene::UsingFireBoll(Unit *hero,Vec2 newPosition) {
+	static clock_t last_time = 0;
+	clock_t now_time = clock();
+	float pass_time = now_time - last_time;
+	if (pass_time < 2000) {// cd时间在这里调整
+		log("fireboll still cd");
+		return;
+	}
+	last_time = now_time;
+	auto skill = Skill::create("fireboll.jpg", 300, 10, 300, 50);
+	skill->setScale(0.3);
+	skill->setPosition(hero->getPosition());
+	skill->_st_pos = hero->getPosition();
+	skill_map[skill_num] = skill;
+	skill_num++;
+	skill->_side = 0;
+	skill->_release_time = clock();
+	map->addChild(skill, 12);//这里有一点问题要解决
+	skill->move(skill->_st_pos, newPosition);
+}
