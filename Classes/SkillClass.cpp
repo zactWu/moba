@@ -24,7 +24,7 @@ Skill* Skill::create(const std::string& filename,
 
 bool GameScene::SkillHit(Skill *sk,Unit *un) {
 	if (sk->_side == un->_side) {
-		log("unit side is %d", sk ->_side);
+//		log("unit side is %d", sk ->_side);
 		return 0;
 	}
 	if (un->getPosition().getDistance(sk->getPosition()) < sk->hit_range) {

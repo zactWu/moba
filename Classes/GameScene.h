@@ -3,11 +3,11 @@
 #include "cocos2d.h"
 #include "UnitClass.h"
 #include "skillClass.h"
+#include "client.h"
 
 
 class GameScene :public Layer {
 private:
-
 	TMXTiledMap* map;
 	Unit* hero;
 	//ÆÁÄ»³ß´çÍßÆ¬³ß´ç
@@ -34,7 +34,9 @@ private:
 	Vec2 heroSetPosition;
 	Vec2 soldierSetPosition;
 
+
 public:
+
 	static cocos2d::Scene* createScene();
 	virtual bool init();
 	void AllActionsTakenEachSecond(float dt);

@@ -2,6 +2,10 @@
 #include "cocos2d.h"
 #include <windows.h>
 #include "MoveFind.h"
+
+#include "client.h"
+
+GameClient client;
 #define MESIDE 0
 #define ENEMYSIDE 1
 cocos2d::Scene* GameScene::createScene()
@@ -9,6 +13,7 @@ cocos2d::Scene* GameScene::createScene()
 	auto scene = Scene::create();
 	auto layer = GameScene::create();
 	scene->addChild(layer);
+
 	return scene;
 }
 
@@ -43,6 +48,7 @@ bool GameScene::init() {
 		auto mapPosition = map->getPosition();
 		auto nowPosition = hero->getPosition();
 		auto newPosition = touchPosition - mapPosition;
+		sprintf_s(client.SendBuf, "%fT%f", newPosition.x, newPosition.y);
 		std::vector<Vec2> route = MoveFind(hero->getPosition(), newPosition);
 		hero->moveTo_directly(route);
 		auto skill = Skill::create("soldier/0.png", 300, 10,300,50);
@@ -58,10 +64,13 @@ bool GameScene::init() {
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
+
 	return true;
 }
 void GameScene::AllActionsTakenEachSecond(float dt) {
 	hero->_money++;// 加钱
+
+
 
 	auto skill = skill_map.begin();
 	clock_t start = clock();
@@ -113,7 +122,7 @@ bool GameScene::MapInit()
 	mapMoveUp_y = 0;
 	mapMoveDowm_y = viewSize.height - map->getMapSize().height * map->getTileSize().height;
 
-	
+
 	return false;
 }
 
@@ -124,7 +133,10 @@ bool GameScene::HeroInit()
 	this->unit_map[unit_num] = hero;
 	unit_num++;
 
-	map->addChild(hero);
+	map->addChild(hero, 0, 1);
+	if (client.init(hero)) {
+		log("client init !");
+	}
 	return false;
 }
 
@@ -132,6 +144,8 @@ bool GameScene::HeroInit()
 
 void GameScene::AllActionsTakenEachF(float dt)
 {
+	client.ClientProcess();
+
 
 	int RectWidth = viewSize.width;		//窗口宽
 	int RectHeight = viewSize.height;	//窗口高
