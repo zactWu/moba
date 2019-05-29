@@ -22,7 +22,7 @@ Unit* Unit::create(const std::string& filename, const std::string& unitType,
 		unit->_attackRange = attackRange;
 		unit->_tag_attackTarget = -1;
 		unit->_onAttack = false;
-
+		unit->_kill_award = 100;
 		//´´½¨ÑªÌõ
 		unit->_lifeBank = Sprite::create("lifeBank.jpg");
 

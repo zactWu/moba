@@ -2,7 +2,7 @@
 #define SKILLCLASS
 
 #include "cocos2d.h"
-
+#include "UnitClass.h"
 USING_NS_CC;
 
 class Skill : public Sprite {
@@ -22,7 +22,9 @@ public:
 	clock_t _release_time;
 	Vec2 _st_pos;
 	int _test = 0;
+	Unit* _skiller;
 	void move(Vec2 from, Vec2 to);
+	
 private:
 	int _moveDir;
 	float _attackInterval;

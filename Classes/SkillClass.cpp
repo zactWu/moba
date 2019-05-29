@@ -55,7 +55,8 @@ void GameScene::UsingFireBoll(Unit *hero,Vec2 newPosition) {
 		return;
 	}
 	last_time = now_time;
-	auto skill = Skill::create("fireboll.jpg", 300, 10, 300, 50);
+	auto skill = Skill::create("fireboll.jpg", 300, 100, 300, 50);
+	skill->_skiller = hero;
 	skill->setScale(0.3);
 	skill->setPosition(hero->getPosition());
 	skill->_st_pos = hero->getPosition();

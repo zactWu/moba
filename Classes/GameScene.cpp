@@ -77,6 +77,15 @@ void GameScene::AllActionsTakenEachSecond(float dt) {
 					// 还有伤害加进去
 					unit->second->getDamaged(skill->second->_damage);
 					if (unit->second->_life_current <= 0) {
+						auto money = Sprite::create("money.jpg");
+						money->setPosition(unit->second->getPosition());
+						money->setScale(0.2);
+						map->addChild(money);
+						
+						auto fed= FadeOut::create(1.0f);
+                        auto moneyseq = Sequence::create(fed, nullptr);
+						money->runAction(moneyseq);
+						skill->second->_skiller->_money += unit->second->_kill_award;// 赏金系统
 						map->removeChild(unit->second);
 						unit_map.erase(unit);
 					}

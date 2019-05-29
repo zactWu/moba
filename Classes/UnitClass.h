@@ -28,6 +28,7 @@ public:
 	int _side;
 	int _life_current;
 	int _tag_attackTarget;
+	int _kill_award;
 	void getDamaged(int damage);
 	cocos2d::Sprite* _lifeBank;
 private:
