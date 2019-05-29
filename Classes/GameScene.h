@@ -37,6 +37,7 @@ private:
 public:
 	static cocos2d::Scene* createScene();
 	virtual bool init();
+	void SkillHitCheck();
 	void AllActionsTakenEachSecond(float dt);
 	bool MapInit();
 	bool HeroInit();

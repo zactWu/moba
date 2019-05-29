@@ -13,6 +13,10 @@ cocos2d::Scene* GameScene::createScene()
 	scene->addChild(layer);
 	return scene;
 }
+void KeyboardTest::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
+{
+	log("Key with keycode %d pressed", keyCode);
+}
 
 bool GameScene::init() {
 	if (!Layer::init())
@@ -23,24 +27,19 @@ bool GameScene::init() {
 	HeroInit();
 	PointInit();
 	Vec2 pos = { 400,400 };
+	//
 	auto spa = Unit::create("soldier/0.png", "soldier");
 	unit_map[unit_num] = spa;
 	unit_num++;
 	spa->_side = ENEMYSIDE;
 	spa->setPosition(pos);
 	map->addChild(spa);
+	//
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
 	
 	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.1);
-																			//鼠标监听
-	/*
-	auto bloodBg = Sprite::create(p_bloodline);	
-	bloodBg->setPosition(Point(npc->getContentSize().width / 2, npc->getContentSize().height - 10));
-	npc->addChild(bloodBg, 1);
-	auto bloodBlue = Sprite::create(p_bloodlinehong);
-	*/
-	auto listener = EventListenerTouchOneByOne::create();
-	listener->onTouchBegan = [=](Touch * Touch, Event * Event) {
+	auto mouse_listener = EventListenerTouchOneByOne::create();
+	mouse_listener->onTouchBegan = [=](Touch * Touch, Event * Event) {
 		auto touchPosition = Touch->getLocation();
 		auto mapPosition = map->getPosition();
 		auto nowPosition = hero->getPosition();
@@ -50,13 +49,12 @@ bool GameScene::init() {
 		UsingFireBoll(hero, newPosition);
 		return true;
 	};
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+	// Implementation of the keyboard event callback function prototype
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouse_listener, this);
 
 	return true;
 }
-void GameScene::AllActionsTakenEachSecond(float dt) {
-	hero->_money++;// 加钱
-
+void GameScene::SkillHitCheck() {
 	auto skill = skill_map.begin();
 	clock_t start = clock();
 	static int times = 0;
@@ -81,10 +79,8 @@ void GameScene::AllActionsTakenEachSecond(float dt) {
 						money->setPosition(unit->second->getPosition());
 						money->setScale(0.2);
 						map->addChild(money);
-						
-						auto fed= FadeOut::create(1.0f);
-                        auto moneyseq = Sequence::create(fed, nullptr);
-						money->runAction(moneyseq);
+						auto fed = FadeOut::create(1.0f);
+						money->runAction(fed);
 						skill->second->_skiller->_money += unit->second->_kill_award;// 赏金系统
 						map->removeChild(unit->second);
 						unit_map.erase(unit);
@@ -99,10 +95,15 @@ void GameScene::AllActionsTakenEachSecond(float dt) {
 					++unit;
 				}
 			}
-			if(flag)++skill;
+			if (flag)++skill;
 		}
-		
+
 	}
+}
+void GameScene::AllActionsTakenEachSecond(float dt) {
+	hero->_money++;// 加钱
+	SkillHitCheck();
+	
 }
 bool GameScene::MapInit()
 {
