@@ -8,8 +8,13 @@
 class GameScene :public Layer {
 private:
 
+<<<<<<< HEAD
 	TMXTiledMap* map;
 	
+=======
+	
+	Unit* hero;
+>>>>>>> 530new
 	//ÆÁÄ»³ß´çÍßÆ¬³ß´ç
 	Size viewSize;
 	Size mapSize;
@@ -35,6 +40,7 @@ private:
 	Vec2 soldierSetPosition;
 
 public:
+	TMXTiledMap* map;
 	static cocos2d::Scene* createScene();
 	virtual bool init();
 	void SkillHitCheck();

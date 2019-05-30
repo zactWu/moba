@@ -1,6 +1,8 @@
 #include "UnitClass.h"
 #include "cocos2d.h"
 #include "helper.h"
+#include "skillClass.h"
+#include "GameScene.h"
 USING_NS_CC;
 
 //Unit的create函数，调用：myUnit = Unit::create(...)
@@ -204,13 +206,22 @@ void Unit::attack_once(Unit* sp_enemy) {
 	Animation* animation2 = Animation::createWithSpriteFrames(animFrames2, _attackInterval / 2.f);
 	Animate* animate2 = Animate::create(animation2);
 
+
+
+
+
 	auto cf_damage = CallFunc::create([=]() {
 		if (sp_enemy == nullptr) {
 			this->_onAttack = false;
 			return;
 		}
-		sp_enemy->getDamaged(this->_attack);
+		longRangeAttack(sp_enemy);
 		});
+
+
+
+
+
 
 	Vector<SpriteFrame*> animFrames3;
 	animFrames3.reserve(1);
@@ -238,6 +249,9 @@ void Unit::attack_once(Unit* sp_enemy) {
 //取消攻击时需调用unschedule，来节省开销，并且需要修改_attackTarget=-1, _onAttack = false
 
 void Unit::update_follow_attack(float dt) {
+	if (_stunned) {
+		return;
+	}
 	//出错处理：无攻击目标
 	if (_tag_attackTarget == -1) {
 		return;
@@ -275,11 +289,67 @@ inline void Unit::getDamaged(int damage) {
 	_lifeBank->setScaleX(static_cast<double>(_life_current) / _life_max);
 	//变红动画
 	auto cf_intoRed = CallFunc::create([=]() {
-		this->setColor(cocos2d::Color3B::RED);
+		if (this)
+			this->setColor(cocos2d::Color3B::RED);
 		});
 	auto cf_back = CallFunc::create([=]() {
-		this->setColor(cocos2d::Color3B(255, 255, 255));
+		if (this)
+			this->setColor(cocos2d::Color3B(255, 255, 255));
 		});
 	auto switchColor = Sequence::create(cf_intoRed, DelayTime::create(0.15), cf_back, nullptr);
 	getParent()->runAction(switchColor);
+}
+
+void Unit::longRangeAttack(Unit* enemy) {
+	if (_stunned) {
+		return;
+	}
+	if (enemy == nullptr) {
+		return;
+	}
+
+	auto skill = Skill::create("fireboll.jpg", 300, _attack, 500, 50);
+	skill->targe = enemy;
+	skill->_skiller = this;
+	skill->setScale(0.3);
+	skill->setPosition(getPosition());
+	skill->_st_pos = getPosition();
+
+	auto gameScene = dynamic_cast<GameScene*>(getParent()->getParent());
+
+	gameScene->skill_map[gameScene->skill_num] = skill;
+	gameScene->skill_num++;
+	skill->_side = 0;
+	skill->_release_time = clock();
+	gameScene->map->addChild(skill, 12);//这里有一点问题要解决
+	skill->move(skill->_st_pos, enemy->getPosition());
+}
+
+void Unit::stunned(double duration) {
+	auto cf_stun = CallFunc::create([=]() {
+		if (this != nullptr)
+			this->_stunned = true;
+		});
+	auto cf_deStun = CallFunc::create([=]() {
+		if (this != nullptr)
+			this->_stunned = false;;
+		});
+	auto seq = Sequence::create(cf_stun, DelayTime::create(duration), cf_deStun, nullptr);
+	getParent()->runAction(seq);
+}
+
+void Unit::useSkill_trample() {
+	auto gameScene = dynamic_cast<GameScene*> (getParent()->getParent());
+	auto it = gameScene->unit_map.begin();
+	while (it != gameScene->unit_map.end()) {
+		auto enemy = it->second;
+		if (enemy->_side != _side && enemy->getPosition().distance(getPosition()) < 200) {
+			enemy->getDamaged(200);
+			if (enemy->_life_current <= 0) {
+				_money += enemy->_kill_award;
+			}
+			enemy->stunned(2.0);
+		}
+		++it;
+	}
 }

@@ -32,7 +32,15 @@ public:
 	int _map_id;
 	void getDamaged(int damage);
 	cocos2d::Sprite* _lifeBank;
-private:
+	void stunned(double duration);
+
+	bool _stunned;
+
+	void useSkill_trample();
+
+	void Unit::longRangeAttack(Unit* enemy);
+
+protected:
 	bool _onAttack;
 	int _life_max;
 	int _attack;
