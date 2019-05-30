@@ -2,8 +2,9 @@
 #include "cocos2d.h"
 #include <windows.h>
 #include "MoveFind.h"
-
+#include <mutex>
 #include "client.h"
+
 
 GameClient client;
 #define MESIDE 0
@@ -48,7 +49,10 @@ bool GameScene::init() {
 		auto mapPosition = map->getPosition();
 		auto nowPosition = hero->getPosition();
 		auto newPosition = touchPosition - mapPosition;
-		sprintf_s(client.SendBuf, "%fT%f", newPosition.x, newPosition.y);
+		log("x is %f, y is %f", newPosition.x, newPosition.y);
+		char x[25];
+		sprintf_s(x, "%fT%f", newPosition.x, newPosition.y);
+		sprintf_s(client.SendBuf, "%s", x);
 		std::vector<Vec2> route = MoveFind(hero->getPosition(), newPosition);
 		hero->moveTo_directly(route);
 		auto skill = Skill::create("soldier/0.png", 300, 10,300,50);
@@ -64,6 +68,9 @@ bool GameScene::init() {
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
+
+
+	client.ClientProcess();
 
 	return true;
 }
@@ -144,8 +151,8 @@ bool GameScene::HeroInit()
 
 void GameScene::AllActionsTakenEachF(float dt)
 {
-	client.ClientProcess();
 
+//	client.ClientProcess();
 
 	int RectWidth = viewSize.width;		//´°¿Ú¿í
 	int RectHeight = viewSize.height;	//´°¿Ú¸ß

@@ -6,7 +6,7 @@
 #include <mutex>
 #define PORTS 1236
 
-std::mutex l;
+
 bool GameClient::init(Unit* h)
 {
 	hero = h;
@@ -50,45 +50,76 @@ bool GameClient::init(Unit* h)
 
 void GameClient::ClientProcess()
 {
-	HANDLE  RecvThread = nullptr, SendThread = nullptr;
-	if ((SendThread = CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)Send, this, 0, &SendThreadID)) == nullptr) {
-//		cocos2d::log("sendThread wrong");
-		cocos2d::log("wrong sendThreadId is %d", SendThreadID);
+
+	HANDLE sendThead, recvThread;
+	sendThead = CreateThread(NULL, 0,
+		static_cast<LPTHREAD_START_ROUTINE>(GameClient::Send),
+		static_cast<LPVOID>(this), 0,
+		NULL
+	);
+	if (nullptr == sendThead) {
+		DWORD k=GetLastError();
+		cocos2d::log("send wrong, error is %d", k);
+//		cocos2d::log("send thread wrong");
 	}
-	if (nullptr != SendThread) {
-//		cocos2d::log("sendThreadId is %d", SendThreadID);
-		CloseHandle(SendThread);
+	else {
+		CloseHandle(sendThead);
+	}
+	recvThread = CreateThread(NULL, 0,
+		static_cast<LPTHREAD_START_ROUTINE>(GameClient::Receive),
+		static_cast<LPVOID>(this), 0,
+		NULL
+	);
+	if (nullptr == recvThread) {
+		DWORD k = GetLastError();
+		cocos2d::log("receive wrong, error is %d", k);
+//		cocos2d::log("receive thread wrong");
+	}
+	else {
+		CloseHandle(recvThread);
 	}
 
-	if ((RecvThread = CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)Receive, this, 0, &RecvThreadID)) == nullptr) {
-//		cocos2d::log("receiveThread wrong");
-		cocos2d::log("wrong recvThreadId is %d", SendThreadID);
-	}
-	if (nullptr != RecvThread) {
-//		cocos2d::log("recvThreadId is %d", SendThreadID);
-		CloseHandle(RecvThread);
-	}
+
+//	HANDLE  RecvThread = nullptr, SendThread = nullptr;
+//	if ((SendThread = CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)Send, this, 0, &SendThreadID)) == nullptr) {
+////		cocos2d::log("sendThread wrong");
+//		cocos2d::log("wrong sendThreadId is %d", SendThreadID);
+//	}
+//	if (nullptr != SendThread) {
+////		cocos2d::log("sendThreadId is %d", SendThreadID);
+//		CloseHandle(SendThread);
+//	}
+//
+//	if ((RecvThread = CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)Receive, this, 0, &RecvThreadID)) == nullptr) {
+////		cocos2d::log("receiveThread wrong");
+//		cocos2d::log("wrong recvThreadId is %d", SendThreadID);
+//	}
+//	if (nullptr != RecvThread) {
+////		cocos2d::log("recvThreadId is %d", SendThreadID);
+//		CloseHandle(RecvThread);
+//	}
 }
+
 
 DWORD __stdcall GameClient::Send(LPVOID lpParam)
 {
 	GameClient* Client = (GameClient*)lpParam;
 
-//	while (true)
-//	{
+	while (true)
+	{
 		if (Client->ClientSocket != NULL)
 		{
 			char sendbuf[1024] = { 0 };
 			strcpy(sendbuf, Client->SendBuf);
 			if ('\0'==sendbuf[0]) {
-				return 0;
+				continue;
 			}
 			int iSend = send(Client->ClientSocket, sendbuf, strlen(sendbuf), 0);
 
 			ZeroMemory(Client->SendBuf, 1024);
 
 			cocos2d::log("send message :%s\n", sendbuf);
-//
+
 //			if (iSend <= 0)
 //			{
 //				if (Client->ClientSocket != NULL)
@@ -104,7 +135,8 @@ DWORD __stdcall GameClient::Send(LPVOID lpParam)
 //				return 0;
 //			}
 		}
-//	}
+	}
+	log("return");
 	return 0;
 }
 
@@ -112,8 +144,8 @@ DWORD __stdcall GameClient::Receive(LPVOID lpParam)
 {
 	GameClient* Client = (GameClient*)lpParam;
 
-//	while (true)
-//	{
+	while (true)
+	{
 		fd_set  Read;
 		int ret;
 		FD_ZERO(&Read);
@@ -138,31 +170,31 @@ DWORD __stdcall GameClient::Receive(LPVOID lpParam)
 			char c;
 			float x, y;
 			sscanf(recvbuf, "%f%c%f", &x, &c, &y);
-			auto move = MoveTo::create(0.5, Vec2(x, y));
-			Client->hero->runAction(move);
-//			Client->hero->moveTo_directly(Vec2(x, y));
-/*			if (iLen == SOCKET_ERROR || iLen <= 0 )//|| iLen != (int)strlen(recvbuf) + 1
-			{
-				cocos2d::log("iLen is %d", iLen);
-				cocos2d::log("(int)strlen(recvbuf) is %d", (int)strlen(recvbuf));
-				cocos2d::log("recvbuf is %s", recvbuf);
-				//				printf("接收出现错误号:%d\n", WSAGetLastError());
-				cocos2d::log("receive number wrong:%d", WSAGetLastError());
-				if (Client->ClientSocket != NULL)
-					closesocket(Client->ClientSocket);
-				Client->ClientSocket = NULL;
-				//				printf("接收线程关闭\n");
-				//				printf("发送[%d]\n接收[%d]\n", Client->SendThreadID, Client->RecvThreadID);
-				cocos2d::log("receive thread close");
-				cocos2d::log("send[%d] receive[%d]", Client->SendThreadID, Client->RecvThreadID);
-				ExitThread(Client->RecvThreadID);
-				ExitThread(Client->SendThreadID);
-				//				printf("接收线程关闭\n");
-				return 0;
-			}*/
+//			auto move = MoveTo::create(0.5, Vec2(x, y));
+//			Client->hero->runAction(move);
+			Client->hero->moveTo_directly(Vec2(x, y));
+			//if (iLen == SOCKET_ERROR || iLen <= 0 )//|| iLen != (int)strlen(recvbuf) + 1
+			//{
+			//	cocos2d::log("iLen is %d", iLen);
+			//	cocos2d::log("(int)strlen(recvbuf) is %d", (int)strlen(recvbuf));
+			//	cocos2d::log("recvbuf is %s", recvbuf);
+			//	//				printf("接收出现错误号:%d\n", WSAGetLastError());
+			//	cocos2d::log("receive number wrong:%d", WSAGetLastError());
+			//	if (Client->ClientSocket != NULL)
+			//		closesocket(Client->ClientSocket);
+			//	Client->ClientSocket = NULL;
+			//	//				printf("接收线程关闭\n");
+			//	//				printf("发送[%d]\n接收[%d]\n", Client->SendThreadID, Client->RecvThreadID);
+			//	cocos2d::log("receive thread close");
+			//	cocos2d::log("send[%d] receive[%d]", Client->SendThreadID, Client->RecvThreadID);
+			//	ExitThread(Client->RecvThreadID);
+			//	ExitThread(Client->SendThreadID);
+			//	//				printf("接收线程关闭\n");
+			//	return 0;
+			//}
 
 		}
-//	}
+	}
 	return 0;
 }
 
