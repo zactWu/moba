@@ -74,4 +74,5 @@ void GameScene::UsingFireBoll(Unit *hero,Vec2 newPosition,Unit *tar) {
 	map->addChild(skill, 12);//这里有一点问题要解决
 	skill->targe = tar;
 	skill->move(skill->_st_pos, newPosition);
+
 }

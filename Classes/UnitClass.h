@@ -29,6 +29,7 @@ public:
 	int _life_current;
 	int _tag_attackTarget;
 	int _kill_award;
+	int _map_id;
 	void getDamaged(int damage);
 	cocos2d::Sprite* _lifeBank;
 private:

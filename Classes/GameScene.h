@@ -9,7 +9,7 @@ class GameScene :public Layer {
 private:
 
 	TMXTiledMap* map;
-	Unit* hero;
+	
 	//ÆÁÄ»³ß´çÍßÆ¬³ß´ç
 	Size viewSize;
 	Size mapSize;
@@ -45,7 +45,7 @@ public:
 	std::vector<Vec2> MoveFind(const Vec2 startpoint, const Vec2& pos_target);		//Ñ°Â·
 	bool PointInit();
 	std::map<int, Unit*> unit_map;
-
+	Unit* hero;
 	std::map<int, Skill*> skill_map;
 	int unit_num = 0;
 	int skill_num = 0;

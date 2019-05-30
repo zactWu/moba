@@ -1,7 +1,6 @@
 #ifndef MOVEFIND
 #include "cocos2d.h"
 USING_NS_CC;
-
 struct MapPoint {
 	std::vector<int> can_be;
 	Vec2 position;

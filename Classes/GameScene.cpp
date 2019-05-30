@@ -2,6 +2,8 @@
 #include "cocos2d.h"
 #include <windows.h>
 #include "MoveFind.h"
+#include <proj.win32\main.h>
+#include "Gv.h"
 #define MESIDE 0
 #define ENEMYSIDE 1
 #define MAPZERO 10
@@ -42,7 +44,10 @@ bool GameScene::init() {
 		auto newPosition = touchPosition - mapPosition;
 		std::vector<Vec2> route = MoveFind(hero->getPosition(), newPosition);
 		hero->moveTo_directly(route);
-		UsingFireBoll(hero, newPosition, spa);
+		UsingFireBoll(hero, newPosition, NULL); 
+		log("%d", test_v);
+		test_v = 1;
+		//log("hero id i);
 		return true;
 	};
 
@@ -99,7 +104,24 @@ void GameScene::SkillHitCheck() {
 			}
 			if (flag)++skill;
 		}
-
+	}
+	auto unit = unit_map.begin();
+	while (unit != unit_map.end()) {
+		if (unit->second->_life_current <= 0) {
+			log("ac dead!!!!!!");
+			
+			auto money = Sprite::create("money.jpg");
+			money->setPosition(unit->second->getPosition());
+			money->setScale(0.2);
+			map->addChild(money);
+			auto fed = FadeOut::create(1.0f);
+			money->runAction(fed);
+			map->removeChild(unit->second);
+			unit = unit_map.erase(unit);
+		}
+		else {
+			++unit;
+		}
 	}
 }
 void GameScene::AllActionsTakenEachSecond(float dt) {
