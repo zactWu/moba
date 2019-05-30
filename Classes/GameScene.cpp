@@ -45,14 +45,9 @@ bool GameScene::init() {
 		std::vector<Vec2> route = MoveFind(hero->getPosition(), newPosition);
 		hero->moveTo_directly(route);
 		UsingFireBoll(hero, newPosition, NULL); 
-		log("%d", test_v);
-		test_v = 1;
 		//log("hero id i);
 		return true;
 	};
-
-
-
 	// Implementation of the keyboard event callback function prototype
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouse_listener, this);
 
@@ -109,7 +104,6 @@ void GameScene::SkillHitCheck() {
 	while (unit != unit_map.end()) {
 		if (unit->second->_life_current <= 0) {
 			log("ac dead!!!!!!");
-			
 			auto money = Sprite::create("money.jpg");
 			money->setPosition(unit->second->getPosition());
 			money->setScale(0.2);

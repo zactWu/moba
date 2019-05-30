@@ -7,14 +7,6 @@
 
 class GameScene :public Layer {
 private:
-
-<<<<<<< HEAD
-	TMXTiledMap* map;
-	
-=======
-	
-	Unit* hero;
->>>>>>> 530new
 	//ÆÁÄ»³ß´çÍßÆ¬³ß´ç
 	Size viewSize;
 	Size mapSize;
