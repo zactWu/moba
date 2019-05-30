@@ -51,6 +51,7 @@ public:
 	int skill_num = 0;
 	bool SkillHit(Skill* sk, Unit* un);
 	// 接下来就各种各样的技能
+	void UsingFireBoll(Unit* hero, Vec2 newPosition, Unit* tar);
 	void UsingFireBoll(Unit* sb,Vec2 newPosition);
 
 	CREATE_FUNC(GameScene);

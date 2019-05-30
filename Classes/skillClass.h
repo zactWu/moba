@@ -23,6 +23,7 @@ public:
 	Vec2 _st_pos;
 	int _test = 0;
 	Unit* _skiller;
+	Unit* targe = NULL;
 	void move(Vec2 from, Vec2 to);
 	
 private:

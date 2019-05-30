@@ -42,7 +42,7 @@ bool GameScene::init() {
 		auto newPosition = touchPosition - mapPosition;
 		std::vector<Vec2> route = MoveFind(hero->getPosition(), newPosition);
 		hero->moveTo_directly(route);
-		UsingFireBoll(hero, newPosition);
+		UsingFireBoll(hero, newPosition, spa);
 		return true;
 	};
 
@@ -60,7 +60,7 @@ void GameScene::SkillHitCheck() {
 	times++;
 	while (skill != skill_map.end()) {
 		int dis = skill->second->getPosition().getDistance(skill->second->_st_pos);
-		if (dis > skill->second->move_range - 50) {
+		if (dis > skill->second->move_range - 20) {
 			map->removeChild(skill->second);
 			skill = skill_map.erase(skill);
 			continue;
