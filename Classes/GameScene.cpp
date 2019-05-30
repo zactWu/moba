@@ -13,10 +13,6 @@ cocos2d::Scene* GameScene::createScene()
 	scene->addChild(layer);
 	return scene;
 }
-void KeyboardTest::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
-{
-	log("Key with keycode %d pressed", keyCode);
-}
 
 bool GameScene::init() {
 	if (!Layer::init())
@@ -49,6 +45,9 @@ bool GameScene::init() {
 		UsingFireBoll(hero, newPosition);
 		return true;
 	};
+
+
+
 	// Implementation of the keyboard event callback function prototype
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouse_listener, this);
 
@@ -70,11 +69,13 @@ void GameScene::SkillHitCheck() {
 			bool flag = 1;
 			auto unit = unit_map.begin();
 			while (unit != unit_map.end()) {
+				
 				if (this->SkillHit(skill->second, unit->second)) {
 					log("HIT!!");
 					// 还有伤害加进去
 					unit->second->getDamaged(skill->second->_damage);
 					if (unit->second->_life_current <= 0) {
+
 						auto money = Sprite::create("money.jpg");
 						money->setPosition(unit->second->getPosition());
 						money->setScale(0.2);
@@ -82,6 +83,7 @@ void GameScene::SkillHitCheck() {
 						auto fed = FadeOut::create(1.0f);
 						money->runAction(fed);
 						skill->second->_skiller->_money += unit->second->_kill_award;// 赏金系统
+						// 下面不要动
 						map->removeChild(unit->second);
 						unit_map.erase(unit);
 					}
