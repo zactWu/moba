@@ -158,6 +158,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\MoveFind.cpp" />
     <ClCompile Include="..\Classes\SettingScene.cpp" />
     <ClCompile Include="..\Classes\SkillClass.cpp" />
+    <ClCompile Include="..\Classes\SkillKinds.cpp" />
     <ClCompile Include="..\Classes\Startscene.cpp" />
     <ClCompile Include="..\Classes\UnitClass.cpp" />
     <ClCompile Include="main.cpp" />
@@ -172,6 +173,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\MoveFind.h" />
     <ClInclude Include="..\Classes\SettingScene.h" />
     <ClInclude Include="..\Classes\skillClass.h" />
+    <ClInclude Include="..\Classes\SkillKinds.h" />
     <ClInclude Include="..\Classes\Startscene.h" />
     <ClInclude Include="..\Classes\UnitClass.h" />
     <ClInclude Include="main.h" />
