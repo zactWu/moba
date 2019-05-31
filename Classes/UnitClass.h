@@ -19,6 +19,7 @@ public:
 	void moveTo_directly(const std::vector<Vec2> pos_list);
 	void attack_once(Unit* sp_enemy);
 	void update_follow_attack(float dt);
+	void getDamaged(Unit* producer, int damage);
 	virtual void animate_move_forever(int dir);
 
 	int getDirByTargetPos(const Vec2& pos_target)const;
@@ -29,13 +30,13 @@ public:
 	int _life_current;
 	int _tag_attackTarget;
 	int _kill_award;
-	void getDamaged(int damage);
+	
 	cocos2d::Sprite* _lifeBank;
 	void stunned(double duration);
 
 	bool _stunned;
 
-	void useSkill_trample();
+	
 
 	void Unit::longRangeAttack(Unit* enemy);
 

@@ -280,20 +280,28 @@ void Unit::update_follow_attack(float dt) {
 
 }
 
-inline void Unit::getDamaged(int damage) {
-
-	_life_current -= damage;
-	if (_life_current <= 0) {
+void Unit::getDamaged(Unit* producer, int damage) {
+	if (damage < 0) {
 		return;
 	}
-	_lifeBank->setScaleX(static_cast<double>(_life_current) / _life_max);
+	_life_current -= damage;
+	
+
+	if (_life_current <= 0) {
+		//伤害来源得到金钱
+		if (producer != nullptr)
+			producer->_money += _kill_award;
+
+		return;
+	}
+	_lifeBank->setScaleX(static_cast<float>(_life_current) / _life_max);
 	//变红动画
 	auto cf_intoRed = CallFunc::create([=]() {
-		if (this)
+		if(this)
 			this->setColor(cocos2d::Color3B::RED);
 		});
 	auto cf_back = CallFunc::create([=]() {
-		if (this)
+		if(this)
 			this->setColor(cocos2d::Color3B(255, 255, 255));
 		});
 	auto switchColor = Sequence::create(cf_intoRed, DelayTime::create(0.15), cf_back, nullptr);
@@ -326,30 +334,18 @@ void Unit::longRangeAttack(Unit* enemy) {
 }
 
 void Unit::stunned(double duration) {
+	//debug
+	cocos2d::log("stunned!");
+
 	auto cf_stun = CallFunc::create([=]() {
-		if (this != nullptr)
+		if (this!=nullptr)
 			this->_stunned = true;
-		});
+	    });
 	auto cf_deStun = CallFunc::create([=]() {
-		if (this != nullptr)
+		if (this!=nullptr)
 			this->_stunned = false;;
 		});
 	auto seq = Sequence::create(cf_stun, DelayTime::create(duration), cf_deStun, nullptr);
 	getParent()->runAction(seq);
 }
 
-void Unit::useSkill_trample() {
-	auto gameScene = dynamic_cast<GameScene*> (getParent()->getParent());
-	auto it = gameScene->unit_map.begin();
-	while (it != gameScene->unit_map.end()) {
-		auto enemy = it->second;
-		if (enemy->_side != _side && enemy->getPosition().distance(getPosition()) < 200) {
-			enemy->getDamaged(200);
-			if (enemy->_life_current <= 0) {
-				_money += enemy->_kill_award;
-			}
-			enemy->stunned(2.0);
-		}
-		++it;
-	}
-}

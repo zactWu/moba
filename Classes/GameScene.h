@@ -3,13 +3,14 @@
 #include "cocos2d.h"
 #include "UnitClass.h"
 #include "skillClass.h"
+#include "Hero.h"
 
 
 class GameScene :public Layer {
 private:
 
 	
-	Unit* hero;
+	Hero* hero;
 	//ÆÁÄ»³ß´çÍßÆ¬³ß´ç
 	Size viewSize;
 	Size mapSize;

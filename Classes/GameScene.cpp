@@ -2,6 +2,8 @@
 #include "cocos2d.h"
 #include <windows.h>
 #include "MoveFind.h"
+#include "Hero.h"
+
 #define MESIDE 0
 #define ENEMYSIDE 1
 #define MAPZERO 10
@@ -46,10 +48,12 @@ bool GameScene::init() {
 		return true;
 	};
 
+	
 
 
 	// Implementation of the keyboard event callback function prototype
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouse_listener, this);
+	
 
 	return true;
 }
@@ -73,7 +77,7 @@ void GameScene::SkillHitCheck() {
 				if (this->SkillHit(skill->second, unit->second)) {
 					log("HIT!!");
 					// 还有伤害加进去
-					unit->second->getDamaged(skill->second->_damage);
+					unit->second->getDamaged(skill->second->_skiller, skill->second->_damage);
 					if (unit->second->_life_current <= 0) {
 
 						auto money = Sprite::create("money.jpg");
@@ -82,7 +86,9 @@ void GameScene::SkillHitCheck() {
 						map->addChild(money);
 						auto fed = FadeOut::create(1.0f);
 						money->runAction(fed);
-						skill->second->_skiller->_money += unit->second->_kill_award;// 赏金系统
+
+						// 原有的赏金系统被加到了getDamaged里，所以这里的赏金系统被删除了。
+
 						// 下面不要动
 						map->removeChild(unit->second);
 						unit_map.erase(unit);
@@ -130,7 +136,7 @@ bool GameScene::MapInit()
 
 bool GameScene::HeroInit()
 {
-	hero = Unit::create("soldier/0.png", "soldier");
+	hero = Hero::create("soldier/0.png", "soldier");
 	hero->_side = MESIDE;
 	this->unit_map[unit_num] = hero;
 	unit_num++;
