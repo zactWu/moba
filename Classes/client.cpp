@@ -6,6 +6,9 @@
 #include <mutex>
 #define PORTS 1236
 
+std::mutex gameLock;
+
+extern std::queue<information> receiveQueue;
 
 bool GameClient::init(Unit* h)
 {
@@ -51,19 +54,19 @@ bool GameClient::init(Unit* h)
 void GameClient::ClientProcess()
 {
 
-	HANDLE sendThead, recvThread;
-	sendThead = CreateThread(NULL, 0,
+	HANDLE sendThread, recvThread, controlThread;
+	sendThread = CreateThread(NULL, 0,
 		static_cast<LPTHREAD_START_ROUTINE>(GameClient::Send),
 		static_cast<LPVOID>(this), 0,
 		NULL
 	);
-	if (nullptr == sendThead) {
+	if (nullptr == sendThread) {
 		DWORD k=GetLastError();
 		cocos2d::log("send wrong, error is %d", k);
 //		cocos2d::log("send thread wrong");
 	}
 	else {
-		CloseHandle(sendThead);
+		CloseHandle(sendThread);
 	}
 	recvThread = CreateThread(NULL, 0,
 		static_cast<LPTHREAD_START_ROUTINE>(GameClient::Receive),
@@ -78,7 +81,19 @@ void GameClient::ClientProcess()
 	else {
 		CloseHandle(recvThread);
 	}
-
+	controlThread = CreateThread(NULL, 0,
+		static_cast<LPTHREAD_START_ROUTINE>(GameClient::control),
+		static_cast<LPVOID>(this), 0,
+		NULL
+	);
+	if (nullptr == controlThread) {
+		DWORD k = GetLastError();
+		cocos2d::log("send wrong, error is %d", k);
+		//		cocos2d::log("send thread wrong");
+	}
+	else {
+		CloseHandle(controlThread);
+	}
 
 //	HANDLE  RecvThread = nullptr, SendThread = nullptr;
 //	if ((SendThread = CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)Send, this, 0, &SendThreadID)) == nullptr) {
@@ -110,14 +125,17 @@ DWORD __stdcall GameClient::Send(LPVOID lpParam)
 		if (Client->ClientSocket != NULL)
 		{
 			char sendbuf[1024] = { 0 };
+			gameLock.lock();
 			strcpy(sendbuf, Client->SendBuf);
 			if ('\0'==sendbuf[0]) {
+				gameLock.unlock();
 				continue;
 			}
+
 			int iSend = send(Client->ClientSocket, sendbuf, strlen(sendbuf), 0);
 
 			ZeroMemory(Client->SendBuf, 1024);
-
+			gameLock.unlock();
 			cocos2d::log("send message :%s\n", sendbuf);
 
 //			if (iSend <= 0)
@@ -160,8 +178,10 @@ DWORD __stdcall GameClient::Receive(LPVOID lpParam)
 			//通过缓冲区交互  
 			char recvbuf[1024] = { 0 };
 			ZeroMemory(recvbuf, 1024);
+			gameLock.lock();
 			int iLen = recv(Client->ClientSocket, recvbuf, 1024, 0);
 			if (iLen <= 0) {
+				gameLock.unlock();
 				return 0;
 			}
 			ZeroMemory(Client->RecvBuf, 1024);
@@ -170,9 +190,21 @@ DWORD __stdcall GameClient::Receive(LPVOID lpParam)
 			char c;
 			float x, y;
 			sscanf(recvbuf, "%f%c%f", &x, &c, &y);
+			information inf;
+			inf.x = x;
+			inf.y = y;
+//			static float xx = 10.0;
+//			static float yy = 10.0;
+//			cocos2d::log("push");
+			receiveQueue.push(inf);
+//			information temp = receiveQueue.front();
+//			cocos2d::log("%f %f", temp.x, temp.y);
 //			auto move = MoveTo::create(0.5, Vec2(x, y));
 //			Client->hero->runAction(move);
-			Client->hero->moveTo_directly(Vec2(x, y));
+//			Client->hero->moveTo_directly(Vec2(x, y));
+			gameLock.unlock();
+//			xx += 10;
+//			yy += 10;
 			//if (iLen == SOCKET_ERROR || iLen <= 0 )//|| iLen != (int)strlen(recvbuf) + 1
 			//{
 			//	cocos2d::log("iLen is %d", iLen);
@@ -195,6 +227,36 @@ DWORD __stdcall GameClient::Receive(LPVOID lpParam)
 
 		}
 	}
+	return 0;
+}
+
+DWORD __stdcall GameClient::control(LPVOID lpParam)
+{
+	GameClient* Client = static_cast<GameClient*>(lpParam);
+	if (nullptr == Client) {
+		return 0;
+	}
+	while (true)
+	{
+		information temp;
+		gameLock.lock();
+		if (!receiveQueue.empty()) {
+			temp = receiveQueue.front();
+			receiveQueue.pop();
+			gameLock.unlock();
+
+		}
+		else {
+			gameLock.unlock();
+			continue;
+		}
+		//		auto move = MoveTo::create(0.5, Vec2(temp.x, temp.y));
+		//		Client->hero->runAction(move);
+		log("position is %f %f", temp.x, temp.y);
+		Client->hero->moveTo_directly(Vec2(temp.x, temp.y));
+
+	}
+
 	return 0;
 }
 
