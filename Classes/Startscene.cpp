@@ -8,6 +8,7 @@
 #include "Startscene.h"
 #include "SimpleAudioEngine.h"
 #include "ui/CocosGUI.h"
+#include "GlobalVal.h"
 
 
 USING_NS_CC;
