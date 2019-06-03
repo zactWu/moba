@@ -3,6 +3,7 @@
 #include "helper.h"
 #include "skillClass.h"
 #include "GameScene.h"
+#include "MoveFind.h"
 USING_NS_CC;
 
 //Unit的create函数，调用：myUnit = Unit::create(...)
@@ -254,9 +255,10 @@ void Unit::update_follow_attack(float dt) {
 	}
 	//出错处理：无攻击目标
 	if (_tag_attackTarget == -1) {
+		log("follow at1");
 		return;
 	}
-
+	
 	auto sceneMap = getParent();
 	auto sp_target = sceneMap->getChildByTag(_tag_attackTarget);
 
@@ -267,11 +269,12 @@ void Unit::update_follow_attack(float dt) {
 
 	float distance = getPosition().distance(sp_target->getPosition());
 	if (distance > _attackRange) {
-		moveTo_directly(sp_target->getPosition());  //未考虑寻路
+		//auto gameScene = dynamic_cast<GameScene*>(getParent()->getParent());
+		//moveTo_directly(gameScene->MoveFind(this->getPosition(),sp_target->getPosition()));  //考虑寻路
+		moveTo_directly( sp_target->getPosition());
 	}
 	else {
 		if (!_onAttack) {
-
 			//debug
 			stopAllActions();//这个不知道需不需要加
 			attack_once(sp_enemy);
@@ -285,13 +288,9 @@ void Unit::getDamaged(Unit* producer, int damage) {
 		return;
 	}
 	_life_current -= damage;
-	
-
+	_last_attacker = producer;
 	if (_life_current <= 0) {
-		//伤害来源得到金钱
-		if (producer != nullptr)
-			producer->_money += _kill_award;
-
+	    // 赏金还是放在外面
 		return;
 	}
 	_lifeBank->setScaleX(static_cast<float>(_life_current) / _life_max);

@@ -28,13 +28,13 @@ public:
 	int _money;
 	int _side;
 	int _life_current;
-	int _tag_attackTarget;
+	int _tag_attackTarget=-1;
 	int _kill_award;
-	
+	Unit* _last_attacker=NULL;
 	cocos2d::Sprite* _lifeBank;
 	void stunned(double duration);
 
-	bool _stunned;
+	bool _stunned=0;
 
 	
 

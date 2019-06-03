@@ -2,6 +2,7 @@
 #include "cocos2d.h"
 #include <windows.h>
 #include "MoveFind.h"
+#include "TowerClass.h"
 #include "Hero.h"
 
 #define MESIDE 0
@@ -16,6 +17,7 @@ cocos2d::Scene* GameScene::createScene()
 	return scene;
 }
 
+
 bool GameScene::init() {
 	if (!Layer::init())
 	{
@@ -24,18 +26,19 @@ bool GameScene::init() {
 	MapInit();			//map初始化
 	HeroInit();
 	PointInit();
+	TowerInit();
 	Vec2 pos = { 400,400 };
-	//
+	
 	auto spa = Unit::create("soldier/0.png", "soldier");
 	unit_map[unit_num] = spa;
 	unit_num++;
-	spa->_side = ENEMYSIDE;
+	spa->_side = 1;
 	spa->setPosition(pos);
 	map->addChild(spa);
-	//
-	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
 	
-	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.1);
+	
+	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
+	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.15);
 	auto mouse_listener = EventListenerTouchOneByOne::create();
 	mouse_listener->onTouchBegan = [=](Touch * Touch, Event * Event) {
 		auto touchPosition = Touch->getLocation();
@@ -44,17 +47,11 @@ bool GameScene::init() {
 		auto newPosition = touchPosition - mapPosition;
 		std::vector<Vec2> route = MoveFind(hero->getPosition(), newPosition);
 		hero->moveTo_directly(route);
-		UsingFireBoll(hero, newPosition, spa);
+		UsingFireBoll(hero, newPosition, NULL);
 		return true;
 	};
-
-	
-
-
 	// Implementation of the keyboard event callback function prototype
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouse_listener, this);
-	
-
 	return true;
 }
 void GameScene::SkillHitCheck() {
@@ -64,7 +61,11 @@ void GameScene::SkillHitCheck() {
 	times++;
 	while (skill != skill_map.end()) {
 		int dis = skill->second->getPosition().getDistance(skill->second->_st_pos);
-		if (dis > skill->second->move_range - 20) {
+		if (skill->second->targe != NULL) {
+			skill->second->stopAllActions();
+			skill->second->move(skill->second->getPosition(), skill->second->targe->getPosition());
+		}
+		if (dis > skill->second->move_range - 20 && skill->second->targe==NULL) {
 			map->removeChild(skill->second);
 			skill = skill_map.erase(skill);
 			continue;
@@ -78,21 +79,6 @@ void GameScene::SkillHitCheck() {
 					log("HIT!!");
 					// 还有伤害加进去
 					unit->second->getDamaged(skill->second->_skiller, skill->second->_damage);
-					if (unit->second->_life_current <= 0) {
-
-						auto money = Sprite::create("money.jpg");
-						money->setPosition(unit->second->getPosition());
-						money->setScale(0.2);
-						map->addChild(money);
-						auto fed = FadeOut::create(1.0f);
-						money->runAction(fed);
-
-						// 原有的赏金系统被加到了getDamaged里，所以这里的赏金系统被删除了。
-
-						// 下面不要动
-						map->removeChild(unit->second);
-						unit_map.erase(unit);
-					}
 					map->removeChild(skill->second);
 					skill = skill_map.erase(skill);
 					flag = 0;
@@ -107,11 +93,67 @@ void GameScene::SkillHitCheck() {
 		}
 
 	}
+	auto unit = unit_map.begin();
+	while (unit != unit_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
+		if (unit->second->_life_current <= 0) {
+			if (unit->second->_last_attacker != NULL) {
+				unit->second->_last_attacker->_money += unit->second->_kill_award;// 赏金放在这里
+			}
+			auto money = Sprite::create("money.jpg");
+			money->setPosition(unit->second->getPosition());
+			money->setScale(0.2);
+			map->addChild(money);
+			auto fed = FadeOut::create(1.0f);
+			money->runAction(fed);
+			map->removeChild(unit->second);
+			unit = unit_map.erase(unit);
+		}
+		else {
+			
+			++unit;
+		}
+	}
+	
+}
+void GameScene::TowerAction() {
+	auto tower = tower_map.begin();
+	while (tower != tower_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
+		if (tower->second->_life_current <= 0) {
+			auto money = Sprite::create("towercrash.jpg");
+			money->setPosition(tower->second->getPosition());
+			money->setScale(0.1);
+			map->addChild(money);
+			map->removeChild(tower->second);
+			tower->second->_last_attacker->_money += tower->second->_kill_award;// 赏金放在这里
+			tower = tower_map.erase(tower);
+		}
+		else {
+			float pass_time = clock() - tower->second->_last_release_time;
+			log("pass time is %f", pass_time);
+			if (pass_time > tower->second->_cd_time) {
+				auto unit = unit_map.begin();
+				//log("has check");
+				while (unit != unit_map.end()) {
+					if (unit->second->getPosition().getDistance(tower->second->getPosition())
+						< tower->second->hit_range &&
+						unit->second->_side!=tower->second->_side-2) {
+						tower->second->fire(unit->second);
+						tower->second->_last_release_time = clock();
+						log("in range!!");
+						break;
+					}
+					++unit;
+				}
+			}
+			
+			++tower;
+		}
+	}
 }
 void GameScene::AllActionsTakenEachSecond(float dt) {
 	hero->_money++;// 加钱
 	SkillHitCheck();
-	
+	TowerAction();
 }
 bool GameScene::MapInit()
 {
@@ -133,7 +175,17 @@ bool GameScene::MapInit()
 	
 	return false;
 }
-
+void GameScene::TowerInit() {
+	auto towerA = Tower::create("tower.jpg", 3);
+	Vec2 pos = { 600,600 };
+	towerA->setPosition(pos);
+	towerA->setScale(0.1);
+	map->addChild(towerA);
+	log("towerA ready");
+	tower_map[tower_num] = towerA;
+	tower_num++;
+	return;
+}
 bool GameScene::HeroInit()
 {
 	hero = Hero::create("soldier/0.png", "soldier");

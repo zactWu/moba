@@ -4,7 +4,7 @@
 #include "UnitClass.h"
 #include "skillClass.h"
 #include "Hero.h"
-
+#include "TowerClass.h"
 
 class GameScene :public Layer {
 private:
@@ -38,8 +38,10 @@ private:
 public:
 	TMXTiledMap* map;
 	static cocos2d::Scene* createScene();
+	void TowerInit();
 	virtual bool init();
 	void SkillHitCheck();
+	void TowerAction();
 	void AllActionsTakenEachSecond(float dt);
 	bool MapInit();
 	bool HeroInit();
@@ -47,10 +49,11 @@ public:
 	std::vector<Vec2> MoveFind(const Vec2 startpoint, const Vec2& pos_target);		//寻路
 	bool PointInit();
 	std::map<int, Unit*> unit_map;
-
+	std::map<int, Tower*> tower_map;
 	std::map<int, Skill*> skill_map;
 	int unit_num = 0;
 	int skill_num = 0;
+	int tower_num = 0;
 	bool SkillHit(Skill* sk, Unit* un);
 	// 接下来就各种各样的技能
 	void UsingFireBoll(Unit* hero, Vec2 newPosition, Unit* tar);

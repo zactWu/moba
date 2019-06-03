@@ -24,15 +24,13 @@ Skill* Skill::create(const std::string& filename,
 
 bool GameScene::SkillHit(Skill *sk,Unit *un) {
 	if (sk->_side == un->_side) {
-		log("unit side is %d", sk ->_side);
 		return 0;
 	}
 	if (sk->targe != NULL) {
-		log("yes!~!");
-	}
-	if (sk->targe != NULL && sk->getPosition().getDistance(sk->_st_pos)>sk->move_range-70 ){
-		log("let it hit!!!!!!");
-		return 1;
+		if (sk->targe != un) {
+			return 0;
+		}
+		
 	}
 	if (un->getPosition().getDistance(sk->getPosition()) < sk->hit_range) {
 		float dis = un->getPosition().getDistance(sk->getPosition());
