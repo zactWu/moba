@@ -121,16 +121,21 @@ void GameScene::TowerAction() {
 		if (tower->second->_life_current <= 0) {
 			auto money = Sprite::create("towercrash.jpg");
 			money->setPosition(tower->second->getPosition());
-			money->setScale(0.1);
+			money->setScale(0.03);
+			if (tower->second->_last_attacker != NULL) {
+				tower->second->_last_attacker->_money += tower->second->_kill_award;
+			}
 			map->addChild(money);
 			map->removeChild(tower->second);
-			tower->second->_last_attacker->_money += tower->second->_kill_award;// 赏金放在这里
+			
+			
 			tower = tower_map.erase(tower);
 		}
 		else {
 			float pass_time = clock() - tower->second->_last_release_time;
 			log("pass time is %f", pass_time);
 			if (pass_time > tower->second->_cd_time) {
+
 				auto unit = unit_map.begin();
 				//log("has check");
 				while (unit != unit_map.end()) {
@@ -140,6 +145,7 @@ void GameScene::TowerAction() {
 						tower->second->fire(unit->second);
 						tower->second->_last_release_time = clock();
 						log("in range!!");
+						//tower->second->getDamaged(tower->second, 200);
 						break;
 					}
 					++unit;

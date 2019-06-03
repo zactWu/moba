@@ -19,8 +19,8 @@ Tower* Tower::create(const std::string& filename,
 		unit->_kill_award = 300;
 		unit->_last_attacker = NULL;
 		unit->_life_current = 500;
-		unit->_lifeBank = Sprite::create("lifeBank.jpg");
 
+		unit->_lifeBank = Sprite::create("lifeBank.jpg");
 		unit->_lifeBank->setPosition(unit->getPosition() + Vec2(30.f, 60.f));
 		unit->addChild(unit->_lifeBank, 1);
 		unit->autorelease();
