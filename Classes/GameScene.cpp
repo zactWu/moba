@@ -4,11 +4,12 @@
 #include "MoveFind.h"
 #include "TowerClass.h"
 #include "Hero.h"
-
+#include "client.h"
 #define MESIDE 0
 #define ENEMYSIDE 1
 #define MAPZERO 10
 #define HEROZERO 15
+GameClient client;
 cocos2d::Scene* GameScene::createScene()
 {
 	auto scene = Scene::create();
@@ -35,8 +36,7 @@ bool GameScene::init() {
 	spa->_side = 1;
 	spa->setPosition(pos);
 	map->addChild(spa);
-	
-	
+	spa->setTag(123);
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
 	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.15);
 	auto mouse_listener = EventListenerTouchOneByOne::create();
@@ -52,6 +52,7 @@ bool GameScene::init() {
 	};
 	// Implementation of the keyboard event callback function prototype
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouse_listener, this);
+	client.ClientProcess();
 	return true;
 }
 void GameScene::SkillHitCheck() {
@@ -200,6 +201,9 @@ bool GameScene::HeroInit()
 	unit_num++;
 
 	map->addChild(hero,HEROZERO);
+	if (client.init(hero)) {
+
+	};
 	return false;
 }
 

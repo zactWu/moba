@@ -18,19 +18,25 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\UnitClass.cpp">
+    <ClCompile Include="..\Classes\client.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\GameScene.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\MoveFind.cpp">
+    <ClCompile Include="..\Classes\gvy.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\HelloWorldScene.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\HelpScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Hero.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MoveFind.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\SettingScene.cpp">
@@ -39,19 +45,16 @@
     <ClCompile Include="..\Classes\SkillClass.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Startscene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Hero.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\SkillKinds.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\gvy.cpp">
+    <ClCompile Include="..\Classes\Startscene.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\TowerClass.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\UnitClass.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,22 +65,28 @@
     <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\client.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameScene.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Gv.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="..\Classes\HelloWorldScene.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\helper.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\UnitClass.h">
+    <ClInclude Include="..\Classes\HelpScene.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\GameScene.h">
+    <ClInclude Include="..\Classes\Hero.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\MoveFind.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\HelpScene.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\SettingScene.h">
@@ -86,19 +95,16 @@
     <ClInclude Include="..\Classes\skillClass.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Startscene.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Hero.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\SkillKinds.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Gv.h">
+    <ClInclude Include="..\Classes\Startscene.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\TowerClass.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UnitClass.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
