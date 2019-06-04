@@ -1,15 +1,18 @@
 #include "UnitClass.h"
 #include "cocos2d.h"
 #include "helper.h"
+#include "skillClass.h"
+#include "GameScene.h"
+#include "MoveFind.h"
 USING_NS_CC;
 
 //Unit的create函数，调用：myUnit = Unit::create(...)
-Unit* Unit::create(const std::string &filename, const std::string &unitType,
+Unit* Unit::create(const std::string& filename, const std::string& unitType,
 	int maxLife, int attack, int defense, int speed,
 	float rotate_speed, float attackInterval, float attackRange) {
 
 	auto unit = new (std::nothrow) Unit;
-	if (unit&&unit->initWithFile(filename)) {
+	if (unit && unit->initWithFile(filename)) {
 
 		//初始化unit各项属性
 		unit->_life_max = maxLife;
@@ -22,12 +25,16 @@ Unit* Unit::create(const std::string &filename, const std::string &unitType,
 		unit->_attackRange = attackRange;
 		unit->_tag_attackTarget = -1;
 		unit->_onAttack = false;
+		unit->_kill_award = 100;
+		//创建血条
+		unit->_lifeBank = Sprite::create("lifeBank.jpg");
 
+		unit->_lifeBank->setPosition(unit->getPosition() + Vec2(30.f, 60.f));
+		unit->addChild(unit->_lifeBank, 1);
 		unit->autorelease();
+
 		return unit;
 	}
-
-
 
 	CC_SAFE_DELETE(unit);
 	return nullptr;
@@ -67,11 +74,11 @@ inline void Unit::animate_move_forever(int dir) {
 }
 
 
-inline int Unit::getDirByTargetPos(const Vec2 &pos_target)const {
+inline int Unit::getDirByTargetPos(const Vec2& pos_target)const {
 	return Unit::getDirByTargetPos(getPosition(), pos_target);
 }
 
-inline int Unit::getDirByTargetPos(const Vec2 &pos_current, const Vec2 &pos_target)const {
+inline int Unit::getDirByTargetPos(const Vec2& pos_current, const Vec2& pos_target)const {
 	Vec2 vecDir = pos_target - pos_current;
 	float angleDir = RTOD(vecDir.getAngle());
 	int iDir;
@@ -104,7 +111,7 @@ inline int Unit::getDirByTargetPos(const Vec2 &pos_current, const Vec2 &pos_targ
 }
 
 //自动停止当前移动、修改_pos_moveTarget和_moveDir。
-void Unit::moveTo_directly(const Vec2 &pos_target) {
+void Unit::moveTo_directly(const Vec2& pos_target) {
 	_pos_moveTarget = pos_target;
 	stopActionByTag(Tag::move);
 	float distance = pos_target.distance(getPosition());
@@ -112,7 +119,7 @@ void Unit::moveTo_directly(const Vec2 &pos_target) {
 	auto move = MoveTo::create(duration, pos_target);
 	auto cf_stopAnimation = CallFunc::create([=]() {
 		stopActionByTag(Tag::animate_move);
-	});
+		});
 
 	auto seq_moveThenStopAnimation = Sequence::create(move, cf_stopAnimation, nullptr);
 	seq_moveThenStopAnimation->setTag(Tag::move);
@@ -148,13 +155,13 @@ void Unit::moveTo_directly(const std::vector<Vec2> pos_list) {
 			this->_pos_moveTarget = pos_target;
 			this->animate_move_forever(iDir);
 
-		});
+			});
 		actionListToOnePoint.pushBack(cf);
 		actionListToOnePoint.pushBack(move);
 	}
 	auto cf_stopAnimate = CallFunc::create([=]()mutable {
 		this->stopActionByTag(Tag::animate_move);
-	});
+		});
 	actionListToOnePoint.pushBack(cf_stopAnimate);
 	auto actionList = Sequence::create(actionListToOnePoint);
 
@@ -172,7 +179,7 @@ void Unit::attack_once(Unit* sp_enemy) {
 
 	auto cf_onAttack = CallFunc::create([=]() {
 		_onAttack = true;
-	});
+		});
 
 
 	Vector<SpriteFrame*> animFrames1;
@@ -189,7 +196,7 @@ void Unit::attack_once(Unit* sp_enemy) {
 			this->_onAttack = false;
 			return;
 		}
-	});
+		});
 
 	Vector<SpriteFrame*> animFrames2;
 	animFrames2.reserve(1);
@@ -200,16 +207,22 @@ void Unit::attack_once(Unit* sp_enemy) {
 	Animation* animation2 = Animation::createWithSpriteFrames(animFrames2, _attackInterval / 2.f);
 	Animate* animate2 = Animate::create(animation2);
 
+
+
+
+
 	auto cf_damage = CallFunc::create([=]() {
 		if (sp_enemy == nullptr) {
 			this->_onAttack = false;
 			return;
 		}
-		sp_enemy->_life_current -= this->_attack;
+		longRangeAttack(sp_enemy);
+		});
 
-		//debug
-		cocos2d::log("%d", sp_enemy->_life_current);
-	});
+
+
+
+
 
 	Vector<SpriteFrame*> animFrames3;
 	animFrames3.reserve(1);
@@ -222,7 +235,7 @@ void Unit::attack_once(Unit* sp_enemy) {
 
 	auto cf_notOnAttack = CallFunc::create([=]() {
 		this->_onAttack = false;
-	});
+		});
 
 	auto seq_oneAttack = Sequence::create(cf_onAttack, animate1, cf_stopIfEnemyIsDead,
 		animate2, cf_damage, animate3, cf_notOnAttack, nullptr);
@@ -237,35 +250,101 @@ void Unit::attack_once(Unit* sp_enemy) {
 //取消攻击时需调用unschedule，来节省开销，并且需要修改_attackTarget=-1, _onAttack = false
 
 void Unit::update_follow_attack(float dt) {
-	//出错处理：无攻击目标
-	if (_tag_attackTarget == -1) {
+	if (_stunned) {
 		return;
 	}
-
+	//出错处理：无攻击目标
+	if (_tag_attackTarget == -1) {
+		log("follow at1");
+		return;
+	}
+	
 	auto sceneMap = getParent();
 	auto sp_target = sceneMap->getChildByTag(_tag_attackTarget);
 
 	if (sp_target == nullptr) {
 		return;
 	}
-	auto sp_enemy = static_cast<Unit*>(sp_target);
+	auto sp_enemy = dynamic_cast<Unit*>(sp_target);
 
 	float distance = getPosition().distance(sp_target->getPosition());
 	if (distance > _attackRange) {
-		moveTo_directly(sp_target->getPosition());  //未考虑寻路
-
-		//debug
-		cocos2d::log("%f %f", distance, _attackRange);
+		//auto gameScene = dynamic_cast<GameScene*>(getParent()->getParent());
+		//moveTo_directly(gameScene->MoveFind(this->getPosition(),sp_target->getPosition()));  //考虑寻路
+		moveTo_directly( sp_target->getPosition());
 	}
 	else {
 		if (!_onAttack) {
-
 			//debug
 			stopAllActions();//这个不知道需不需要加
-			cocos2d::log("not on attack!");
-
 			attack_once(sp_enemy);
 		}
 	}
 
 }
+
+void Unit::getDamaged(Unit* producer, int damage) {
+	if (damage < 0) {
+		return;
+	}
+	_life_current -= damage;
+	_last_attacker = producer;
+	if (_life_current <= 0) {
+	    // 赏金还是放在外面
+		return;
+	}
+	_lifeBank->setScaleX(static_cast<float>(_life_current) / _life_max);
+	//变红动画
+	auto cf_intoRed = CallFunc::create([=]() {
+		if(this)
+			this->setColor(cocos2d::Color3B::RED);
+		});
+	auto cf_back = CallFunc::create([=]() {
+		if(this)
+			this->setColor(cocos2d::Color3B(255, 255, 255));
+		});
+	auto switchColor = Sequence::create(cf_intoRed, DelayTime::create(0.15), cf_back, nullptr);
+	getParent()->runAction(switchColor);
+}
+
+void Unit::longRangeAttack(Unit* enemy) {
+	if (_stunned) {
+		return;
+	}
+	if (enemy == nullptr) {
+		return;
+	}
+
+	auto skill = Skill::create("fireboll.jpg", 300, _attack, 500, 50);
+	skill->targe = enemy;
+	skill->_skiller = this;
+	skill->setScale(0.3);
+	skill->setPosition(getPosition());
+	skill->_st_pos = getPosition();
+
+	auto gameScene = dynamic_cast<GameScene*>(getParent()->getParent());
+
+	gameScene->skill_map[gameScene->skill_num] = skill;
+	gameScene->skill_num++;
+	skill->_side = 0;
+	skill->_release_time = clock();
+	gameScene->map->addChild(skill, 12);//这里有一点问题要解决
+	skill->move(skill->_st_pos, enemy->getPosition());
+}
+
+void Unit::stunned(double duration) {
+	//debug
+	cocos2d::log("stunned!");
+
+	auto cf_stun = CallFunc::create([=]() {
+		if (this!=nullptr)
+			this->_stunned = true;
+	    });
+	auto cf_deStun = CallFunc::create([=]() {
+		if (this!=nullptr)
+			this->_stunned = false;;
+		});
+	auto seq = Sequence::create(cf_stun, DelayTime::create(duration), cf_deStun, nullptr);
+	getParent()->runAction(seq);
+}
+

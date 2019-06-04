@@ -2,8 +2,14 @@
 #include "cocos2d.h"
 #include <windows.h>
 #include "MoveFind.h"
-
-
+#include "TowerClass.h"
+#include "Hero.h"
+#include "client.h"
+#define MESIDE 0
+#define ENEMYSIDE 1
+#define MAPZERO 10
+#define HEROZERO 15
+GameClient client;
 cocos2d::Scene* GameScene::createScene()
 {
 	auto scene = Scene::create();
@@ -11,6 +17,7 @@ cocos2d::Scene* GameScene::createScene()
 	scene->addChild(layer);
 	return scene;
 }
+
 
 bool GameScene::init() {
 	if (!Layer::init())
@@ -20,43 +27,147 @@ bool GameScene::init() {
 	MapInit();			//map初始化
 	HeroInit();
 	PointInit();
+	TowerInit();
 	Vec2 pos = { 400,400 };
+	
 	auto spa = Unit::create("soldier/0.png", "soldier");
+	unit_map[unit_num] = spa;
+	unit_num++;
+	spa->_side = 1;
 	spa->setPosition(pos);
 	map->addChild(spa);
+	spa->setTag(123);
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
-	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),1.0);
-																			//鼠标监听
-	/*
-	auto bloodBg = Sprite::create(p_bloodline);	
-	bloodBg->setPosition(Point(npc->getContentSize().width / 2, npc->getContentSize().height - 10));
-	npc->addChild(bloodBg, 1);
-	auto bloodBlue = Sprite::create(p_bloodlinehong);
-	*/
-	auto listener = EventListenerTouchOneByOne::create();
-	listener->onTouchBegan = [=](Touch * Touch, Event * Event) {
+	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.15);
+	auto mouse_listener = EventListenerTouchOneByOne::create();
+	mouse_listener->onTouchBegan = [=](Touch * Touch, Event * Event) {
 		auto touchPosition = Touch->getLocation();
 		auto mapPosition = map->getPosition();
 		auto nowPosition = hero->getPosition();
 		auto newPosition = touchPosition - mapPosition;
 		std::vector<Vec2> route = MoveFind(hero->getPosition(), newPosition);
 		hero->moveTo_directly(route);
+		UsingFireBoll(hero, newPosition, NULL);
 		return true;
 	};
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-
+	// Implementation of the keyboard event callback function prototype
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouse_listener, this);
+	client.ClientProcess();
 	return true;
 }
+void GameScene::SkillHitCheck() {
+	auto skill = skill_map.begin();
+	clock_t start = clock();
+	static int times = 0;
+	times++;
+	while (skill != skill_map.end()) {
+		int dis = skill->second->getPosition().getDistance(skill->second->_st_pos);
+		if (skill->second->targe != NULL) {
+			skill->second->stopAllActions();
+			skill->second->move(skill->second->getPosition(), skill->second->targe->getPosition());
+		}
+		if (dis > skill->second->move_range - 20 && skill->second->targe==NULL) {
+			map->removeChild(skill->second);
+			skill = skill_map.erase(skill);
+			continue;
+		}
+		else {
+			bool flag = 1;
+			auto unit = unit_map.begin();
+			while (unit != unit_map.end()) {
+				
+				if (this->SkillHit(skill->second, unit->second)) {
+					log("HIT!!");
+					// 还有伤害加进去
+					unit->second->getDamaged(skill->second->_skiller, skill->second->_damage);
+					map->removeChild(skill->second);
+					skill = skill_map.erase(skill);
+					flag = 0;
+					break;
+				}
+				else
+				{
+					++unit;
+				}
+			}
+			if (flag)++skill;
+		}
+
+	}
+	auto unit = unit_map.begin();
+	while (unit != unit_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
+		if (unit->second->_life_current <= 0) {
+			if (unit->second->_last_attacker != NULL) {
+				unit->second->_last_attacker->_money += unit->second->_kill_award;// 赏金放在这里
+			}
+			auto money = Sprite::create("money.jpg");
+			money->setPosition(unit->second->getPosition());
+			money->setScale(0.2);
+			map->addChild(money);
+			auto fed = FadeOut::create(1.0f);
+			money->runAction(fed);
+			map->removeChild(unit->second);
+			unit = unit_map.erase(unit);
+		}
+		else {
+			
+			++unit;
+		}
+	}
+	
+}
+void GameScene::TowerAction() {
+	auto tower = tower_map.begin();
+	while (tower != tower_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
+		if (tower->second->_life_current <= 0) {
+			auto money = Sprite::create("towercrash.jpg");
+			money->setPosition(tower->second->getPosition());
+			money->setScale(0.03);
+			if (tower->second->_last_attacker != NULL) {
+				tower->second->_last_attacker->_money += tower->second->_kill_award;
+			}
+			map->addChild(money);
+			map->removeChild(tower->second);
+			
+			
+			tower = tower_map.erase(tower);
+		}
+		else {
+			float pass_time = clock() - tower->second->_last_release_time;
+			log("pass time is %f", pass_time);
+			if (pass_time > tower->second->_cd_time) {
+
+				auto unit = unit_map.begin();
+				//log("has check");
+				while (unit != unit_map.end()) {
+					if (unit->second->getPosition().getDistance(tower->second->getPosition())
+						< tower->second->hit_range &&
+						unit->second->_side!=tower->second->_side-2) {
+						tower->second->fire(unit->second);
+						tower->second->_last_release_time = clock();
+						log("in range!!");
+						//tower->second->getDamaged(tower->second, 200);
+						break;
+					}
+					++unit;
+				}
+			}
+			
+			++tower;
+		}
+	}
+}
 void GameScene::AllActionsTakenEachSecond(float dt) {
-	log("get money");
-	hero->_money++;
+	hero->_money++;// 加钱
+	SkillHitCheck();
+	TowerAction();
 }
 bool GameScene::MapInit()
 {
 	map = TMXTiledMap::create("map.tmx");		//创建map
 	map->setAnchorPoint(Vec2(0, 0));			//设置锚点为左下角
 	map->setPosition(Vec2(0, 0));				//设置位置为窗口左下角
-	this->addChild(map);
+	this->addChild(map,MAPZERO);
 
 	viewSize = Director::getInstance()->getOpenGLView()->getVisibleRect().size;		//初始化窗口大小
 	mapSize = map->getMapSize();													//初始化map大小（单位：块）
@@ -71,11 +182,28 @@ bool GameScene::MapInit()
 	
 	return false;
 }
-
+void GameScene::TowerInit() {
+	auto towerA = Tower::create("tower.jpg", 3);
+	Vec2 pos = { 600,600 };
+	towerA->setPosition(pos);
+	towerA->setScale(0.1);
+	map->addChild(towerA);
+	log("towerA ready");
+	tower_map[tower_num] = towerA;
+	tower_num++;
+	return;
+}
 bool GameScene::HeroInit()
 {
-	hero = Unit::create("soldier/0.png", "soldier");
-	map->addChild(hero);
+	hero = Hero::create("soldier/0.png", "soldier");
+	hero->_side = MESIDE;
+	this->unit_map[unit_num] = hero;
+	unit_num++;
+
+	map->addChild(hero,HEROZERO);
+	if (client.init(hero)) {
+
+	};
 	return false;
 }
 
@@ -116,8 +244,7 @@ void GameScene::AllActionsTakenEachF(float dt)
 		}
 		auto MapMove = MoveBy::create(1 / 60, Vec2(x, y));	//1/60是一帧所需要的时间（目前一秒60帧）
 		map->runAction(MapMove);
-		//
-		Vec2 pos = { 400,400 };
+		// 
 		
 		
 		//

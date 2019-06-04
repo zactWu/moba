@@ -7,8 +7,8 @@
 #define GOAL 1000
 USING_NS_CC;
 
-#define across 62
-#define movemarknums 177
+#define across 50
+#define movemarknums 199
 
 
 
@@ -137,7 +137,7 @@ std::vector<Vec2> GameScene::MoveFind(const Vec2 startpoint, const Vec2& pos_tar
 	}
 	clock_t end2_tiem = clock();
 	float spendtime2 = end2_tiem - start_time;
-	log("spend %f", spendtime2);
+	//log("spend %f", spendtime2);
 	route ans;// 同来储存结果 
 
 	while (!finds.empty()) {
@@ -196,6 +196,6 @@ std::vector<Vec2> GameScene::MoveFind(const Vec2 startpoint, const Vec2& pos_tar
 
 	clock_t end_tiem = clock();
 	float spendtime = end_tiem - start_time;
-	log("spend %f", spendtime);
+	//log("spend %f", spendtime);
 	return ans.position;//接口是一个vector的点集 
 }
