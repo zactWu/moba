@@ -98,6 +98,10 @@ void GameScene::UnitDeadAction() {
 	while (unit != unit_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
 		if (unit->second->_life_current <= 0) {
 			unit->second->stopAllActions();
+			if (unit->second == hero) {
+				hero->_life_current = 100;
+				hero->setPosition(hero->reborn_pos);
+			}
 			if (unit->second->_last_attacker != NULL) {
 				unit->second->_last_attacker->_money += unit->second->_kill_award;// 赏金放在这里
 			}
@@ -107,6 +111,14 @@ void GameScene::UnitDeadAction() {
 			map->addChild(money);
 			auto fed = FadeOut::create(1.0f);
 			money->runAction(fed);
+			if (unit->second == hero) {
+				hero->_life_current = 100;
+				hero->setPosition(hero->reborn_pos);
+				hero->getDamaged(NULL, 1);
+				hero->_money -= 50;
+				++unit;
+				continue;
+			}
 			map->removeChild(unit->second);
 			unit = unit_map.erase(unit);
 		}
