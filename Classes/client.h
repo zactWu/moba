@@ -34,8 +34,12 @@ public:
 	static DWORD WINAPI Receive(LPVOID lpParam);  //接受线程
 	static DWORD WINAPI control(LPVOID lpParam);	//控制
 
-	bool Q_Skill(GameClient* Client,information* temp);
-	bool MoveControl(GameClient* Client, information* temp);
+
+	bool MoveControl(GameClient* Client, const information* temp);
+	bool Q_Skill(GameClient* Client, const information* temp);
+	bool W_Skill(GameClient* Client, const information* temp);
+	bool E_Skill(GameClient* Client, const information* temp);
+
 
 	static int AddBuf(char c, int tag, float x, float y);
 	void CleanUp();      //资源回收

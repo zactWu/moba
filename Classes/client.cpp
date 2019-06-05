@@ -266,13 +266,25 @@ DWORD __stdcall GameClient::control(LPVOID lpParam)
 			receiveQueue.pop();
 			if (pass_time > 170) {
 				_last_time = clock();
-				if (temp.c == 'M') {
-					Client->MoveControl(Client, &temp);
-				}
-				if (temp.c == 'Q') {
 
+				switch (temp.c)
+				{
+				case 'M':		//移动
+					Client->MoveControl(Client, &temp);
+					break;
+				case 'Q':		//Q技能
 					Client->Q_Skill(Client, &temp);
+					break;
+				case 'W':		//W技能
+					Client->W_Skill(Client, &temp);
+					break;
+				case 'E':		//E技能
+					Client->E_Skill(Client, &temp);
+					break;
+				default:
+					break;
 				}
+				
 			}
 			gameLock.unlock();
 		}
@@ -287,22 +299,9 @@ DWORD __stdcall GameClient::control(LPVOID lpParam)
 	return 0;
 }
 
-bool GameClient::Q_Skill(GameClient* Client, information* temp)
-{
-	order od;
-	od.kind = 2;
-	//od.tag
-	od.pos.x = temp->x;
-	od.pos.y = temp->y;
-	od.tag = temp->tag;
-	if (Client->hero->order_list.size() < 3) {
-		Client->hero->order_list.push_back(od);
-	}
-	return true;
-}
 
 
-bool GameClient::MoveControl(GameClient* Client, information* temp)
+bool GameClient::MoveControl(GameClient* Client, const information* temp)
 {
 	order od;
 	od.kind = 1;
@@ -313,6 +312,49 @@ bool GameClient::MoveControl(GameClient* Client, information* temp)
 		return true;
 	}
 }
+
+//技能QWE对应123
+bool GameClient::Q_Skill(GameClient* Client, const information* temp)
+{
+	order od;
+	od.kind = 1;
+	od.pos.x = temp->x;
+	od.pos.y = temp->y;
+	od.tag = temp->tag;
+	if (Client->hero->order_list.size() < 3) {
+		Client->hero->order_list.push_back(od);
+	}
+	return true;
+}
+
+bool GameClient::W_Skill(GameClient* Client, const information* temp)
+{
+	order od;
+	od.kind = 2;
+	od.pos.x = temp->x;
+	od.pos.y = temp->y;
+	od.tag = temp->tag;
+	if (Client->hero->order_list.size() < 3) {
+		Client->hero->order_list.push_back(od);
+	}
+	return true;
+}
+
+bool GameClient::E_Skill(GameClient* Client, const information* temp)
+{
+	order od;
+	od.kind = 3;
+	od.pos.x = temp->x;
+	od.pos.y = temp->y;
+	od.tag = temp->tag;
+	if (Client->hero->order_list.size() < 3) {
+		Client->hero->order_list.push_back(od);
+	}
+	return true;
+}
+
+
+
 
 
 int GameClient::AddBuf(char c, int tag, float x, float y)

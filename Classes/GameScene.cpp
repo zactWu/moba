@@ -5,6 +5,10 @@
 #include "TowerClass.h"
 #include "Hero.h"
 #include "client.h"
+#include "ui/CocosGUI.h"
+#include <iostream>
+
+
 #define MESIDE 0
 #define ENEMYSIDE 1
 #define MAPZERO 10
@@ -41,6 +45,11 @@ bool GameScene::init() {
 	spa->_it_tag = unit_num;
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
 	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.15);
+
+
+
+
+
 	auto mouse_listener = EventListenerTouchOneByOne::create();
 	mouse_listener->onTouchBegan = [=](Touch * Touch, Event * Event) {
 		auto touchPosition = Touch->getLocation();
@@ -260,7 +269,6 @@ void GameScene::AllActionsTakenEachF(float dt)
 	auto MoneyLabel = Label::createWithSystemFont(m, "Arial", 25);
 	if (MoneyLabel != nullptr)
 	{
-		log("money %d", money);
 		// position the label on the center of the screen
 		MoneyLabel->setPosition(Vec2(viewSize.width - 200, 100));
 
