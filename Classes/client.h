@@ -9,7 +9,6 @@
 #include <queue>
 #pragma comment(lib,"ws2_32.lib")
 
-static int InformationNumber = 0;
 
 
 struct information {
@@ -42,7 +41,8 @@ public:
 
 	DWORD SendThreadID;
 	DWORD RecvThreadID;
-
+	 
+	int InfNum = 0;
 
 
 };

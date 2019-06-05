@@ -46,9 +46,9 @@ bool GameScene::init() {
 		auto nowPosition = hero->getPosition();
 		auto newPosition = touchPosition - mapPosition;
 		client.AddBuf('m', -1, newPosition.x, newPosition.y);
-		std::vector<Vec2> route = MoveFind(hero->getPosition(), newPosition);
-		hero->moveTo_directly(route);
-		UsingFireBoll(hero, newPosition, NULL);
+//		std::vector<Vec2> route = MoveFind(hero->getPosition(), newPosition);
+//		hero->moveTo_directly(route);
+//		UsingFireBoll(hero, newPosition, NULL);
 		return true;
 	};
 	// Implementation of the keyboard event callback function prototype

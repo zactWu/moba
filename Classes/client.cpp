@@ -30,7 +30,7 @@ bool GameClient::init(Unit* h)
 	ServerAddr.sin_port = htons(PORTS);
 
 	//	ServerAddr.sin_addr.S_un.S_addr = inet_pton(AF_INET, "127.0.0.1", &ServerAddr.sin_addr.S_un.S_addr);
-	ServerAddr.sin_addr.S_un.S_addr = inet_addr("192.168.1.103");
+	ServerAddr.sin_addr.S_un.S_addr = inet_addr("192.168.43.168");
 	ClientSocket = socket(PF_INET, SOCK_STREAM, 0);
 
 	if (ClientSocket == INVALID_SOCKET)
@@ -141,6 +141,7 @@ DWORD __stdcall GameClient::Send(LPVOID lpParam)
 			int iSend = send(Client->ClientSocket, sendbuf, strlen(sendbuf), 0);
 
 			ZeroMemory(Client->SendBuf, 30*100);
+			client.InfNum = 0;
 			gameLock.unlock();
 			cocos2d::log("send message :%s\n", sendbuf);
 
@@ -253,22 +254,22 @@ DWORD __stdcall GameClient::control(LPVOID lpParam)
 	}
 	while (true)
 	{
-		information temp;
+		information temp{};
 		gameLock.lock();
 		if (!receiveQueue.empty()) {
 			temp = receiveQueue.front();
 			receiveQueue.pop();
 			gameLock.unlock();
-
+			log("position is %f %f", temp.x, temp.y);
+			auto move = MoveTo::create(0.5, Vec2(temp.x, temp.y));
+			Client->hero->runAction(move);
+			//		Client->hero->moveTo_directly(Vec2(temp.x, temp.y));
 		}
 		else {
 			gameLock.unlock();
 			continue;
 		}
-		//		auto move = MoveTo::create(0.5, Vec2(temp.x, temp.y));
-		//		Client->hero->runAction(move);
-		log("position is %f %f", temp.x, temp.y);
-//		Client->hero->moveTo_directly(Vec2(temp.x, temp.y));
+
 
 	}
 
@@ -282,7 +283,8 @@ int GameClient::AddBuf(char c, int tag, float x, float y)
 	char inf[30];
 	sprintf_s(inf, "%c%d#%f#%f", c, tag, x, y);
 //	sprintf_s(SendBuf, "%s", inf);
-	strcat(client.SendBuf, inf);
+	strcat(&client.SendBuf[client.InfNum*30], inf);
+	client.InfNum++;
 	cocos2d::log("sendbuf is %s", client.SendBuf);
 	gameLock.unlock();
 	return 0;
