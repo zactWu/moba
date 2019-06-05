@@ -6,6 +6,7 @@
 #include "Hero.h"
 #include "TowerClass.h"
 
+//GameClient client;// 不用服务器注释掉这行
 class GameScene :public Layer {
 private:
 
@@ -41,6 +42,7 @@ public:
 	void TowerInit();
 	virtual bool init();
 	void SkillHitCheck();
+	void UnitDeadAction();
 	void TowerAction();
 	void AllActionsTakenEachSecond(float dt);
 	bool MapInit();
@@ -69,4 +71,4 @@ public:
 
 #define GAMESCENE
 #endif // !GAMESCENE
-#pragma once
+#pragma once 

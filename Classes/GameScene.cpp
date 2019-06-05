@@ -4,12 +4,13 @@
 #include "MoveFind.h"
 #include "TowerClass.h"
 #include "Hero.h"
-#include "client.h"
+//#include "client.h"
+#define SEVER 0
 #define MESIDE 0
 #define ENEMYSIDE 1
 #define MAPZERO 10
 #define HEROZERO 15
-GameClient client;
+
 cocos2d::Scene* GameScene::createScene()
 {
 	auto scene = Scene::create();
@@ -17,8 +18,6 @@ cocos2d::Scene* GameScene::createScene()
 	scene->addChild(layer);
 	return scene;
 }
-
-
 bool GameScene::init() {
 	if (!Layer::init())
 	{
@@ -29,16 +28,18 @@ bool GameScene::init() {
 	PointInit();
 	TowerInit();
 	Vec2 pos = { 400,400 };
-	
 	auto spa = Unit::create("soldier/0.png", "soldier");
 	unit_map[unit_num] = spa;
-	
 	unit_num++;
 	spa->_side = 1;
 	spa->setPosition(pos);
 	map->addChild(spa);
 	spa->setTag(123);
 	spa->_it_tag = unit_num;
+	if (SEVER) {
+		
+		//client.ClientProcess();
+	}
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
 	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.15);
 	auto mouse_listener = EventListenerTouchOneByOne::create();
@@ -47,7 +48,10 @@ bool GameScene::init() {
 		auto mapPosition = map->getPosition();
 		auto nowPosition = hero->getPosition();
 		auto newPosition = touchPosition - mapPosition;
-		client.AddBuf('m', -1, newPosition.x, newPosition.y);
+
+		if (SEVER) {
+			//client.AddBuf('m', -1, newPosition.x, newPosition.y);
+		}
 //		std::vector<Vec2> route = MoveFind(hero->getPosition(), newPosition);
 //		hero->moveTo_directly(route);
 //		UsingFireBoll(hero, newPosition, NULL);
@@ -55,7 +59,8 @@ bool GameScene::init() {
 	};
 	// Implementation of the keyboard event callback function prototype
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouse_listener, this);
-	client.ClientProcess();
+
+	
 	return true;
 }
 void GameScene::SkillHitCheck() {
@@ -84,7 +89,6 @@ void GameScene::SkillHitCheck() {
 			bool flag = 1;
 			auto unit = unit_map.begin();
 			while (unit != unit_map.end()) {
-				
 				if (this->SkillHit(skill->second, unit->second)) {
 					log("HIT!!");
 					// 还有伤害加进去
@@ -101,8 +105,10 @@ void GameScene::SkillHitCheck() {
 			}
 			if (flag)++skill;
 		}
-
 	}
+	
+}
+void GameScene::UnitDeadAction() {
 	auto unit = unit_map.begin();
 	while (unit != unit_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
 		if (unit->second->_life_current <= 0) {
@@ -126,7 +132,7 @@ void GameScene::SkillHitCheck() {
 					unit->second->moveTo_directly(MoveFind(unit->second->getPosition(), i->pos));
 					log("unit move");
 				}
-				if (i->kind==2) {
+				if (i->kind == 2) {
 					auto skill = Skill::create("fireboll.jpg", 300, 10, 300, 50);
 					skill->_skiller = unit->second;
 					skill->setScale(0.3);
@@ -138,23 +144,18 @@ void GameScene::SkillHitCheck() {
 					skill->_release_time = clock();
 					skill->targe = dynamic_cast<Unit*>(map->getChildByTag(i->tag));
 					log("%d", i->tag);
-					if (skill->targe == NULL) {
-						log("jdsal");
-					}
-				    map->addChild(skill, 12);//这里有一点问题要解决
+					map->addChild(skill);
 					skill->move(skill->_st_pos, i->pos);
-					log("release skill!!!!!");
 				}
 				i = unit->second->order_list.erase(i);
 			}
 			++unit;
 		}
 	}
-	
+
 }
 void GameScene::TowerAction() {
 	auto tower = tower_map.begin();
-	
 	while (tower != tower_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
 		if (tower->second->_life_current <= 0) {
 			auto money = Sprite::create("towercrash.jpg");
@@ -189,7 +190,6 @@ void GameScene::TowerAction() {
 					++unit;
 				}
 			}
-			
 			++tower;
 		}
 	}
@@ -197,6 +197,7 @@ void GameScene::TowerAction() {
 void GameScene::AllActionsTakenEachSecond(float dt) {
 	hero->_money++;// 加钱
 	SkillHitCheck();
+	UnitDeadAction();
 	TowerAction();
 }
 bool GameScene::MapInit()
@@ -240,14 +241,9 @@ bool GameScene::HeroInit()
 	map->addChild(hero,HEROZERO);
 	hero->setTag(unit_num);
 	hero->_it_tag = unit_num;
-	if (client.init(hero)) {
-
-	};
+	//client.init(hero);
 	return false;
 }
-
-
-
 void GameScene::AllActionsTakenEachF(float dt)
 {
 

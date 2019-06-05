@@ -14,12 +14,12 @@ public:
 	int _money;
 	int _magic_current;
 	int _magic_max;
-
+	Vec2 reborn_pos = { 100.0,100.0 };
 	//¼¼ÄÜÀ¸
 	void UsingFireBall(Vec2 newPosition);
 	void useSkill_trample();
 	void useSkill_blinkToEnemy(Unit* enemy);
-
+    
 	void useSkill_ConeWave(const Vec2& pos_target);
 
 	void useSkill_switchLife(Unit* enemy);
