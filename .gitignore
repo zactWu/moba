@@ -9,3 +9,4 @@ server/Debug
 Resources/log2.txt
 server/Release
 server/server
+server/x64

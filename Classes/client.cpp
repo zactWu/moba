@@ -31,7 +31,7 @@ bool GameClient::init(Unit* h)
 	ServerAddr.sin_port = htons(PORTS);
 
 	//	ServerAddr.sin_addr.S_un.S_addr = inet_pton(AF_INET, "127.0.0.1", &ServerAddr.sin_addr.S_un.S_addr);
-	ServerAddr.sin_addr.S_un.S_addr = inet_addr("192.168.43.168");
+	ServerAddr.sin_addr.S_un.S_addr = inet_addr("192.168.1.103");
 	ClientSocket = socket(PF_INET, SOCK_STREAM, 0);
 
 	if (ClientSocket == INVALID_SOCKET)
@@ -266,31 +266,14 @@ DWORD __stdcall GameClient::control(LPVOID lpParam)
 			receiveQueue.pop();
 			if (pass_time > 170) {
 				_last_time = clock();
-				if (temp.c == 'Q') {
-					order od;
-					od.kind = 2;
-					//od.tag
-					od.pos.x = temp.x;
-					od.pos.y = temp.y;
-					od.tag = temp.tag;
-					if (Client->hero->order_list.size() < 3) {
-						log("this");
-						Client->hero->order_list.push_back(od);
-					}
-				}
 				if (temp.c == 'M') {
-					order od;
-					od.kind = 1;
-					od.pos.x = temp.x;
-					od.pos.y = temp.y;
-					if (Client->hero->order_list.size() < 3) {
-						log("this");
-						Client->hero->order_list.push_back(od);
-					}
+					Client->MoveControl(Client, &temp);
 				}
-				
+				if (temp.c == 'Q') {
+
+					Client->Q_Skill(Client, &temp);
+				}
 			}
-			
 			gameLock.unlock();
 		}
 		else {
@@ -302,6 +285,33 @@ DWORD __stdcall GameClient::control(LPVOID lpParam)
 	}
 
 	return 0;
+}
+
+bool GameClient::Q_Skill(GameClient* Client, information* temp)
+{
+	order od;
+	od.kind = 2;
+	//od.tag
+	od.pos.x = temp->x;
+	od.pos.y = temp->y;
+	od.tag = temp->tag;
+	if (Client->hero->order_list.size() < 3) {
+		Client->hero->order_list.push_back(od);
+	}
+	return true;
+}
+
+
+bool GameClient::MoveControl(GameClient* Client, information* temp)
+{
+	order od;
+	od.kind = 1;
+	od.pos.x = temp->x;
+	od.pos.y = temp->y;
+	if (Client->hero->order_list.size() < 3) {
+		Client->hero->order_list.push_back(od);
+		return true;
+	}
 }
 
 

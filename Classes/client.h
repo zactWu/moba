@@ -33,6 +33,10 @@ public:
 	static DWORD WINAPI Send(LPVOID lpParam);    //发送线程
 	static DWORD WINAPI Receive(LPVOID lpParam);  //接受线程
 	static DWORD WINAPI control(LPVOID lpParam);	//控制
+
+	bool Q_Skill(GameClient* Client,information* temp);
+	bool MoveControl(GameClient* Client, information* temp);
+
 	static int AddBuf(char c, int tag, float x, float y);
 	void CleanUp();      //资源回收
 	//SOCKET相关

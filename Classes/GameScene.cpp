@@ -47,7 +47,7 @@ bool GameScene::init() {
 		auto mapPosition = map->getPosition();
 		auto nowPosition = hero->getPosition();
 		auto newPosition = touchPosition - mapPosition;
-		client.AddBuf('m', -1, newPosition.x, newPosition.y);
+		client.AddBuf('Q', -1, newPosition.x, newPosition.y);
 //		std::vector<Vec2> route = MoveFind(hero->getPosition(), newPosition);
 //		hero->moveTo_directly(route);
 //		UsingFireBoll(hero, newPosition, NULL);
