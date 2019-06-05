@@ -51,12 +51,10 @@ void Hero::UsingFireBall(Vec2 newPosition) {
 	skill->setScale(0.3);
 	skill->setPosition(getPosition());
 	skill->_st_pos = getPosition();
-
 	auto gameScene = dynamic_cast<GameScene*>(getParent()->getParent());
-
 	gameScene->skill_map[gameScene->skill_num] = skill;
 	gameScene->skill_num++;
-	skill->_side = 0;
+	skill->_side = _side;
 	skill->_release_time = clock();
 	gameScene->map->addChild(skill, 12);//这里有一点问题要解决
 	skill->move(skill->_st_pos, newPosition);

@@ -32,11 +32,13 @@ bool GameScene::init() {
 	
 	auto spa = Unit::create("soldier/0.png", "soldier");
 	unit_map[unit_num] = spa;
+	
 	unit_num++;
 	spa->_side = 1;
 	spa->setPosition(pos);
 	map->addChild(spa);
 	spa->setTag(123);
+	spa->_it_tag = unit_num;
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
 	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.15);
 	auto mouse_listener = EventListenerTouchOneByOne::create();
@@ -63,9 +65,15 @@ void GameScene::SkillHitCheck() {
 	times++;
 	while (skill != skill_map.end()) {
 		int dis = skill->second->getPosition().getDistance(skill->second->_st_pos);
-		if (skill->second->targe != NULL) {
+		if (skill->second->targe != NULL && skill->second->targe->_life_current>0) {
 			skill->second->stopAllActions();
 			skill->second->move(skill->second->getPosition(), skill->second->targe->getPosition());
+		}
+		if (skill->second->targe != NULL && skill->second->targe->_life_current <= 0) {
+			skill->second->stopAllActions();
+			map->removeChild(skill->second);
+			skill = skill_map.erase(skill);
+			continue;
 		}
 		if (dis > skill->second->move_range - 20 && skill->second->targe==NULL) {
 			map->removeChild(skill->second);
@@ -98,6 +106,7 @@ void GameScene::SkillHitCheck() {
 	auto unit = unit_map.begin();
 	while (unit != unit_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
 		if (unit->second->_life_current <= 0) {
+			unit->second->stopAllActions();
 			if (unit->second->_last_attacker != NULL) {
 				unit->second->_last_attacker->_money += unit->second->_kill_award;// 赏金放在这里
 			}
@@ -111,7 +120,33 @@ void GameScene::SkillHitCheck() {
 			unit = unit_map.erase(unit);
 		}
 		else {
-			
+
+			for (auto i = unit->second->order_list.begin(); i != unit->second->order_list.end();) {
+				if (i->kind == 1) {
+					unit->second->moveTo_directly(MoveFind(unit->second->getPosition(), i->pos));
+					log("unit move");
+				}
+				if (i->kind==2) {
+					auto skill = Skill::create("fireboll.jpg", 300, 10, 300, 50);
+					skill->_skiller = unit->second;
+					skill->setScale(0.3);
+					skill->setPosition(getPosition());
+					skill->_st_pos = getPosition();
+					skill_map[skill_num] = skill;
+					skill_num++;
+					skill->_side = unit->second->_side;
+					skill->_release_time = clock();
+					skill->targe = dynamic_cast<Unit*>(map->getChildByTag(i->tag));
+					log("%d", i->tag);
+					if (skill->targe == NULL) {
+						log("jdsal");
+					}
+				    map->addChild(skill, 12);//这里有一点问题要解决
+					skill->move(skill->_st_pos, i->pos);
+					log("release skill!!!!!");
+				}
+				i = unit->second->order_list.erase(i);
+			}
 			++unit;
 		}
 	}
@@ -119,6 +154,7 @@ void GameScene::SkillHitCheck() {
 }
 void GameScene::TowerAction() {
 	auto tower = tower_map.begin();
+	
 	while (tower != tower_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
 		if (tower->second->_life_current <= 0) {
 			auto money = Sprite::create("towercrash.jpg");
@@ -135,7 +171,7 @@ void GameScene::TowerAction() {
 		}
 		else {
 			float pass_time = clock() - tower->second->_last_release_time;
-			log("pass time is %f", pass_time);
+			//log("pass time is %f", pass_time);
 			if (pass_time > tower->second->_cd_time) {
 
 				auto unit = unit_map.begin();
@@ -189,7 +225,7 @@ void GameScene::TowerInit() {
 	towerA->setPosition(pos);
 	towerA->setScale(0.1);
 	map->addChild(towerA);
-	log("towerA ready");
+	//log("towerA ready");
 	tower_map[tower_num] = towerA;
 	tower_num++;
 	return;
@@ -200,8 +236,10 @@ bool GameScene::HeroInit()
 	hero->_side = MESIDE;
 	this->unit_map[unit_num] = hero;
 	unit_num++;
-
+	hero->_money = 0;
 	map->addChild(hero,HEROZERO);
+	hero->setTag(unit_num);
+	hero->_it_tag = unit_num;
 	if (client.init(hero)) {
 
 	};
@@ -212,6 +250,24 @@ bool GameScene::HeroInit()
 
 void GameScene::AllActionsTakenEachF(float dt)
 {
+
+	if (this->getChildByName("MoneyLabel") != nullptr) {
+		this->removeChildByName("MoneyLabel");
+	}
+	int const money = this->hero->_money;
+	char m[1000];
+	sprintf_s(m, "money: %d", money);
+	auto MoneyLabel = Label::createWithSystemFont(m, "Arial", 25);
+	if (MoneyLabel != nullptr)
+	{
+		log("money %d", money);
+		// position the label on the center of the screen
+		MoneyLabel->setPosition(Vec2(viewSize.width - 200, 100));
+
+		// add the label as a child to this layer
+		this->addChild(MoneyLabel, 10);
+		MoneyLabel->setName("MoneyLabel");
+	}
 
 	int RectWidth = viewSize.width;		//窗口宽
 	int RectHeight = viewSize.height;	//窗口高

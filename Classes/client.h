@@ -13,7 +13,7 @@
 
 struct information {
 	char c;
-	char tag;
+	int tag;
 	float x;
 	float y;
 };

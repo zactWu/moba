@@ -5,6 +5,7 @@
 #include <UnitClass.h>
 #include <mutex>
 #include <cstring>
+#include "Hero.h"
 #define PORTS 1236
 
 extern int InformationNumber;
@@ -255,15 +256,42 @@ DWORD __stdcall GameClient::control(LPVOID lpParam)
 	while (true)
 	{
 		information temp{};
+		
 		gameLock.lock();
 		if (!receiveQueue.empty()) {
+			static clock_t _last_time = 0;
+			float pass_time = clock() - _last_time;
+			
 			temp = receiveQueue.front();
 			receiveQueue.pop();
+			if (pass_time > 170) {
+				_last_time = clock();
+				if (temp.c == 'Q') {
+					order od;
+					od.kind = 2;
+					//od.tag
+					od.pos.x = temp.x;
+					od.pos.y = temp.y;
+					od.tag = temp.tag;
+					if (Client->hero->order_list.size() < 3) {
+						log("this");
+						Client->hero->order_list.push_back(od);
+					}
+				}
+				if (temp.c == 'M') {
+					order od;
+					od.kind = 1;
+					od.pos.x = temp.x;
+					od.pos.y = temp.y;
+					if (Client->hero->order_list.size() < 3) {
+						log("this");
+						Client->hero->order_list.push_back(od);
+					}
+				}
+				
+			}
+			
 			gameLock.unlock();
-			log("position is %f %f", temp.x, temp.y);
-			auto move = MoveTo::create(0.5, Vec2(temp.x, temp.y));
-			Client->hero->runAction(move);
-			//		Client->hero->moveTo_directly(Vec2(temp.x, temp.y));
 		}
 		else {
 			gameLock.unlock();
