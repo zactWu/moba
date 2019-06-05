@@ -20,6 +20,7 @@ public:
 	int kind;
 	bool checkself();
 	void send_to_sever();
+	void ListenOutside();
 };
 
 #endif // !UNITCLASS

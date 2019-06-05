@@ -43,16 +43,7 @@ bool GameScene::init() {
 	}
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
 	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.15);
-	auto mouse_listener = EventListenerTouchOneByOne::create();
-	mouse_listener->onTouchBegan = [=](Touch * Touch, Event * Event) {
-		auto touchPosition = Touch->getLocation();
-		auto mapPosition = map->getPosition();
-		auto nowPosition = hero->getPosition();
-		auto newPosition = touchPosition - mapPosition;
-		return true;
-	};
-	// Implementation of the keyboard event callback function prototype
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouse_listener, this);
+	ListenOutside();
 
 	
 	return true;
@@ -120,26 +111,21 @@ void GameScene::UnitDeadAction() {
 			unit = unit_map.erase(unit);
 		}
 		else {
-
 			for (auto i = unit->second->order_list.begin(); i != unit->second->order_list.end();) {
 				if (i->kind == 1) {
 					unit->second->moveTo_directly(MoveFind(unit->second->getPosition(), i->pos));
 					log("unit move");
 				}
 				if (i->kind == 2) {
-					auto skill = Skill::create("fireboll.jpg", 300, 10, 300, 50);
-					skill->_skiller = unit->second;
-					skill->setScale(0.3);
-					skill->setPosition(getPosition());
-					skill->_st_pos = getPosition();
-					skill_map[skill_num] = skill;
-					skill_num++;
-					skill->_side = unit->second->_side;
-					skill->_release_time = clock();
-					skill->targe = dynamic_cast<Unit*>(map->getChildByTag(i->tag));
-					log("%d", i->tag);
-					map->addChild(skill);
-					skill->move(skill->_st_pos, i->pos);
+					// 假定这个是英雄
+					int tag = unit->second->_it_tag;
+					log("TAG IS %d", unit->second->_it_tag);
+					if (hero == unit->second) {
+						hero->UsingFireBall(i->pos);
+					}
+					
+					
+					
 				}
 				i = unit->second->order_list.erase(i);
 			}
@@ -231,12 +217,13 @@ bool GameScene::HeroInit()
 	hero->_side = MESIDE;
 	this->unit_map[unit_num[0]] = hero;
 	hero->_money = 0;
-	map->addChild(hero,HEROZERO);
+	
 	hero->setTag(unit_num[0]);
 	hero->_it_tag = unit_num[0];
+	map->addChild(hero,HEROZERO);
 	unit_num[0]++;
-
-
+	hero->Qskill_cd_time = 2000;
+	hero->Qskill_last_release_time = 0;
 	//client.init(hero);
 	return false;
 }
@@ -252,7 +239,7 @@ void GameScene::AllActionsTakenEachF(float dt)
 	auto MoneyLabel = Label::createWithSystemFont(m, "Arial", 25);
 	if (MoneyLabel != nullptr)
 	{
-		log("money %d", money);
+		//log("money %d", money);
 		// position the label on the center of the screen
 		MoneyLabel->setPosition(Vec2(viewSize.width - 200, 100));
 

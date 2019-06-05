@@ -19,11 +19,15 @@ public:
 	void UsingFireBall(Vec2 newPosition);
 	void useSkill_trample();
 	void useSkill_blinkToEnemy(Unit* enemy);
-    
 	void useSkill_ConeWave(const Vec2& pos_target);
-
 	void useSkill_switchLife(Unit* enemy);
-	
+	clock_t Qskill_last_release_time;
+	clock_t Wskill_last_release_time; 
+	clock_t Eskill_last_release_time;
+	clock_t Qskill_cd_time;
+	clock_t Wskill_cd_time;
+	clock_t Eskill_cd_time;
+	int skill_statement = 0;
 };
 
 

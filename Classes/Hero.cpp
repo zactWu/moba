@@ -38,13 +38,13 @@ Hero* Hero::create(const std::string& filename, const std::string& unitType,
 
 
 void Hero::UsingFireBall(Vec2 newPosition) {
+	if (this == NULL) {
+		log("???");
+		return;
+	}
 	static clock_t last_time = 0;
 	clock_t now_time = clock();
 	float pass_time = now_time - last_time;
-	if (pass_time < 2000) {// cd时间在这里调整
-		log("fireball still cd");
-		return;
-	}
 	last_time = now_time;
 	auto skill = Skill::create("fireboll.jpg", 300, 10, 300, 50);
 	skill->_skiller = this;

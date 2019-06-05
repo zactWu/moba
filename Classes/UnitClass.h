@@ -12,7 +12,6 @@ struct  order//服务器用的，不用管
 	Vec2 pos;
 	int kind = 0;
 	int tag = -1;
-
 };
 
 class Unit : public Sprite {

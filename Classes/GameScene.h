@@ -12,6 +12,7 @@ private:
 
 	
 	Hero* hero;
+	Hero* en_hero;
 	//屏幕尺寸瓦片尺寸
 	Size viewSize;
 	Size mapSize;
@@ -53,7 +54,9 @@ public:
 	std::map<int, Unit*> unit_map;
 	std::map<int, Tower*> tower_map;
 	std::map<int, Skill*> skill_map;
-	int unit_num[2] = { 0,1000 };
+	int my_hero_id;
+	int en_hero_id;//最后是通过全局看
+	int unit_num[2] = { 1,1000 };
 	int skill_num = 0;
 	int tower_num[2] = { 10000,20000 };
 	bool SkillHit(Skill* sk, Unit* un);
@@ -63,6 +66,8 @@ public:
 
 	CREATE_FUNC(GameScene);
 	
+	void ListenOutside();
+
 };
 
 
