@@ -9,7 +9,12 @@
 #include <queue>
 #pragma comment(lib,"ws2_32.lib")
 
+static int InformationNumber = 0;
+
+
 struct information {
+	char c;
+	char tag;
 	float x;
 	float y;
 };
@@ -19,7 +24,8 @@ class GameClient
 {
 private:
 	Unit* hero;
-
+	char RecvBuf[30 * 100];
+	char SendBuf[30 * 100];
 
 public:
 
@@ -28,7 +34,7 @@ public:
 	static DWORD WINAPI Send(LPVOID lpParam);    //发送线程
 	static DWORD WINAPI Receive(LPVOID lpParam);  //接受线程
 	static DWORD WINAPI control(LPVOID lpParam);	//控制
-	int AddBuf(char c, int tag, float x, float y);
+	static int AddBuf(char c, int tag, float x, float y);
 	void CleanUp();      //资源回收
 	//SOCKET相关
 	SOCKET ClientSocket;
@@ -37,8 +43,7 @@ public:
 	DWORD SendThreadID;
 	DWORD RecvThreadID;
 
-	char RecvBuf[1024];
-	char SendBuf[1024];
+
 
 };
 

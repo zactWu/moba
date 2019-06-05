@@ -4,8 +4,11 @@
 #include "GameScene.h"
 #include <UnitClass.h>
 #include <mutex>
+#include <cstring>
 #define PORTS 1236
 
+extern int InformationNumber;
+extern GameClient client;
 std::mutex gameLock;
 
 extern std::queue<information> receiveQueue;
@@ -27,7 +30,7 @@ bool GameClient::init(Unit* h)
 	ServerAddr.sin_port = htons(PORTS);
 
 	//	ServerAddr.sin_addr.S_un.S_addr = inet_pton(AF_INET, "127.0.0.1", &ServerAddr.sin_addr.S_un.S_addr);
-	ServerAddr.sin_addr.S_un.S_addr = inet_addr("192.168.43.168");
+	ServerAddr.sin_addr.S_un.S_addr = inet_addr("192.168.1.103");
 	ClientSocket = socket(PF_INET, SOCK_STREAM, 0);
 
 	if (ClientSocket == INVALID_SOCKET)
@@ -68,6 +71,7 @@ void GameClient::ClientProcess()
 	else {
 		CloseHandle(sendThread);
 	}
+
 	recvThread = CreateThread(NULL, 0,
 		static_cast<LPTHREAD_START_ROUTINE>(GameClient::Receive),
 		static_cast<LPVOID>(this), 0,
@@ -81,6 +85,7 @@ void GameClient::ClientProcess()
 	else {
 		CloseHandle(recvThread);
 	}
+	
 	controlThread = CreateThread(NULL, 0,
 		static_cast<LPTHREAD_START_ROUTINE>(GameClient::control),
 		static_cast<LPVOID>(this), 0,
@@ -94,6 +99,7 @@ void GameClient::ClientProcess()
 	else {
 		CloseHandle(controlThread);
 	}
+	
 
 //	HANDLE  RecvThread = nullptr, SendThread = nullptr;
 //	if ((SendThread = CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)Send, this, 0, &SendThreadID)) == nullptr) {
@@ -124,7 +130,7 @@ DWORD __stdcall GameClient::Send(LPVOID lpParam)
 	{
 		if (Client->ClientSocket != NULL)
 		{
-			char sendbuf[1024] = { 0 };
+			char sendbuf[30*100] = { 0 };
 			gameLock.lock();
 			strcpy(sendbuf, Client->SendBuf);
 			if ('\0'==sendbuf[0]) {
@@ -134,7 +140,7 @@ DWORD __stdcall GameClient::Send(LPVOID lpParam)
 
 			int iSend = send(Client->ClientSocket, sendbuf, strlen(sendbuf), 0);
 
-			ZeroMemory(Client->SendBuf, 1024);
+			ZeroMemory(Client->SendBuf, 30*100);
 			gameLock.unlock();
 			cocos2d::log("send message :%s\n", sendbuf);
 
@@ -176,27 +182,36 @@ DWORD __stdcall GameClient::Receive(LPVOID lpParam)
 		if (FD_ISSET(Client->ClientSocket, &Read) && Client->ClientSocket != NULL)
 		{
 			//通过缓冲区交互  
-			char recvbuf[1024] = { 0 };
-			ZeroMemory(recvbuf, 1024);
+			char recvbuf[30*100] = { 0 };
+			ZeroMemory(recvbuf, 30*100);
 			gameLock.lock();
-			int iLen = recv(Client->ClientSocket, recvbuf, 1024, 0);
+			int iLen = recv(Client->ClientSocket, recvbuf, 30*100, 0);
 			if (iLen <= 0) {
 				gameLock.unlock();
 				return 0;
 			}
-			ZeroMemory(Client->RecvBuf, 1024);
+			ZeroMemory(Client->RecvBuf, 30*100);
 			strcpy(Client->RecvBuf, recvbuf);
-			cocos2d::log("receive message: %s ", Client->RecvBuf);
-			char c;
-			float x, y;
-			sscanf(recvbuf, "%f%c%f", &x, &c, &y);
-			information inf;
-			inf.x = x;
-			inf.y = y;
-//			static float xx = 10.0;
-//			static float yy = 10.0;
-//			cocos2d::log("push");
-			receiveQueue.push(inf);
+			cocos2d::log("receive message: %s ", recvbuf);
+
+			for (int i = 0; i < 100; i++) {
+				if ('\0' == recvbuf[i * 30]) {
+					break;
+				}
+				char c, tag;
+				float x, y;
+				sscanf(&recvbuf[i*30], "%c%d#%f#%f", &c, &tag, &x, &y);
+				information inf;
+				inf.c = c;
+				inf.tag = tag;
+				inf.x = x;
+				inf.y = y;
+				cocos2d::log("inf is %c %d %f %f", inf.c, inf.tag, inf.x, inf.y);
+				//			static float xx = 10.0;
+				//			static float yy = 10.0;
+				//			cocos2d::log("push");
+				receiveQueue.push(inf);
+			}
 //			information temp = receiveQueue.front();
 //			cocos2d::log("%f %f", temp.x, temp.y);
 //			auto move = MoveTo::create(0.5, Vec2(x, y));
@@ -243,10 +258,6 @@ DWORD __stdcall GameClient::control(LPVOID lpParam)
 		if (!receiveQueue.empty()) {
 			temp = receiveQueue.front();
 			receiveQueue.pop();
-			log("position is %f %f", temp.x, temp.y);
-			auto map = dynamic_cast<GameScene*>(Client->hero->getParent()->getParent());
-			auto hero = dynamic_cast<Unit*>(map->map->getChildByTag(123));
-			hero->moveTo_directly(Vec2(temp.x, temp.y));
 			gameLock.unlock();
 
 		}
@@ -256,7 +267,8 @@ DWORD __stdcall GameClient::control(LPVOID lpParam)
 		}
 		//		auto move = MoveTo::create(0.5, Vec2(temp.x, temp.y));
 		//		Client->hero->runAction(move);
-
+		log("position is %f %f", temp.x, temp.y);
+//		Client->hero->moveTo_directly(Vec2(temp.x, temp.y));
 
 	}
 
@@ -266,7 +278,13 @@ DWORD __stdcall GameClient::control(LPVOID lpParam)
 
 int GameClient::AddBuf(char c, int tag, float x, float y)
 {
-
+	gameLock.lock();
+	char inf[30];
+	sprintf_s(inf, "%c%d#%f#%f", c, tag, x, y);
+//	sprintf_s(SendBuf, "%s", inf);
+	strcat(client.SendBuf, inf);
+	cocos2d::log("sendbuf is %s", client.SendBuf);
+	gameLock.unlock();
 	return 0;
 }
 
