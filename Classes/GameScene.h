@@ -53,9 +53,9 @@ public:
 	std::map<int, Unit*> unit_map;
 	std::map<int, Tower*> tower_map;
 	std::map<int, Skill*> skill_map;
-	int unit_num = 0;
+	int unit_num[2] = { 0,1000 };
 	int skill_num = 0;
-	int tower_num = 0;
+	int tower_num[2] = { 10000,20000 };
 	bool SkillHit(Skill* sk, Unit* un);
 	// 接下来就各种各样的技能
 	void UsingFireBoll(Unit* hero, Vec2 newPosition, Unit* tar);

@@ -29,13 +29,14 @@ bool GameScene::init() {
 	TowerInit();
 	Vec2 pos = { 400,400 };
 	auto spa = Unit::create("soldier/0.png", "soldier");
-	unit_map[unit_num] = spa;
-	unit_num++;
+	unit_map[unit_num[1]] = spa;
+	spa->setTag(unit_num[1]);
+	unit_num[1]--;
 	spa->_side = 1;
 	spa->setPosition(pos);
 	map->addChild(spa);
-	spa->setTag(123);
-	spa->_it_tag = unit_num;
+	
+	spa->_it_tag = unit_num[1];
 	if (SEVER) {
 		
 		//client.ClientProcess();
@@ -48,13 +49,6 @@ bool GameScene::init() {
 		auto mapPosition = map->getPosition();
 		auto nowPosition = hero->getPosition();
 		auto newPosition = touchPosition - mapPosition;
-
-		if (SEVER) {
-			//client.AddBuf('m', -1, newPosition.x, newPosition.y);
-		}
-//		std::vector<Vec2> route = MoveFind(hero->getPosition(), newPosition);
-//		hero->moveTo_directly(route);
-//		UsingFireBoll(hero, newPosition, NULL);
 		return true;
 	};
 	// Implementation of the keyboard event callback function prototype
@@ -227,20 +221,22 @@ void GameScene::TowerInit() {
 	towerA->setScale(0.1);
 	map->addChild(towerA);
 	//log("towerA ready");
-	tower_map[tower_num] = towerA;
-	tower_num++;
+	tower_map[tower_num[0]] = towerA;
+	tower_num[0]++;
 	return;
 }
 bool GameScene::HeroInit()
 {
 	hero = Hero::create("soldier/0.png", "soldier");
 	hero->_side = MESIDE;
-	this->unit_map[unit_num] = hero;
-	unit_num++;
+	this->unit_map[unit_num[0]] = hero;
 	hero->_money = 0;
 	map->addChild(hero,HEROZERO);
-	hero->setTag(unit_num);
-	hero->_it_tag = unit_num;
+	hero->setTag(unit_num[0]);
+	hero->_it_tag = unit_num[0];
+	unit_num[0]++;
+
+
 	//client.init(hero);
 	return false;
 }
