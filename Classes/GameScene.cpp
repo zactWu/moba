@@ -27,7 +27,7 @@ bool GameScene::init() {
 	HeroInit();
 	PointInit();
 	TowerInit();
-	Vec2 pos = { 400,400 };
+	
 	auto spa = Unit::create("soldier/0.png", "soldier");
 	unit_map[unit_num[1]] = spa;
 	spa->setTag(unit_num[1]);
@@ -237,17 +237,33 @@ void GameScene::TowerInit() {
 }
 bool GameScene::HeroInit()
 {
+	Vec2 pos2 = { 100,100 };
 	hero = Hero::create("soldier/0.png", "soldier");
 	hero->_side = MESIDE;
 	this->unit_map[unit_num[0]] = hero;
 	hero->_money = 0;
-	
+	hero->reborn_pos = pos2;
+	hero->setPosition(pos2);
 	hero->setTag(unit_num[0]);
 	hero->_it_tag = unit_num[0];
 	map->addChild(hero,HEROZERO);
 	unit_num[0]++;
 	hero->Qskill_cd_time = 2000;
 	hero->Qskill_last_release_time = 0;
+
+	Vec2 pos = { 400,400 };
+	en_hero = Hero::create("soldier/0.png", "soldier");
+	hero->_side =1;
+	en_hero->setPosition(pos);
+	this->unit_map[unit_num[1]] = hero;
+	en_hero->_money = 0;
+	en_hero->setTag(unit_num[1]);
+	en_hero->_it_tag = unit_num[1];
+	en_hero->reborn_pos = pos;
+	map->addChild(en_hero, HEROZERO);
+	unit_num[1]++;
+	en_hero->Qskill_cd_time = 2000;
+	en_hero->Qskill_last_release_time = 0;
 	//client.init(hero);
 	return false;
 }
