@@ -54,6 +54,12 @@ void Hero::turnTo(Vec2 pos)
 
 
 void Hero::UsingFireBall(Vec2 newPosition) {
+	Wskill_cd_time = 2000;
+	if (clock() - Wskill_last_release_time < Wskill_cd_time) {
+		return;
+	}
+	Wskill_last_release_time = clock();
+
 	if (this == NULL) {
 		log("???");
 		return;
@@ -77,6 +83,12 @@ void Hero::UsingFireBall(Vec2 newPosition) {
 }
 
 void Hero::useSkill_trample() {
+	Wskill_cd_time = 2000;
+	if (clock() - Wskill_last_release_time < Wskill_cd_time) {
+		return;
+	}
+	Wskill_last_release_time = clock();
+
 	stopAllActions();
 	auto gameScene = dynamic_cast<GameScene*> (getParent()->getParent());
 	auto it = gameScene->unit_map.begin();
@@ -95,6 +107,12 @@ void Hero::useSkill_blinkToEnemy(Unit* enemy)
 	if (enemy == nullptr) {
 		return;
 	}
+	Qskill_cd_time = 2000;
+	if (clock() - Qskill_last_release_time < Qskill_cd_time) {
+		return;
+	}
+	Qskill_last_release_time = clock();
+
 	
 	stopAllActions();
 	auto pos_current = getPosition();
@@ -107,7 +125,11 @@ void Hero::useSkill_blinkToEnemy(Unit* enemy)
 }
 
 void Hero::useSkill_ConeWave(const Vec2 &pos_target) {
-
+	Qskill_cd_time = 2000;
+	if (clock() - Qskill_last_release_time < Qskill_cd_time) {
+		return;
+	}
+	Qskill_last_release_time = clock();
 
 	stopAllActions();
 	auto pos_current = getPosition();
@@ -141,6 +163,12 @@ void Hero::useSkill_switchLife(Unit* enemy) {
 	if (enemy == nullptr) {
 		return;
 	}
+	Eskill_cd_time = 2000;
+	if (clock() - Eskill_last_release_time < Eskill_cd_time) {
+		return;
+	}
+	Eskill_last_release_time = clock();
+
 	stopAllActions();
 	int life_this = _life_current;
 	_life_current = enemy->_life_current;
@@ -151,6 +179,12 @@ void Hero::useSkill_switchLife(Unit* enemy) {
 
 void Hero::useSkill_heal()
 {
+	Wskill_cd_time = 2000;
+	if (clock() - Wskill_last_release_time < Wskill_cd_time) {
+		return;
+	}
+	Wskill_last_release_time = clock();
+
 	stopAllActions();
 	heal(static_cast<int>(_life_max * 0.3));
 }
@@ -160,6 +194,11 @@ void Hero::useSkill_ultra(Unit* enemy)
 	if (enemy == nullptr) {
 		return;
 	}
+	Eskill_cd_time = 2000;
+	if (clock() - Eskill_last_release_time < Eskill_cd_time) {
+		return;
+	}
+	Eskill_last_release_time = clock();
 	stopAllActions();
 	enemy->stunned(2.0);
 	enemy->getDamaged(this, static_cast<int>(enemy->_life_max*0.3));
@@ -169,30 +208,30 @@ void Hero::useSkill_percentageDamage(Unit* enemy) {
 	if (enemy == nullptr) {
 		return;
 	}
+	Qskill_cd_time = 2000;
+	if (clock() - Qskill_last_release_time < Qskill_cd_time) {
+		return;
+	}
+	Qskill_last_release_time = clock();
 	stopAllActions();
 	enemy->getDamaged(this, static_cast<int>(enemy->_life_current * 0.15));
 }
 
 void Hero::useSkill_tornado()
 {
-	stopAllActions();
-}
-
-//随机技能
-void Hero::useSkill_randomDamage(Unit* enemy)
-{
-	if (enemy == nullptr) {
+	Eskill_cd_time = 2000;
+	if (clock() - Eskill_last_release_time < Eskill_cd_time) {
 		return;
 	}
+	Eskill_last_release_time = clock();
 	stopAllActions();
-	enemy->stunned(1.0);
-	enemy->getDamaged(this, static_cast<int>(enemy->_life_max * 0.2));
 }
 
-void Hero::useSkill(int heroID,int kind, Vec2 pos, int tag){
-	auto enemy = nullptr;
+
+void Hero::useSkill(int heroID, int kind, Vec2 pos, int tag) {
+	Unit* enemy = NULL;
 	if (tag >= 0) {
-		auto enemy = dynamic_cast<Unit*>(getParent()->getChildByTag(tag));
+		enemy = dynamic_cast<Unit*>(getParent()->getChildByTag(tag));
 	}
 	switch (heroID) {
 	case WARRIOR:
@@ -214,7 +253,8 @@ void Hero::useSkill(int heroID,int kind, Vec2 pos, int tag){
 			useSkill_ConeWave(pos);
 			break;
 		case SKILLW:
-			break;//被动
+			UsingFireBall(pos);
+			break;
 		case SKILLE:
 			useSkill_switchLife(enemy);
 			break;
@@ -226,7 +266,7 @@ void Hero::useSkill(int heroID,int kind, Vec2 pos, int tag){
 			useSkill_percentageDamage(enemy);
 			break;
 		case SKILLW:
-			useSkill_randomDamage(enemy);
+			useSkill_trample();
 			break;
 		case SKILLE:
 			useSkill_tornado();
@@ -235,3 +275,4 @@ void Hero::useSkill(int heroID,int kind, Vec2 pos, int tag){
 		break;
 	}
 }
+
