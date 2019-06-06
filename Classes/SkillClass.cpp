@@ -24,21 +24,22 @@ Skill* Skill::create(const std::string& filename,
 
 bool GameScene::SkillHit(Skill *sk,Unit *un) {
 	if (sk->_side == un->_side) {
+		log("en_gesi is %d", un->_side);
 		return 0;
 	}
 	if (sk->targe != NULL) {
 		if (sk->targe != un) {
+			log("you are not the one");
 			return 0;
 		}
 		
 	}
 	if (un->getPosition().getDistance(sk->getPosition()) < sk->hit_range) {
 		float dis = un->getPosition().getDistance(sk->getPosition());
-		log("dis is %f", dis);
-		un->_life_current -= 10;
 		//log("dead!");
 		return 1;
 	}
+	log("dis is %f", un->getPosition().getDistance(sk->getPosition()));
 	return 0;
 }
 void Skill::move(Vec2 from, Vec2 to) {

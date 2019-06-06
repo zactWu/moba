@@ -50,12 +50,12 @@ public:
 	// 接下来是服务器用的
 	
 	std::vector<order> order_list;
-
+	int _life_max;
 	//接下来就是升级系统
 
 protected:
 	bool _onAttack;
-	int _life_max;
+	
 	int _attack;
 	int _defense;
 	int _speed;

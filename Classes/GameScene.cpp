@@ -28,15 +28,8 @@ bool GameScene::init() {
 	PointInit();
 	TowerInit();
 	
-	auto spa = Unit::create("soldier/0.png", "soldier");
-	unit_map[unit_num[1]] = spa;
-	spa->setTag(unit_num[1]);
-	unit_num[1]--;
-	spa->_side = 1;
-	spa->setPosition(pos);
-	map->addChild(spa);
 	
-	spa->_it_tag = unit_num[1];
+	
 	if (SEVER) {
 		
 		//client.ClientProcess();
@@ -74,6 +67,9 @@ void GameScene::SkillHitCheck() {
 			bool flag = 1;
 			auto unit = unit_map.begin();
 			while (unit != unit_map.end()) {
+				if (unit->second == en_hero) {
+					log("side is %d",en_hero->_side);
+				}
 				if (this->SkillHit(skill->second, unit->second)) {
 					log("HIT!!");
 					// 还有伤害加进去
@@ -131,15 +127,14 @@ void GameScene::UnitDeadAction() {
 					unit->second->moveTo_directly(MoveFind(unit->second->getPosition(), i->pos));
 					log("unit move");
 				}
-				if (i->kind == 2) {
+				if (i->kind != 1) {
 					// 假定这个是英雄
 					
 					if (hero == unit->second) {
-						hero->UsingFireBall(i->pos);// 这里改成合适英雄的技能就好
-						//hero->UsingSKill(hero_id,i->kind , i->pos, i->tag);
+						hero->useSkill(3, i->kind, i->pos, i->tag);
 					}
 					else if (en_hero == unit->second) {
-						en_hero->UsingFireBall(i->pos);
+					    
 					}
 				}
 				i = unit->second->order_list.erase(i);
@@ -246,21 +241,21 @@ bool GameScene::HeroInit()
 	hero->setPosition(pos2);
 	hero->setTag(unit_num[0]);
 	hero->_it_tag = unit_num[0];
-	map->addChild(hero,HEROZERO);
+	map->addChild(hero);
 	unit_num[0]++;
 	hero->Qskill_cd_time = 2000;
 	hero->Qskill_last_release_time = 0;
 
 	Vec2 pos = { 400,400 };
 	en_hero = Hero::create("soldier/0.png", "soldier");
-	hero->_side =1;
+	en_hero->_side =1;
 	en_hero->setPosition(pos);
-	this->unit_map[unit_num[1]] = hero;
+	unit_map[unit_num[1]] = en_hero;
 	en_hero->_money = 0;
 	en_hero->setTag(unit_num[1]);
 	en_hero->_it_tag = unit_num[1];
 	en_hero->reborn_pos = pos;
-	map->addChild(en_hero, HEROZERO);
+	map->addChild(en_hero);
 	unit_num[1]++;
 	en_hero->Qskill_cd_time = 2000;
 	en_hero->Qskill_last_release_time = 0;
