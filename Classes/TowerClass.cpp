@@ -13,7 +13,7 @@ Tower* Tower::create(const std::string& filename,
 		//初始化各项属性
 		unit->_defense = 20;
 		unit->_attack = 30;
-		unit->hit_range = 600;
+		unit->hit_range = 300;
 		unit->_side = side;
 		unit->_last_release_time = 0;
 		unit->_kill_award = 300;

@@ -42,10 +42,10 @@ void Hero::UsingFireBall(Vec2 newPosition) {
 		log("???");
 		return;
 	}
-	static clock_t last_time = 0;
-	clock_t now_time = clock();
-	float pass_time = now_time - last_time;
-	last_time = now_time;
+	if (clock() - Qskill_last_release_time < Qskill_cd_time) {
+		return;
+	}
+	Qskill_last_release_time = clock();
 	auto skill = Skill::create("fireboll.jpg", 300, 10, 300, 50);
 	skill->_skiller = this;
 	skill->setScale(0.3);

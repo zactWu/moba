@@ -135,11 +135,11 @@ void GameScene::UnitDeadAction() {
 					// 假定这个是英雄
 					
 					if (hero == unit->second) {
-						//hero->UsingFireBall(i->pos);// 这里改成合适英雄的技能就好
+						hero->UsingFireBall(i->pos);// 这里改成合适英雄的技能就好
 						//hero->UsingSKill(hero_id,i->kind , i->pos, i->tag);
 					}
 					else if (en_hero == unit->second) {
-						//en_hero->UsingSKill(en_hero_id,i->kind , i->pos, i->tag);
+						en_hero->UsingFireBall(i->pos);
 					}
 				}
 				i = unit->second->order_list.erase(i);
