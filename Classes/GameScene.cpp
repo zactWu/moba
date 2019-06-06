@@ -4,12 +4,15 @@
 #include "MoveFind.h"
 #include "TowerClass.h"
 #include "Hero.h"
+#include "client.h"
 //#include "client.h"
 #define SEVER 0
 #define MESIDE 0
 #define ENEMYSIDE 1
 #define MAPZERO 10
 #define HEROZERO 15
+
+GameClient client;
 
 cocos2d::Scene* GameScene::createScene()
 {

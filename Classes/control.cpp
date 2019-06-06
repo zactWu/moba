@@ -2,7 +2,12 @@
 #include "UnitClass.h"
 #include "GameScene.h"
 #include "control.h"
+#include <mutex>
+#include "client.h"
 USING_NS_CC;
+
+std::mutex gameLock;
+extern GameClient client;
 
 void GameScene::ListenOutside() {
 	auto mouse_listener = EventListenerTouchOneByOne::create();
@@ -107,4 +112,26 @@ int GameScene::ClickFindTag(Vec2 pos) {
 		}
 	}
 	return tag;
+}
+
+void control::send_to_sever()
+{
+	gameLock.lock();
+	char inf[30];
+	char c;
+	if (1 == kind) {
+		c = 'Q';
+	}
+	else if (2 == kind) {
+		c = 'W';
+	}
+	else {
+		c = 'E';
+	}
+	sprintf_s(inf, "%c%d#%f#%f", c, tar_tag, pos.x, pos.y);
+	//	sprintf_s(SendBuf, "%s", inf);
+	strcat(&client.SendBuf[client.InfNum * 30], inf);
+	client.InfNum++;
+	cocos2d::log("sendbuf is %s", client.SendBuf);
+	gameLock.unlock();
 }
