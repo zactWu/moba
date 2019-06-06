@@ -34,6 +34,7 @@ void GameScene::ListenOutside() {
 	
 	auto ketboard_listener = EventListenerKeyboard::create();
 	ketboard_listener->onKeyPressed = [=](EventKeyboard::KeyCode keycode, Event* event) {
+		
 		if (hero->skill_statement == 0) {
 			hero->skill_statement = 1;
 			log("ready");

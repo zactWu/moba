@@ -99,6 +99,7 @@ void GameScene::UnitDeadAction() {
 		if (unit->second->_life_current <= 0) {
 			unit->second->stopAllActions();
 			if (unit->second == hero) {
+				hero->skill_statement = 0;
 				hero->_life_current = 100;
 				hero->setPosition(hero->reborn_pos);
 			}
@@ -250,11 +251,11 @@ void GameScene::AllActionsTakenEachF(float dt)
 	money /= 100;
 	char m[1000];
 	if (money > 0) {
-		sprintf_s(m, "money: %f", money);
+		sprintf_s(m, "%d skill cd: %f", hero->skill_statement,money);
 	}
 	else
 	{
-		sprintf_s(m, "money: %f", 0.0);
+		sprintf_s(m, "%d ready:", hero->skill_statement);
 	}
 	auto MoneyLabel = Label::createWithSystemFont(m, "Arial", 25);
 	if (MoneyLabel != nullptr)
