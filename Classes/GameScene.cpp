@@ -126,19 +126,20 @@ void GameScene::UnitDeadAction() {
 		else {
 			// 接下来遍历命令单
 			for (auto i = unit->second->order_list.begin(); i != unit->second->order_list.end();) {
-				if (i->kind == 1) {
+			
+				if (i->kind ==1) {
 					unit->second->moveTo_directly(MoveFind(unit->second->getPosition(), i->pos));
 					log("unit move");
 				}
 				if (i->kind == 2) {
 					// 假定这个是英雄
-					int tag = unit->second->_it_tag;
-					log("TAG IS %d", unit->second->_it_tag);
+					
 					if (hero == unit->second) {
-						if (hero->Qskill_last_release_time + hero->Qskill_cd_time < clock()){
-                            hero->UsingFireBall(i->pos);// 这里改成合适英雄的技能就好
-							hero->Qskill_last_release_time = clock();
-						}
+						//hero->UsingFireBall(i->pos);// 这里改成合适英雄的技能就好
+						//hero->UsingSKill(hero_id,i->kind , i->pos, i->tag);
+					}
+					else if (en_hero == unit->second) {
+						//en_hero->UsingSKill(en_hero_id,i->kind , i->pos, i->tag);
 					}
 				}
 				i = unit->second->order_list.erase(i);
@@ -168,20 +169,28 @@ void GameScene::TowerAction() {
 			float pass_time = clock() - tower->second->_last_release_time;
 			//log("pass time is %f", pass_time);
 			if (pass_time > tower->second->_cd_time) {
-
+				float best_dis = tower->second->hit_range;
+				Unit* firetar=NULL;
 				auto unit = unit_map.begin();
 				//log("has check");
 				while (unit != unit_map.end()) {
 					if (unit->second->getPosition().getDistance(tower->second->getPosition())
-						< tower->second->hit_range &&
+						<  best_dis&&
 						unit->second->_side!=tower->second->_side-2) {
-						tower->second->fire(unit->second);
-						tower->second->_last_release_time = clock();
+
+						best_dis = unit->second->getPosition().getDistance(tower->second->getPosition());
+						firetar = unit->second;
+						
+					
 						log("in range!!");
 						//tower->second->getDamaged(tower->second, 200);
 						break;
 					}
 					++unit;
+				}
+				if (firetar != NULL) {
+					tower->second->_last_release_time = clock();
+					tower->second->fire(firetar);
 				}
 			}
 			++tower;
@@ -222,6 +231,7 @@ void GameScene::TowerInit() {
 	map->addChild(towerA);
 	//log("towerA ready");
 	tower_map[tower_num[0]] = towerA;
+	towerA->setTag(tower_num[0]);
 	tower_num[0]++;
 	return;
 }
@@ -243,31 +253,8 @@ bool GameScene::HeroInit()
 }
 void GameScene::AllActionsTakenEachF(float dt)
 {
-
-	if (this->getChildByName("MoneyLabel") != nullptr) {
-		this->removeChildByName("MoneyLabel");
-	}
-	float  money = this->hero->Qskill_cd_time+ this->hero->Qskill_last_release_time-clock();
-	money /= 100;
-	char m[1000];
-	if (money > 0) {
-		sprintf_s(m, "%d skill cd: %f", hero->skill_statement,money);
-	}
-	else
-	{
-		sprintf_s(m, "%d ready:", hero->skill_statement);
-	}
-	auto MoneyLabel = Label::createWithSystemFont(m, "Arial", 25);
-	if (MoneyLabel != nullptr)
-	{
-		//log("money %d", money);
-		// position the label on the center of the screen
-		MoneyLabel->setPosition(Vec2(viewSize.width - 200, 100));
-
-		// add the label as a child to this layer
-		this->addChild(MoneyLabel, 10);
-		MoneyLabel->setName("MoneyLabel");
-	}
+	UiShow();
+	
 
 	int RectWidth = viewSize.width;		//窗口宽
 	int RectHeight = viewSize.height;	//窗口高
@@ -308,5 +295,30 @@ void GameScene::AllActionsTakenEachF(float dt)
 	}
 }
 
+void GameScene::UiShow() {
+	if (this->getChildByName("MoneyLabel") != nullptr) {
+		this->removeChildByName("MoneyLabel");
+	}
+	float  money = this->hero->Qskill_cd_time + this->hero->Qskill_last_release_time - clock();
+	money /= 100;
+	char m[1000];
+	if (money > 0) {
+		sprintf_s(m, "%d skill cd: %f", hero->skill_statement, money);
+	}
+	else
+	{
+		sprintf_s(m, "%d ready:", hero->skill_statement);
+	}
+	auto MoneyLabel = Label::createWithSystemFont(m, "Arial", 25);
+	if (MoneyLabel != nullptr)
+	{
+		//log("money %d", money);
+		// position the label on the center of the screen
+		MoneyLabel->setPosition(Vec2(viewSize.width - 200, 100));
 
+		// add the label as a child to this layer
+		this->addChild(MoneyLabel, 10);
+		MoneyLabel->setName("MoneyLabel");
+	}
+}
 

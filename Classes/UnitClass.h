@@ -7,7 +7,7 @@ USING_NS_CC;
 
 enum Dir { down, down_right, right, up_right, up, up_left, left, down_left };
 enum Tag { move = 2001, animate_move };
-struct  order//服务器用的，不用管
+struct  order
 {
 	Vec2 pos;
 	int kind = 0;
@@ -50,6 +50,8 @@ public:
 	// 接下来是服务器用的
 	
 	std::vector<order> order_list;
+
+	//接下来就是升级系统
 
 protected:
 	bool _onAttack;

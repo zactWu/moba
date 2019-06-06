@@ -49,6 +49,7 @@ public:
 	bool MapInit();
 	bool HeroInit();
 	void AllActionsTakenEachF(float dt);			//每一帧都调用，监测鼠标位置，判断是否移动地图（后续可能会添加其他功能）
+	void UiShow();
 	std::vector<Vec2> MoveFind(const Vec2 startpoint, const Vec2& pos_target);		//寻路
 	bool PointInit();
 	std::map<int, Unit*> unit_map;

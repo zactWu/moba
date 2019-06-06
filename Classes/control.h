@@ -10,6 +10,7 @@
 #define SKILLE 4
 #define REBRON 5
 #define DEAD 6
+#define ATTACK 7
 USING_NS_CC;
 
 class control {
