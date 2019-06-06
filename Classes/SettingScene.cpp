@@ -6,11 +6,8 @@
 //
 
 #include "SettingScene.h"
-#include "GlobalVal.h"
-#include "ui/CocosGUI.h"
 
 USING_NS_CC;
-using namespace cocos2d::ui;
 
 Scene* SettingScene::createScene()
 {
@@ -36,17 +33,6 @@ bool SettingScene::init()
     
     addChild(createText());
     addChild(createBGImage());
-    auto hero1 = Sprite::create("SettingScene/test1.png");
-    auto hero2 = Sprite::create("SettingScene/test2.png");
-    auto hero3 = Sprite::create("SettingScene/test3.png");
-    hero1->setPosition(Vec2(320,350));
-    hero2->setPosition(Vec2(570,350));
-    hero3->setPosition(Vec2(820,350));
-    addChild(hero1);
-    addChild(hero2);
-    addChild(hero3);
-    addCheckBox();
-    
     
     return true;
 }
@@ -58,6 +44,7 @@ cocos2d::Menu* SettingScene::createText() {
                                                   Label::createWithTTF("Back", "fonts/OpenSans-Regular.ttf", 25),
                                                   CC_CALLBACK_1(SettingScene::menuBackCallback, this));
     const auto title = MenuItemLabel::create(Label::createWithTTF("Setting", "fonts/Quicksand-Bold.ttf", 45));
+    
     const auto visibleSize = Director::getInstance()->getVisibleSize();
     const auto baseY = visibleSize.height * 0.85f;
     
@@ -73,7 +60,8 @@ cocos2d::Menu* SettingScene::createText() {
     return buttons;
 }
 
-cocos2d::Sprite* SettingScene::createBGImage(){
+cocos2d::Sprite* SettingScene::createBGImage()
+{
     auto size = Director::getInstance()->getVisibleSize();
     auto background = Sprite::create("Startscene/background.jpg");
     background->setLocalZOrder(-1);
@@ -86,27 +74,3 @@ void SettingScene::menuBackCallback(Ref* pSender)
     Director::getInstance()->popScene();
 }
 
-void  SettingScene::addCheckBox()
-{
-    for(int i=0;i<3;i++){
-        checkbox[i] = CheckBox::create("SettingScene/dchoose.jpg", "SettingScene/choose.jpg", TextureResType::LOCAL);  
-        checkbox[i]->setScale(0.15);
-        checkbox[i]->setPosition(Vec2(320+250*i,150));
-        checkbox[i]->setTag(i+1);
-        checkbox[i]->addEventListenerCheckBox(this, checkboxselectedeventselector(SettingScene::CheckButtontouchEvent));
-        this->addChild(checkbox[i], 1);
-    }
-}
-
-void SettingScene::CheckButtontouchEvent(CheckBox* sender, CheckBox::EventType type)
-{
-    int tag = sender->getTag();
-    for (int i=0; i<3; i++) {//for循环实现单选
-        checkbox[i]->setSelected(false);//先让全部按钮设为处于未选中状态
-        if (i+1 == tag) {//通过tag值进入判断
-            checkbox[i]->setSelected(true);//让当前按钮为选中
-            hero_id = tag;
-            log("hero is %d", hero_id);
-            }
-        }
-}

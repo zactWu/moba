@@ -4,12 +4,13 @@
 #include "MoveFind.h"
 #include "TowerClass.h"
 #include "Hero.h"
-#include "client.h"
+//#include "client.h"
+#define SEVER 0
 #define MESIDE 0
 #define ENEMYSIDE 1
 #define MAPZERO 10
 #define HEROZERO 15
-GameClient client;
+
 cocos2d::Scene* GameScene::createScene()
 {
 	auto scene = Scene::create();
@@ -17,8 +18,6 @@ cocos2d::Scene* GameScene::createScene()
 	scene->addChild(layer);
 	return scene;
 }
-
-
 bool GameScene::init() {
 	if (!Layer::init())
 	{
@@ -29,30 +28,24 @@ bool GameScene::init() {
 	PointInit();
 	TowerInit();
 	Vec2 pos = { 400,400 };
-	
 	auto spa = Unit::create("soldier/0.png", "soldier");
-	unit_map[unit_num] = spa;
-	unit_num++;
+	unit_map[unit_num[1]] = spa;
+	spa->setTag(unit_num[1]);
+	unit_num[1]--;
 	spa->_side = 1;
 	spa->setPosition(pos);
 	map->addChild(spa);
-	spa->setTag(123);
+	
+	spa->_it_tag = unit_num[1];
+	if (SEVER) {
+		
+		//client.ClientProcess();
+	}
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
 	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.15);
-	auto mouse_listener = EventListenerTouchOneByOne::create();
-	mouse_listener->onTouchBegan = [=](Touch * Touch, Event * Event) {
-		auto touchPosition = Touch->getLocation();
-		auto mapPosition = map->getPosition();
-		auto nowPosition = hero->getPosition();
-		auto newPosition = touchPosition - mapPosition;
-		std::vector<Vec2> route = MoveFind(hero->getPosition(), newPosition);
-		hero->moveTo_directly(route);
-		UsingFireBoll(hero, newPosition, NULL);
-		return true;
-	};
-	// Implementation of the keyboard event callback function prototype
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouse_listener, this);
-	client.ClientProcess();
+	ListenOutside();
+
+	
 	return true;
 }
 void GameScene::SkillHitCheck() {
@@ -62,9 +55,15 @@ void GameScene::SkillHitCheck() {
 	times++;
 	while (skill != skill_map.end()) {
 		int dis = skill->second->getPosition().getDistance(skill->second->_st_pos);
-		if (skill->second->targe != NULL) {
+		if (skill->second->targe != NULL && skill->second->targe->_life_current>0) {
 			skill->second->stopAllActions();
 			skill->second->move(skill->second->getPosition(), skill->second->targe->getPosition());
+		}
+		if (skill->second->targe != NULL && skill->second->targe->_life_current <= 0) {
+			skill->second->stopAllActions();
+			map->removeChild(skill->second);
+			skill = skill_map.erase(skill);
+			continue;
 		}
 		if (dis > skill->second->move_range - 20 && skill->second->targe==NULL) {
 			map->removeChild(skill->second);
@@ -75,7 +74,6 @@ void GameScene::SkillHitCheck() {
 			bool flag = 1;
 			auto unit = unit_map.begin();
 			while (unit != unit_map.end()) {
-				
 				if (this->SkillHit(skill->second, unit->second)) {
 					log("HIT!!");
 					// 还有伤害加进去
@@ -92,11 +90,19 @@ void GameScene::SkillHitCheck() {
 			}
 			if (flag)++skill;
 		}
-
 	}
+	
+}
+void GameScene::UnitDeadAction() {
 	auto unit = unit_map.begin();
 	while (unit != unit_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
 		if (unit->second->_life_current <= 0) {
+			unit->second->stopAllActions();
+			if (unit->second == hero) {
+				hero->skill_statement = 0;
+				hero->_life_current = 100;
+				hero->setPosition(hero->reborn_pos);
+			}
 			if (unit->second->_last_attacker != NULL) {
 				unit->second->_last_attacker->_money += unit->second->_kill_award;// 赏金放在这里
 			}
@@ -106,15 +112,41 @@ void GameScene::SkillHitCheck() {
 			map->addChild(money);
 			auto fed = FadeOut::create(1.0f);
 			money->runAction(fed);
+			if (unit->second == hero) {// 这里是复活的
+				hero->_life_current = 100;
+				hero->setPosition(hero->reborn_pos);
+				hero->getDamaged(NULL, 1);
+				hero->_money -= 50;
+				++unit;
+				continue;
+			}
 			map->removeChild(unit->second);
 			unit = unit_map.erase(unit);
 		}
 		else {
-			
+			// 接下来遍历命令单
+			for (auto i = unit->second->order_list.begin(); i != unit->second->order_list.end();) {
+				if (i->kind == 1) {
+					unit->second->moveTo_directly(MoveFind(unit->second->getPosition(), i->pos));
+					log("unit move");
+				}
+				if (i->kind == 2) {
+					// 假定这个是英雄
+					int tag = unit->second->_it_tag;
+					log("TAG IS %d", unit->second->_it_tag);
+					if (hero == unit->second) {
+						if (hero->Qskill_last_release_time + hero->Qskill_cd_time < clock()){
+                            hero->UsingFireBall(i->pos);// 这里改成合适英雄的技能就好
+							hero->Qskill_last_release_time = clock();
+						}
+					}
+				}
+				i = unit->second->order_list.erase(i);
+			}
 			++unit;
 		}
 	}
-	
+
 }
 void GameScene::TowerAction() {
 	auto tower = tower_map.begin();
@@ -134,7 +166,7 @@ void GameScene::TowerAction() {
 		}
 		else {
 			float pass_time = clock() - tower->second->_last_release_time;
-			log("pass time is %f", pass_time);
+			//log("pass time is %f", pass_time);
 			if (pass_time > tower->second->_cd_time) {
 
 				auto unit = unit_map.begin();
@@ -152,7 +184,6 @@ void GameScene::TowerAction() {
 					++unit;
 				}
 			}
-			
 			++tower;
 		}
 	}
@@ -160,6 +191,7 @@ void GameScene::TowerAction() {
 void GameScene::AllActionsTakenEachSecond(float dt) {
 	hero->_money++;// 加钱
 	SkillHitCheck();
+	UnitDeadAction();
 	TowerAction();
 }
 bool GameScene::MapInit()
@@ -188,29 +220,54 @@ void GameScene::TowerInit() {
 	towerA->setPosition(pos);
 	towerA->setScale(0.1);
 	map->addChild(towerA);
-	log("towerA ready");
-	tower_map[tower_num] = towerA;
-	tower_num++;
+	//log("towerA ready");
+	tower_map[tower_num[0]] = towerA;
+	tower_num[0]++;
 	return;
 }
 bool GameScene::HeroInit()
 {
 	hero = Hero::create("soldier/0.png", "soldier");
 	hero->_side = MESIDE;
-	this->unit_map[unit_num] = hero;
-	unit_num++;
-
+	this->unit_map[unit_num[0]] = hero;
+	hero->_money = 0;
+	
+	hero->setTag(unit_num[0]);
+	hero->_it_tag = unit_num[0];
 	map->addChild(hero,HEROZERO);
-	if (client.init(hero)) {
-
-	};
+	unit_num[0]++;
+	hero->Qskill_cd_time = 2000;
+	hero->Qskill_last_release_time = 0;
+	//client.init(hero);
 	return false;
 }
-
-
-
 void GameScene::AllActionsTakenEachF(float dt)
 {
+
+	if (this->getChildByName("MoneyLabel") != nullptr) {
+		this->removeChildByName("MoneyLabel");
+	}
+	float  money = this->hero->Qskill_cd_time+ this->hero->Qskill_last_release_time-clock();
+	money /= 100;
+	char m[1000];
+	if (money > 0) {
+		sprintf_s(m, "%d skill cd: %f", hero->skill_statement,money);
+	}
+	else
+	{
+		sprintf_s(m, "%d ready:", hero->skill_statement);
+	}
+	auto MoneyLabel = Label::createWithSystemFont(m, "Arial", 25);
+	if (MoneyLabel != nullptr)
+	{
+		//log("money %d", money);
+		// position the label on the center of the screen
+		MoneyLabel->setPosition(Vec2(viewSize.width - 200, 100));
+
+		// add the label as a child to this layer
+		this->addChild(MoneyLabel, 10);
+		MoneyLabel->setName("MoneyLabel");
+	}
 
 	int RectWidth = viewSize.width;		//窗口宽
 	int RectHeight = viewSize.height;	//窗口高

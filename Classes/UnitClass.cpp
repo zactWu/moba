@@ -134,7 +134,6 @@ void Unit::moveTo_directly(const Vec2& pos_target) {
 
 void Unit::moveTo_directly(const std::vector<Vec2> pos_list) {
 	if (pos_list.size() == 1) {
-		moveTo_directly(pos_list[0]);
 		return;
 	}
 	stopActionByTag(Tag::move);

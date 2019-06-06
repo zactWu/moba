@@ -11,6 +11,10 @@
 #include <stdio.h>
 #include "cocos2d.h"
 
+#define WARRIOR 1
+#define ARCHER 2
+#define MAGICIAN 3
+
 extern int hero_id;
 
 

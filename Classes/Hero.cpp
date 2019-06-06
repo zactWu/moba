@@ -1,6 +1,9 @@
 #include "Hero.h"
 #include "skillClass.h"
 #include "GameScene.h"
+#include "GlobalVal.h"
+#include "control.h"
+
 
 Hero* Hero::create(const std::string& filename, const std::string& unitType,
 	int maxLife, int attack, int defense, int speed,
@@ -35,28 +38,39 @@ Hero* Hero::create(const std::string& filename, const std::string& unitType,
 	return nullptr;
 }
 
+void Hero::heal(int life_heal) {
+	_life_current += life_heal;
+	if (_life_current > _life_max) {
+		_life_current = _life_max;
+	}
+	_lifeBank->setScaleX(static_cast<float>(_life_current) / _life_max);
+}
+
+void Hero::turnTo(Vec2 pos)
+{
+	int iDir = getDirByTargetPos(pos);
+}
+
 
 
 void Hero::UsingFireBall(Vec2 newPosition) {
+	if (this == NULL) {
+		log("???");
+		return;
+	}
 	static clock_t last_time = 0;
 	clock_t now_time = clock();
 	float pass_time = now_time - last_time;
-	if (pass_time < 2000) {// cd时间在这里调整
-		log("fireball still cd");
-		return;
-	}
 	last_time = now_time;
 	auto skill = Skill::create("fireboll.jpg", 300, 10, 300, 50);
 	skill->_skiller = this;
 	skill->setScale(0.3);
 	skill->setPosition(getPosition());
 	skill->_st_pos = getPosition();
-
 	auto gameScene = dynamic_cast<GameScene*>(getParent()->getParent());
-
 	gameScene->skill_map[gameScene->skill_num] = skill;
 	gameScene->skill_num++;
-	skill->_side = 0;
+	skill->_side = _side;
 	skill->_release_time = clock();
 	gameScene->map->addChild(skill, 12);//这里有一点问题要解决
 	skill->move(skill->_st_pos, newPosition);
@@ -77,7 +91,10 @@ void Hero::useSkill_trample() {
 }
 
 void Hero::useSkill_blinkToEnemy(Unit* enemy)
-{
+{   
+	if (enemy == nullptr) {
+		return;
+	}
 	
 	stopAllActions();
 	auto pos_current = getPosition();
@@ -90,6 +107,8 @@ void Hero::useSkill_blinkToEnemy(Unit* enemy)
 }
 
 void Hero::useSkill_ConeWave(const Vec2 &pos_target) {
+
+
 	stopAllActions();
 	auto pos_current = getPosition();
 	auto diffVec = pos_target - pos_current;
@@ -119,10 +138,100 @@ void Hero::useSkill_ConeWave(const Vec2 &pos_target) {
 }
 
 void Hero::useSkill_switchLife(Unit* enemy) {
+	if (enemy == nullptr) {
+		return;
+	}
 	stopAllActions();
 	int life_this = _life_current;
 	_life_current = enemy->_life_current;
 	enemy->_life_current = life_this;
 	enemy->getDamaged(this, 0);
-	this->getDamaged(enemy, 0);
+	this->heal(0);
+}
+
+void Hero::useSkill_heal()
+{
+	stopAllActions();
+	heal(static_cast<int>(_life_max * 0.3));
+}
+
+void Hero::useSkill_ultra(Unit* enemy)
+{
+	if (enemy == nullptr) {
+		return;
+	}
+	stopAllActions();
+	enemy->stunned(2.0);
+	enemy->getDamaged(this, static_cast<int>(enemy->_life_max*0.3));
+}
+
+void Hero::useSkill_percentageDamage(Unit* enemy) {
+	if (enemy == nullptr) {
+		return;
+	}
+	stopAllActions();
+	enemy->getDamaged(this, static_cast<int>(enemy->_life_current * 0.15));
+}
+
+void Hero::useSkill_tornado()
+{
+	stopAllActions();
+}
+
+//随机技能
+void Hero::useSkill_randomDamage(Unit* enemy)
+{
+	if (enemy == nullptr) {
+		return;
+	}
+	stopAllActions();
+	enemy->stunned(1.0);
+	enemy->getDamaged(this, static_cast<int>(enemy->_life_max * 0.2));
+}
+
+void Hero::useSkill(int heroID,int kind, Vec2 pos, int tag){
+	auto enemy = nullptr;
+	if (tag >= 0) {
+		auto enemy = dynamic_cast<Unit*>(getParent()->getChildByTag(tag));
+	}
+	switch (heroID) {
+	case WARRIOR:
+		switch (kind) {
+		case SKILLQ:
+			useSkill_blinkToEnemy(enemy);
+			break;
+		case SKILLW:
+			useSkill_heal();
+			break;
+		case SKILLE:
+			useSkill_ultra(enemy);
+			break;
+		}
+		break;
+	case ARCHER:
+		switch (kind) {
+		case SKILLQ:
+			useSkill_ConeWave(pos);
+			break;
+		case SKILLW:
+			break;//被动
+		case SKILLE:
+			useSkill_switchLife(enemy);
+			break;
+		}
+		break;
+	case MAGICIAN:
+		switch (kind) {
+		case SKILLQ:
+			useSkill_percentageDamage(enemy);
+			break;
+		case SKILLW:
+			useSkill_randomDamage(enemy);
+			break;
+		case SKILLE:
+			useSkill_tornado();
+			break;
+		}
+		break;
+	}
 }

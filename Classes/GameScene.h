@@ -6,11 +6,13 @@
 #include "Hero.h"
 #include "TowerClass.h"
 
+//GameClient client;// 不用服务器注释掉这行
 class GameScene :public Layer {
 private:
 
 	
 	Hero* hero;
+	Hero* en_hero;
 	//屏幕尺寸瓦片尺寸
 	Size viewSize;
 	Size mapSize;
@@ -41,6 +43,7 @@ public:
 	void TowerInit();
 	virtual bool init();
 	void SkillHitCheck();
+	void UnitDeadAction();
 	void TowerAction();
 	void AllActionsTakenEachSecond(float dt);
 	bool MapInit();
@@ -51,9 +54,11 @@ public:
 	std::map<int, Unit*> unit_map;
 	std::map<int, Tower*> tower_map;
 	std::map<int, Skill*> skill_map;
-	int unit_num = 0;
+	int my_hero_id;
+	int en_hero_id;//最后是通过全局看
+	int unit_num[2] = { 1,1000 };
 	int skill_num = 0;
-	int tower_num = 0;
+	int tower_num[2] = { 10000,20000 };
 	bool SkillHit(Skill* sk, Unit* un);
 	// 接下来就各种各样的技能
 	void UsingFireBoll(Unit* hero, Vec2 newPosition, Unit* tar);
@@ -61,6 +66,10 @@ public:
 
 	CREATE_FUNC(GameScene);
 	
+	void ListenOutside();
+
+	int ClickFindTag(Vec2 pos);
+
 };
 
 
@@ -69,4 +78,4 @@ public:
 
 #define GAMESCENE
 #endif // !GAMESCENE
-#pragma once
+#pragma once 
