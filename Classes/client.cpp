@@ -31,7 +31,7 @@ bool GameClient::init(Unit* h)
 	ServerAddr.sin_port = htons(PORTS);
 
 	//	ServerAddr.sin_addr.S_un.S_addr = inet_pton(AF_INET, "127.0.0.1", &ServerAddr.sin_addr.S_un.S_addr);
-	ServerAddr.sin_addr.S_un.S_addr = inet_addr("192.168.1.103");
+	ServerAddr.sin_addr.S_un.S_addr = inet_addr("192.168.1.104");
 	ClientSocket = socket(PF_INET, SOCK_STREAM, 0);
 
 	if (ClientSocket == INVALID_SOCKET)
@@ -131,21 +131,26 @@ DWORD __stdcall GameClient::Send(LPVOID lpParam)
 	{
 		if (Client->ClientSocket != NULL)
 		{
-			char sendbuf[30*100] = { 0 };
+
 			gameLock.lock();
-			strcpy(sendbuf, Client->SendBuf);
-			if ('\0'==sendbuf[0]) {
-				gameLock.unlock();
-				continue;
+
+			if ('\0' != Client->SendBuf[0]) {
+				char sendbuf[30 * 100] = { 0 };
+				strcpy(sendbuf, Client->SendBuf);
+
+				int const iSend = send(Client->ClientSocket, sendbuf, strlen(sendbuf), 0);
+
+				ZeroMemory(Client->SendBuf, 30 * 100);
+				client.InfNum = 0;
+				cocos2d::log("send message :%s\n", sendbuf);
 			}
 
-			int iSend = send(Client->ClientSocket, sendbuf, strlen(sendbuf), 0);
-
-			ZeroMemory(Client->SendBuf, 30*100);
-			client.InfNum = 0;
-			gameLock.unlock();
-			cocos2d::log("send message :%s\n", sendbuf);
-
+			if ('\0' != Client->ChatBuf[0]) {
+				char chatbuf[100] = { 0 };
+				strcpy(chatbuf, Client->ChatBuf);
+				int const chatSend = send(Client->ClientSocket, chatbuf, 100, 0);
+				ZeroMemory(Client->ChatBuf, 100);
+			}
 //			if (iSend <= 0)
 //			{
 //				if (Client->ClientSocket != NULL)
@@ -160,6 +165,7 @@ DWORD __stdcall GameClient::Send(LPVOID lpParam)
 ////				printf("发送线程关闭\n");
 //				return 0;
 //			}
+			gameLock.unlock();
 		}
 	}
 	log("return");
@@ -196,24 +202,32 @@ DWORD __stdcall GameClient::Receive(LPVOID lpParam)
 			strcpy(Client->RecvBuf, recvbuf);
 			cocos2d::log("receive message: %s ", recvbuf);
 
-			for (int i = 0; i < 100; i++) {
-				if ('\0' == recvbuf[i * 30]) {
-					break;
-				}
-				char c, tag;
-				float x, y;
-				sscanf(&recvbuf[i*30], "%c%d#%f#%f", &c, &tag, &x, &y);
-				information inf;
-				inf.c = c;
-				inf.tag = tag;
-				inf.x = x;
-				inf.y = y;
-				cocos2d::log("inf is %c %d %f %f", inf.c, inf.tag, inf.x, inf.y);
-				//			static float xx = 10.0;
-				//			static float yy = 10.0;
-				//			cocos2d::log("push");
-				receiveQueue.push(inf);
+			if (':' == recvbuf[0]) {			//'C'代表聊天信息
+				cocos2d::log("%s", recvbuf);
+				strcpy(Client->ChattingInfirmationFromTheOther, recvbuf);
+				Client->UpdateChatMessage = true;  //现在需要更新聊天信息
 			}
+			else {								//如果不是聊天信息
+				for (int i = 0; i < 100; i++) {
+					if ('\0' == recvbuf[i * 30]) {
+						break;
+					}
+					char c, tag;
+					float x, y;
+					sscanf(&recvbuf[i * 30], "%c%d#%f#%f", &c, &tag, &x, &y);
+					information inf;
+					inf.c = c;
+					inf.tag = tag;
+					inf.x = x;
+					inf.y = y;
+					cocos2d::log("inf is %c %d %f %f", inf.c, inf.tag, inf.x, inf.y);
+					//			static float xx = 10.0;
+					//			static float yy = 10.0;
+					//			cocos2d::log("push");
+					receiveQueue.push(inf);
+				}
+			}
+			
 //			information temp = receiveQueue.front();
 //			cocos2d::log("%f %f", temp.x, temp.y);
 //			auto move = MoveTo::create(0.5, Vec2(x, y));

@@ -7,13 +7,16 @@
 #include "client.h"
 #include "ui/CocosGUI.h"
 #include <iostream>
-
+#include <mutex>
 
 #define MESIDE 0
 #define ENEMYSIDE 1
 #define MAPZERO 10
 #define HEROZERO 15
+
 GameClient client;
+extern std::mutex gameLock;
+
 cocos2d::Scene* GameScene::createScene()
 {
 	auto scene = Scene::create();
@@ -64,7 +67,41 @@ bool GameScene::init() {
 	};
 	// Implementation of the keyboard event callback function prototype
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouse_listener, this);
+
+
 	client.ClientProcess();
+
+
+	//chat
+	auto textField = cocos2d::ui::TextField::create("chat", "Arial", 30);
+	textField->setMaxLength(100);
+	//下面设置键盘Enter监听，用于聊天
+	this->addChild(textField, 10);
+	textField->setPosition(Vec2(100, 100));
+	textField->addTouchEventListener([&](Ref* sender, cocos2d::ui::Widget::TouchEventType type) {
+		//std::cout << "editing a TextField" << std::endl;
+
+		log("chatttttt");
+		});
+	auto keyListener = EventListenerKeyboard::create();
+	keyListener->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event* event) {
+		if (keyCode == EventKeyboard::KeyCode::KEY_ENTER)
+		{
+			std::string message = textField->getString();
+			if (!message.empty()) {
+				gameLock.lock();
+				client.ChatBuf[0] = ':';
+				for (int i = 0; i < message.size(); i++) {
+					client.ChatBuf[i + 1] = message[i];
+				}
+				gameLock.unlock();
+			}
+			textField->setString("");
+		}
+	};
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
+
+
 	return true;
 }
 void GameScene::SkillHitCheck() {
@@ -250,7 +287,7 @@ bool GameScene::HeroInit()
 	hero->setTag(unit_num);
 	hero->_it_tag = unit_num;
 	if (client.init(hero)) {
-
+		client.scene = this;
 	};
 	return false;
 }
@@ -259,7 +296,22 @@ bool GameScene::HeroInit()
 
 void GameScene::AllActionsTakenEachF(float dt)
 {
-
+	//显示聊天信息
+	if (true == client.UpdateChatMessage) {
+		log("true");
+		if (this->getChildByName("ChatMessage") != nullptr) {
+			this->removeChildByName("ChatMessage");
+		}
+		auto ChatMessage = Label::createWithSystemFont(client.ChattingInfirmationFromTheOther, "Arial", 25);
+		if (ChatMessage != nullptr)
+		{
+			ChatMessage->setPosition(Vec2(150, 150));
+			this->addChild(ChatMessage, 10);
+			ChatMessage->setName("ChatMessage");
+		}
+		client.UpdateChatMessage = false;
+	}
+	//显示英雄money
 	if (this->getChildByName("MoneyLabel") != nullptr) {
 		this->removeChildByName("MoneyLabel");
 	}
@@ -277,6 +329,9 @@ void GameScene::AllActionsTakenEachF(float dt)
 		MoneyLabel->setName("MoneyLabel");
 	}
 
+
+
+	//下面是地图根据鼠标位置移动
 	int RectWidth = viewSize.width;		//窗口宽
 	int RectHeight = viewSize.height;	//窗口高
 	//以下几行获取鼠标位于窗口的坐标
@@ -285,7 +340,6 @@ void GameScene::AllActionsTakenEachF(float dt)
 	HWND hwnd = GetActiveWindow();
 	ScreenToClient(hwnd, &p);
 	p.y = RectHeight - p.y;
-
 	//50是我设定的区域，鼠标位于该区域内则会导致map移动，50可更改
 	if (RectWidth - p.x < 50 || RectHeight - p.y < 50 || p.x < 50 || p.y < 50) {
 		//下面两行的 10 是自定义设置的，即每一设定的时间（目前设定一帧所需要的时间）移动10个像素，可更改，另外，sqrt用于开根号并计算两点距离，感觉式子有点low.....要是有办法写得高大上一点是最好

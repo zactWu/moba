@@ -7,6 +7,7 @@
 #include <cocos2d.h>
 #include <UnitClass.h>
 #include <queue>
+#include "GameScene.h"
 #pragma comment(lib,"ws2_32.lib")
 
 
@@ -23,10 +24,18 @@ class GameClient
 {
 private:
 	Unit* hero;
-	char RecvBuf[30 * 100];
-	char SendBuf[30 * 100];
+
 
 public:
+
+	GameScene* scene;
+
+	bool UpdateChatMessage = false;
+
+	char RecvBuf[30 * 100] = { 0 };
+	char SendBuf[30 * 100] = { 0 };
+	char ChatBuf[100] = { 0 };
+	char ChattingInfirmationFromTheOther[100] = { 0 };
 
 	bool virtual init(Unit* h);
 	void ClientProcess();    //启动客户处理
