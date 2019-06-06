@@ -68,6 +68,8 @@ public:
 	
 	void ListenOutside();
 
+	int ClickFindTag(Vec2 pos);
+
 };
 
 

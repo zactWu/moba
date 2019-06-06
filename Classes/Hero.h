@@ -24,9 +24,11 @@ public:
 	clock_t Qskill_last_release_time;
 	clock_t Wskill_last_release_time; 
 	clock_t Eskill_last_release_time;
+	clock_t Askill_last_release_time;
 	clock_t Qskill_cd_time;
 	clock_t Wskill_cd_time;
 	clock_t Eskill_cd_time;
+	clock_t Askill_cd_time;
 	int skill_statement = 0;
 };
 

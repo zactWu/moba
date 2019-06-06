@@ -109,7 +109,6 @@ std::vector<Vec2> GameScene::MoveFind(const Vec2 startpoint, const Vec2& pos_tar
 	start.position.push_back(startpoint);
 	start.has_move = 0;
 	if (ObjHit(pos_target,map)) {
-		
 		return start.position;
 	}
 	if (canto(start.position[0], pos_target, map)) {

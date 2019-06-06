@@ -111,7 +111,7 @@ void GameScene::UnitDeadAction() {
 			map->addChild(money);
 			auto fed = FadeOut::create(1.0f);
 			money->runAction(fed);
-			if (unit->second == hero) {
+			if (unit->second == hero) {// 这里是复活的
 				hero->_life_current = 100;
 				hero->setPosition(hero->reborn_pos);
 				hero->getDamaged(NULL, 1);
@@ -123,6 +123,7 @@ void GameScene::UnitDeadAction() {
 			unit = unit_map.erase(unit);
 		}
 		else {
+			// 接下来遍历命令单
 			for (auto i = unit->second->order_list.begin(); i != unit->second->order_list.end();) {
 				if (i->kind == 1) {
 					unit->second->moveTo_directly(MoveFind(unit->second->getPosition(), i->pos));
@@ -133,11 +134,11 @@ void GameScene::UnitDeadAction() {
 					int tag = unit->second->_it_tag;
 					log("TAG IS %d", unit->second->_it_tag);
 					if (hero == unit->second) {
-						hero->UsingFireBall(i->pos);
+						if (hero->Qskill_last_release_time + hero->Qskill_cd_time < clock()){
+                            hero->UsingFireBall(i->pos);// 这里改成合适英雄的技能就好
+							hero->Qskill_last_release_time = clock();
+						}
 					}
-					
-					
-					
 				}
 				i = unit->second->order_list.erase(i);
 			}
@@ -245,9 +246,16 @@ void GameScene::AllActionsTakenEachF(float dt)
 	if (this->getChildByName("MoneyLabel") != nullptr) {
 		this->removeChildByName("MoneyLabel");
 	}
-	int const money = this->hero->_money;
+	float  money = this->hero->Qskill_cd_time+ this->hero->Qskill_last_release_time-clock();
+	money /= 100;
 	char m[1000];
-	sprintf_s(m, "money: %d", money);
+	if (money > 0) {
+		sprintf_s(m, "money: %f", money);
+	}
+	else
+	{
+		sprintf_s(m, "money: %f", 0.0);
+	}
 	auto MoneyLabel = Label::createWithSystemFont(m, "Arial", 25);
 	if (MoneyLabel != nullptr)
 	{
