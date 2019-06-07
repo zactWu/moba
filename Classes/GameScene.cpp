@@ -338,29 +338,81 @@ void GameScene::AllActionsTakenEachF(float dt)
 }
 
 void GameScene::UiShow() {
+	//money
 	if (this->getChildByName("MoneyLabel") != nullptr) {
 		this->removeChildByName("MoneyLabel");
 	}
-	float  money = this->hero->Qskill_cd_time + this->hero->Qskill_last_release_time - clock();
-	money /= 100;
-	char m[1000];
-	if (money > 0) {
-		sprintf_s(m, "%d skill cd: %f", hero->skill_statement, money);
-	}
-	else
-	{
-		sprintf_s(m, "%d ready:", hero->skill_statement);
-	}
-	auto MoneyLabel = Label::createWithSystemFont(m, "Arial", 25);
+	char m[20];
+	sprintf_s(m, "money: %d", hero->_money);
+	auto MoneyLabel = Label::createWithSystemFont(m, "Arial", 20);
 	if (MoneyLabel != nullptr)
 	{
-		//log("money %d", money);
-		// position the label on the center of the screen
 		MoneyLabel->setPosition(Vec2(viewSize.width - 200, 100));
-
-		// add the label as a child to this layer
 		this->addChild(MoneyLabel, 10);
 		MoneyLabel->setName("MoneyLabel");
+	}
+
+	//cd
+	if (this->getChildByName("CdLabel") != nullptr) {
+		this->removeChildByName("CdLabel");
+	}
+	if (this->getChildByName("Q") != nullptr) {
+		this->removeChildByName("Q");
+	}
+	if (this->getChildByName("W") != nullptr) {
+		this->removeChildByName("W");
+	}
+	if (this->getChildByName("E") != nullptr) {
+		this->removeChildByName("E");
+	}
+	float Q_Cd = this->hero->Qskill_cd_time + this->hero->Qskill_last_release_time - clock();
+	float W_Cd = this->hero->Wskill_cd_time + this->hero->Wskill_last_release_time - clock();
+	float E_Cd = this->hero->Eskill_cd_time + this->hero->Eskill_last_release_time - clock();
+	Q_Cd /= 100;
+	W_Cd /= 100;
+	E_Cd /= 100;
+	log("%f %f %f", Q_Cd, W_Cd, E_Cd);
+	if (Q_Cd <= 0 && W_Cd <= 0 && E_Cd <= 0) {
+		char cd[100] = { 0 };
+		sprintf_s(cd, "%d ready:", hero->skill_statement);
+		auto CdLabel = Label::createWithSystemFont(cd, "Arial", 20);
+		if (CdLabel != nullptr) {
+			this->addChild(CdLabel, 10);
+			CdLabel->setPosition(Vec2(viewSize.width - 200, 75));
+			CdLabel->setName("CdLabel");
+		}
+	}
+	else {
+		if (Q_Cd > 0) {
+			char Q[100];
+			sprintf_s(Q, "Q skill cd: %f", Q_Cd);
+			auto QCdLabel = Label::createWithSystemFont(Q, "Arial", 20);
+			if (QCdLabel != nullptr) {
+				this->addChild(QCdLabel, 10);
+				QCdLabel->setPosition(Vec2(viewSize.width - 200, 75));
+				QCdLabel->setName("Q");
+			}
+		}
+		if (W_Cd > 0) {
+			char W[100];
+			sprintf_s(W, "W skill cd: %f", W_Cd);
+			auto WCdLabel = Label::createWithSystemFont(W, "Arial", 20);
+			if (WCdLabel != nullptr) {
+				this->addChild(WCdLabel, 10);
+				WCdLabel->setPosition(Vec2(viewSize.width - 200, 50));
+				WCdLabel->setName("W");
+			}
+		}
+		if (E_Cd > 0) {
+			char E[100];
+			sprintf_s(E, "E skill cd: %f", E_Cd);
+			auto ECdLabel = Label::createWithSystemFont(E, "Arial", 20);
+			if (ECdLabel != nullptr) {
+				this->addChild(ECdLabel, 10);
+				ECdLabel->setPosition(Vec2(viewSize.width - 200, 25));
+				ECdLabel->setName("E");
+			}
+		}
 	}
 }
 
