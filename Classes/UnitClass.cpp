@@ -57,11 +57,11 @@ inline void Unit::animate_move_forever(int dir) {
 		animFrames.reserve(2);
 		animFrames.pushBack(SpriteFrame::create(
 			_unitType + "/" + std::to_string(dir) + "_" + std::to_string(1) + ".png",
-			Rect(0, 0, 64, 64)
+			Rect(0, 0, 128, 128)
 		));
 		animFrames.pushBack(SpriteFrame::create(
 			_unitType + "/" + std::to_string(dir) + "_" + std::to_string(2) + ".png",
-			Rect(0, 0, 64, 64)
+			Rect(0, 0, 128, 128)
 		));
 		Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.5f);
 		Animate* animate = Animate::create(animation);
@@ -185,7 +185,7 @@ void Unit::attack_once(Unit* sp_enemy) {
 	animFrames1.reserve(1);
 	animFrames1.pushBack(SpriteFrame::create(
 		_unitType + "/" + std::to_string(iDir) + ".png",
-		Rect(0, 0, 64, 64)
+		Rect(0, 0, 128, 128)
 	));
 	Animation* animation1 = Animation::createWithSpriteFrames(animFrames1, _attackInterval / 2.f);
 	Animate* animate1 = Animate::create(animation1);
@@ -201,7 +201,7 @@ void Unit::attack_once(Unit* sp_enemy) {
 	animFrames2.reserve(1);
 	animFrames2.pushBack(SpriteFrame::create(
 		_unitType + "/" + std::to_string(iDir) + "a.png",
-		Rect(0, 0, 64, 64)
+		Rect(0, 0, 128, 128)
 	));
 	Animation* animation2 = Animation::createWithSpriteFrames(animFrames2, _attackInterval / 2.f);
 	Animate* animate2 = Animate::create(animation2);
@@ -227,7 +227,7 @@ void Unit::attack_once(Unit* sp_enemy) {
 	animFrames3.reserve(1);
 	animFrames3.pushBack(SpriteFrame::create(
 		_unitType + "/" + std::to_string(iDir) + ".png",
-		Rect(0, 0, 64, 64)
+		Rect(0, 0, 128, 128)
 	));
 	Animation* animation3 = Animation::createWithSpriteFrames(animFrames3, 0.05);
 	Animate* animate3 = Animate::create(animation3);
@@ -328,7 +328,7 @@ void Unit::longRangeAttack(Unit* enemy) {
 
 	gameScene->skill_map[gameScene->skill_num] = skill;
 	gameScene->skill_num++;
-	skill->_side = 0;
+	skill->_side = _side;
 	skill->_release_time = clock();
 	gameScene->map->addChild(skill, 12);//这里有一点问题要解决
 }
