@@ -18,7 +18,7 @@ public:
 
 	void heal(int life_heal);
 	void turnTo(Vec2 pos);
-
+	void Hero::specialEffect(const std::string& filename, Vec2 pos);
 	//¼¼ÄÜÀ¸
 	void UsingFireBall(Vec2 newPosition);
 	void useSkill_trample();

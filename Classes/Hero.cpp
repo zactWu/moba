@@ -4,7 +4,7 @@
 #include "GlobalVal.h"
 #include "control.h"
 
-
+USING_NS_CC;
 Hero* Hero::create(const std::string& filename, const std::string& unitType,
 	int maxLife, int attack, int defense, int speed,
 	float rotate_speed, float attackInterval, float attackRange) {
@@ -90,6 +90,7 @@ void Hero::useSkill_trample() {
 	Wskill_last_release_time = clock();
 
 	stopAllActions();
+	specialEffect("trample.png", getPosition());
 	auto gameScene = dynamic_cast<GameScene*> (getParent()->getParent());
 	auto it = gameScene->unit_map.begin();
 	while (it != gameScene->unit_map.end()) {
@@ -276,3 +277,18 @@ void Hero::useSkill(int heroID, int kind, Vec2 pos, int tag) {
 	}
 }
 
+void Hero::specialEffect(const std::string& filename, Vec2 pos)
+{
+	auto effect = Sprite::create(filename);
+	effect->setPosition(pos);
+	auto gameMap = getParent();
+	gameMap->addChild(effect);
+	auto fade = FadeOut::create(1.5f);
+	auto cf = CallFunc::create([=]() {
+		gameMap->removeChild(effect);
+		});
+	auto seq = Sequence::create(DelayTime::create(1.5f), cf, nullptr);
+
+	effect->runAction(fade);
+	gameMap->runAction(seq);
+}
