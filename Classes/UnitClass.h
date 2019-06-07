@@ -51,10 +51,11 @@ public:
 	
 	std::vector<order> order_list;
 	int _life_max;
-	//接下来就是升级系统
-
-protected:
 	bool _onAttack;
+
+	//接下来就是升级系统
+protected:
+	
 	
 	int _attack;
 	int _defense;

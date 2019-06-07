@@ -13,21 +13,25 @@ void GameScene::ListenOutside() {
 		auto newPosition = touchPosition - mapPosition;
 		log("heard a check %f %f", newPosition.x, newPosition.y);
 		log("%d", ClickFindTag(newPosition));
+		
 		order od;
 		od.tag = ClickFindTag(newPosition);
 		if (hero->skill_statement == 0) {
+			hero->_tag_attackTarget = od.tag;
 			
+			log("this tag is %d", od.tag);
 			od.kind = MOVEOERDER;
 			od.pos = newPosition;
 			
-			hero->order_list.push_back(od);
 		}
 		if (hero->skill_statement!=0) {
+			hero->_tag_attackTarget = -1;
 			od.kind = hero->skill_statement;
 			od.pos = newPosition;
-			hero->order_list.push_back(od);
+			
 			hero->skill_statement = 0;
 		}
+		hero->order_list.push_back(od);
 		return true;
 	};
 	

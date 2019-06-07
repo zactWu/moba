@@ -30,12 +30,10 @@ bool GameScene::init() {
 	
 	
 	
-	if (SEVER) {
-		
-		//client.ClientProcess();
-	}
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
 	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.15);
+	//this->schedule(schedule_selector(GameScene::AddSoldiers), 15.0f);		//五秒出一波兵
+
 	ListenOutside();
 
 	
@@ -52,6 +50,9 @@ void GameScene::SkillHitCheck() {
 			skill->second->stopAllActions();
 			skill->second->move(skill->second->getPosition(), skill->second->targe->getPosition());
 		}
+
+
+
 		if (skill->second->targe != NULL && skill->second->targe->_life_current <= 0) {
 			skill->second->stopAllActions();
 			map->removeChild(skill->second);
@@ -63,13 +64,12 @@ void GameScene::SkillHitCheck() {
 			skill = skill_map.erase(skill);
 			continue;
 		}
+
+
 		else {
 			bool flag = 1;
 			auto unit = unit_map.begin();
 			while (unit != unit_map.end()) {
-				if (unit->second == en_hero) {
-					log("side is %d",en_hero->_side);
-				}
 				if (this->SkillHit(skill->second, unit->second)) {
 					log("HIT!!");
 					// 还有伤害加进去
@@ -83,8 +83,35 @@ void GameScene::SkillHitCheck() {
 				{
 					++unit;
 				}
+
 			}
-			if (flag)++skill;
+			if (!flag) {
+				continue;
+			}
+			
+			auto tower = tower_map.begin();
+			while (tower != tower_map.end()) {
+				if (skill->second->targe == tower->second &&
+					skill->second->getPosition().getDistance(tower->second->getPosition()) < skill->second->hit_range) {
+					log("HIT tower!!");
+					// 还有伤害加进去
+					tower->second->getDamaged(skill->second->_skiller, skill->second->_damage);
+					map->removeChild(skill->second);
+					skill = skill_map.erase(skill);
+					flag = 0;
+					break;
+				}
+				else
+				{
+					++tower;
+				}
+			}
+			
+
+			if (flag) {
+				++skill;
+			}
+			
 		}
 	}
 	
@@ -94,11 +121,6 @@ void GameScene::UnitDeadAction() {
 	while (unit != unit_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
 		if (unit->second->_life_current <= 0) {
 			unit->second->stopAllActions();
-			if (unit->second == hero) {
-				hero->skill_statement = 0;
-				hero->_life_current = 100;
-				hero->setPosition(hero->reborn_pos);
-			}
 			if (unit->second->_last_attacker != NULL) {
 				unit->second->_last_attacker->_money += unit->second->_kill_award;// 赏金放在这里
 			}
@@ -109,6 +131,7 @@ void GameScene::UnitDeadAction() {
 			auto fed = FadeOut::create(1.0f);
 			money->runAction(fed);
 			if (unit->second == hero) {// 这里是复活的
+				hero->skill_statement = 0;
 				hero->_life_current = 100;
 				hero->setPosition(hero->reborn_pos);
 				hero->getDamaged(NULL, 1);
@@ -121,20 +144,27 @@ void GameScene::UnitDeadAction() {
 		}
 		else {
 			// 接下来遍历命令单
+			hero->update_follow_attack(0.1);
 			for (auto i = unit->second->order_list.begin(); i != unit->second->order_list.end();) {
 			
 				if (i->kind ==1) {
+					
+
+					unit->second->_tag_attackTarget = i->tag;
+					if (i->tag == -1) {// 这个效果你们自己取舍
+						hero->_onAttack = 0;
+					}
 					unit->second->moveTo_directly(MoveFind(unit->second->getPosition(), i->pos));
 					log("unit move");
 				}
 				if (i->kind != 1) {
 					// 假定这个是英雄
-					
+					unit->second->_onAttack = 0;
 					if (hero == unit->second) {
 						hero->useSkill(3, i->kind, i->pos, i->tag);
 					}
 					else if (en_hero == unit->second) {
-					    
+						en_hero->useSkill(3, i->kind, i->pos, i->tag);
 					}
 				}
 				i = unit->second->order_list.erase(i);
@@ -148,6 +178,7 @@ void GameScene::TowerAction() {
 	auto tower = tower_map.begin();
 	while (tower != tower_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
 		if (tower->second->_life_current <= 0) {
+			tower->second->stopAllActions();
 			auto money = Sprite::create("towercrash.jpg");
 			money->setPosition(tower->second->getPosition());
 			money->setScale(0.03);
@@ -333,3 +364,19 @@ void GameScene::UiShow() {
 	}
 }
 
+void GameScene::AddSoldiers(float dt)
+{
+	this->schedule(schedule_selector(GameScene::AddOneSoldier), 1.0f, 1, 0);
+}
+
+void GameScene::AddOneSoldier(float dt)
+{
+	Vec2 pos[2][2];
+	static int kind_by_time = 0;
+	auto soldier = Unit::create("soldier/0.png", "soldier");//暂时只有我方
+	soldier->_side = 0;
+	unit_map[unit_num[soldier->_side]] = soldier;
+	soldier->setTag(unit_num[soldier->_side]);
+	unit_num[soldier->_side]++;
+	map->addChild(soldier);
+}
