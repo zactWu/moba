@@ -24,11 +24,11 @@ void GameScene::ListenOutside() {
 			od.pos = newPosition;
 			
 		}
-		if (hero->skill_statement!=0) {
+		else if (hero->skill_statement!=0) {
 			hero->_tag_attackTarget = -1;
 			od.kind = hero->skill_statement;
 			od.pos = newPosition;
-			
+			log("skill %d release", hero->skill_statement);
 			hero->skill_statement = 0;
 		}
 		hero->order_list.push_back(od);

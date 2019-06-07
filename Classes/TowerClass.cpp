@@ -12,17 +12,17 @@ Tower* Tower::create(const std::string& filename,
 	if (unit && unit->initWithFile(filename)) {
 		//初始化各项属性
 		unit->_defense = 20;
-		unit->_attack = 30;
+		unit->_attack = 100;
 		unit->hit_range = 300;
 		unit->_side = side;
 		unit->_last_release_time = 0;
 		unit->_kill_award = 300;
 		unit->_last_attacker = NULL;
-		unit->_life_current = 500;
+		unit->_life_current = 1000;
 
 		unit->_lifeBank = Sprite::create("lifeBank.jpg");
-		unit->_lifeBank->setPosition(unit->getPosition() + Vec2(30.f, 60.f));
-		unit->addChild(unit->_lifeBank, 1);
+		unit->_lifeBank->setPosition(unit->getPosition() + Vec2(60.f, 120.f));
+		unit->addChild(unit->_lifeBank, 100);
 		unit->autorelease();
 		return unit;
 	}

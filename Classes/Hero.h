@@ -18,6 +18,7 @@ public:
 
 	void heal(int life_heal);
 	void turnTo(Vec2 pos);
+	void Hero::specialEffect(const std::string& filename, Vec2 pos, float duration);
 
 	//¼¼ÄÜÀ¸
 	void UsingFireBall(Vec2 newPosition);
@@ -29,7 +30,7 @@ public:
 	void useSkill_ultra(Unit* enemy);
 	void useSkill_percentageDamage(Unit* enemy);
 	void useSkill_tornado();
-	void useSkill_randomDamage(Unit* enemy);
+	
 	clock_t Qskill_last_release_time;
 	clock_t Wskill_last_release_time;
 	clock_t Eskill_last_release_time;

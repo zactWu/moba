@@ -16,6 +16,7 @@
 #define MAGICIAN 3
 
 extern int hero_id;
+extern int en_hero_id;
 
 
 #endif /* GlobalVal_hpp */

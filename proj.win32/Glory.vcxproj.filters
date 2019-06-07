@@ -30,9 +30,6 @@
     <ClCompile Include="..\Classes\HelpScene.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Hero.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\MoveFind.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -60,6 +57,9 @@
     <ClCompile Include="..\Classes\GlobalVal.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Hero.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -78,9 +78,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\HelpScene.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Hero.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\MoveFind.h">
@@ -108,6 +105,12 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GlobalVal.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Gv.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Hero.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

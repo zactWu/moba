@@ -254,7 +254,7 @@ void Unit::update_follow_attack(float dt) {
 	}
 	//出错处理：无攻击目标
 	if (_tag_attackTarget == -1) {
-		log("NO TAR");
+		//log("NO TAR");
 		return;
 	}
 	
@@ -264,12 +264,12 @@ void Unit::update_follow_attack(float dt) {
 	if (sp_target == nullptr) {
 		return;
 	}
-	log("try to att");
+	//log("try to att");
 	auto sp_enemy = dynamic_cast<Unit*>(sp_target);
 
 	float distance = getPosition().distance(sp_target->getPosition());
 	if (distance > _attackRange) {
-		log("not in range");
+		//log("not in range");
 		//auto gameScene = dynamic_cast<GameScene*>(getParent()->getParent());
 		//moveTo_directly(gameScene->MoveFind(this->getPosition(),sp_target->getPosition()));  //考虑寻路
 		//moveTo_directly( sp_target->getPosition());
@@ -278,7 +278,7 @@ void Unit::update_follow_attack(float dt) {
 		if (!_onAttack) {
 			//debug
 			stopAllActions();//这个不知道需不需要加
-			log("shoulde att");
+			//log("shoulde att");
 			attack_once(sp_enemy);
 		}
 	}

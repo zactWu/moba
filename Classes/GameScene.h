@@ -52,6 +52,7 @@ public:
 	void UiShow();
 	void AddSoldiers(float dt);
 	void AddOneSoldier(float dt);
+	void SoldierAction();
 	void addsoilder();
 	std::vector<Vec2> MoveFind(const Vec2 startpoint, const Vec2& pos_target);		//Ѱ·
 	bool PointInit();

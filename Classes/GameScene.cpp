@@ -32,7 +32,7 @@ bool GameScene::init() {
 	
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
 	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.15);
-	//this->schedule(schedule_selector(GameScene::AddSoldiers), 15.0f);		//五秒出一波兵
+	this->schedule(schedule_selector(GameScene::AddSoldiers), 5.0f);		//十五秒出一波兵
 
 	ListenOutside();
 
@@ -50,10 +50,8 @@ void GameScene::SkillHitCheck() {
 			skill->second->stopAllActions();
 			skill->second->move(skill->second->getPosition(), skill->second->targe->getPosition());
 		}
-
-
-
 		if (skill->second->targe != NULL && skill->second->targe->_life_current <= 0) {
+			log("why");
 			skill->second->stopAllActions();
 			map->removeChild(skill->second);
 			skill = skill_map.erase(skill);
@@ -122,7 +120,7 @@ void GameScene::UnitDeadAction() {
 		if (unit->second->_life_current <= 0) {
 			unit->second->stopAllActions();
 			if (unit->second->_last_attacker != NULL) {
-				unit->second->_last_attacker->_money += unit->second->_kill_award;// 赏金放在这里
+				unit->second->_last_attacker->_money += unit->second->_kill_award;// 赏金放在这里，升级系统也是
 			}
 			auto money = Sprite::create("money.jpg");
 			money->setPosition(unit->second->getPosition());
@@ -144,24 +142,22 @@ void GameScene::UnitDeadAction() {
 		}
 		else {
 			// 接下来遍历命令单
-			hero->update_follow_attack(0.1);
+			unit->second->update_follow_attack(0.1);
 			for (auto i = unit->second->order_list.begin(); i != unit->second->order_list.end();) {
 			
 				if (i->kind ==1) {
-					
-
 					unit->second->_tag_attackTarget = i->tag;
 					if (i->tag == -1) {// 这个效果你们自己取舍
 						hero->_onAttack = 0;
 					}
 					unit->second->moveTo_directly(MoveFind(unit->second->getPosition(), i->pos));
-					log("unit move");
+					//log("unit move");
 				}
 				if (i->kind != 1) {
 					// 假定这个是英雄
 					unit->second->_onAttack = 0;
 					if (hero == unit->second) {
-						hero->useSkill(3, i->kind, i->pos, i->tag);
+						hero->useSkill(2, i->kind, i->pos, i->tag);
 					}
 					else if (en_hero == unit->second) {
 						en_hero->useSkill(3, i->kind, i->pos, i->tag);
@@ -202,15 +198,21 @@ void GameScene::TowerAction() {
 				while (unit != unit_map.end()) {
 					if (unit->second->getPosition().getDistance(tower->second->getPosition())
 						<  best_dis&&
-						unit->second->_side!=tower->second->_side-2) {
+						unit->second->_side!=tower->second->_side-2 &&
+						unit->second->_life_current>0) {
 
 						best_dis = unit->second->getPosition().getDistance(tower->second->getPosition());
 						firetar = unit->second;
 						
 					
-						log("in range!!");
+						
+						log("ready tar is %d best dis is %f!!", unit->second->_it_tag, best_dis);
+						log("ready tar is %d best dis is %f!!", unit->second->_it_tag, best_dis);
+						log("ready tar is %d best dis is %f!!", unit->second->_it_tag, best_dis);
+						log("ready tar is %d best dis is %f!!", unit->second->_it_tag, best_dis);
+						log("ready tar is %d best dis is %f!!", unit->second->_it_tag, best_dis);
 						//tower->second->getDamaged(tower->second, 200);
-						break;
+						
 					}
 					++unit;
 				}
@@ -228,6 +230,7 @@ void GameScene::AllActionsTakenEachSecond(float dt) {
 	SkillHitCheck();
 	UnitDeadAction();
 	TowerAction();
+	SoldierAction();
 }
 bool GameScene::MapInit()
 {
@@ -371,12 +374,68 @@ void GameScene::AddSoldiers(float dt)
 
 void GameScene::AddOneSoldier(float dt)
 {
-	Vec2 pos[2][2];
+	Vec2 pos = { 50,50 };
+	Vec2 tar = { 650,650 };
+	log("come out!");
 	static int kind_by_time = 0;
 	auto soldier = Unit::create("soldier/0.png", "soldier");//暂时只有我方
 	soldier->_side = 0;
 	unit_map[unit_num[soldier->_side]] = soldier;
 	soldier->setTag(unit_num[soldier->_side]);
 	unit_num[soldier->_side]++;
+	soldier->_money = 0;
+	soldier->setPosition(pos);
+	soldier->_kind = 1;
 	map->addChild(soldier);
+	soldier->moveTo_directly(tar);
+}
+
+void GameScene::SoldierAction() {
+	auto unit = unit_map.begin();
+	while (unit != unit_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
+		if (unit->second->_life_current <= 0 || unit->second->_kind!=1) {
+			++unit;
+		}
+		else {
+			if (unit->second->_side == 0) {// 0方小兵
+				//log("find tag of s");
+				auto enemy = unit_map.begin();
+				float dis = unit->second->_attackRange;
+				int tag = -1;
+				while (enemy != unit_map.end()) {
+					if (enemy->second->_side == unit->second->_side || enemy->second->_life_current < 0) {
+						++enemy;
+					}
+					else{
+						if (unit->second->getPosition().getDistance(enemy->second->getPosition()) < dis) {
+							
+							tag = enemy->second->getTag();
+							//log("find %d",tag);
+						}
+						++enemy;
+					}
+				}
+				auto tower = tower_map.begin();
+				while (tower != tower_map.end()) {
+					if (tower->second->_side == unit->second->_side || tower->second->_life_current < 0) {
+						++tower;
+					}
+					else{
+						if (unit->second->getPosition().getDistance(tower->second->getPosition()) < dis) {
+							
+							tag = tower->second->getTag();
+							//log("find %d",tag);
+						}
+						++tower;
+					}
+				}
+				unit->second->_tag_attackTarget = tag;
+				//log("this soilder tag is %d",tag);
+				if (tag == -1) {
+					unit->second->moveTo_directly(Vec2{ 650,650 });
+				}
+			}
+			++unit;
+		}
+	}
 }
