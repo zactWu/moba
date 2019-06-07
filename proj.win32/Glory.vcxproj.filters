@@ -104,9 +104,6 @@
     <ClInclude Include="..\Classes\GlobalVal.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Gv.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Hero.h">
       <Filter>src</Filter>
     </ClInclude>

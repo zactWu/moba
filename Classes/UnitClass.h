@@ -45,7 +45,6 @@ public:
 	void stunned(double duration);
 
 	bool _stunned=0;
-	int _kind=0;
 	int _it_tag = -1;
 
 	void Unit::longRangeAttack(Unit* enemy);
@@ -54,7 +53,6 @@ public:
 	std::vector<order> order_list;
 	int _life_max;
 	bool _onAttack;
-	float _attackRange;
 
 	//接下来就是升级系统
 protected:
