@@ -22,7 +22,7 @@ Unit* Unit::create(const std::string& filename, const std::string& unitType,
 		unit->_speed = speed;
 		unit->_unitType = unitType;
 		unit->_attackInterval = attackInterval;
-		unit->_attackRange = attackRange;
+		unit->_attackRange = attackRange+50;
 		unit->_tag_attackTarget = -1;
 		unit->_onAttack = false;
 		unit->_kill_award = 100;
@@ -296,17 +296,20 @@ void Unit::getDamaged(Unit* producer, int damage) {
 		return;
 	}
 	_lifeBank->setScaleX(static_cast<float>(_life_current) / _life_max);
+	wound = 1;
 	//变红动画
+	/*
 	auto cf_intoRed = CallFunc::create([=]() {
-		if(this)
+		if(this!=NULL)
 			this->setColor(cocos2d::Color3B::RED);
 		});
 	auto cf_back = CallFunc::create([=]() {
-		if(this)
+		if(this!=NULL)
 			this->setColor(cocos2d::Color3B(255, 255, 255));
 		});
-	auto switchColor = Sequence::create(cf_intoRed, DelayTime::create(0.15), cf_back, nullptr);
+	auto switchColor = Sequence::create(cf_intoRed, DelayTime::create(0.5), cf_back, nullptr);
 	getParent()->runAction(switchColor);
+	*/
 }
 
 void Unit::longRangeAttack(Unit* enemy) {
@@ -330,7 +333,7 @@ void Unit::longRangeAttack(Unit* enemy) {
 	gameScene->skill_num++;
 	skill->_side = _side;
 	skill->_release_time = clock();
-	gameScene->map->addChild(skill, 12);//这里有一点问题要解决
+	gameScene->map->addChild(skill);//这里有一点问题要解决
 }
 
 void Unit::stunned(double duration) {

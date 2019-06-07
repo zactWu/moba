@@ -4,6 +4,7 @@
 #include "MoveFind.h"
 #include "TowerClass.h"
 #include "Hero.h"
+Vec2 pos[2],tar[2];
 //#include "client.h"
 #define SEVER 0
 #define MESIDE 0
@@ -31,8 +32,8 @@ bool GameScene::init() {
 	
 	
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
-	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.15);
-	this->schedule(schedule_selector(GameScene::AddSoldiers), 5.0f);		//十五秒出一波兵
+	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.2);
+	this->schedule(schedule_selector(GameScene::AddSoldiers), 15.0f);		//十五秒出一波兵
 
 	ListenOutside();
 
@@ -46,16 +47,21 @@ void GameScene::SkillHitCheck() {
 	times++;
 	while (skill != skill_map.end()) {
 		int dis = skill->second->getPosition().getDistance(skill->second->_st_pos);
-		if (skill->second->targe != NULL && skill->second->targe->_life_current>0) {
-			skill->second->stopAllActions();
-			skill->second->move(skill->second->getPosition(), skill->second->targe->getPosition());
-		}
-		if (skill->second->targe != NULL && skill->second->targe->_life_current <= 0) {
-			log("why");
+		if (skill->second->targe != NULL && skill->second->targe->_life_current<=0) {
 			skill->second->stopAllActions();
 			map->removeChild(skill->second);
 			skill = skill_map.erase(skill);
 			continue;
+		}
+		if (skill->second->targe != NULL && skill->second->targe->_side==skill->second->_side) {
+			skill->second->stopAllActions();
+			map->removeChild(skill->second);
+			skill = skill_map.erase(skill);
+			continue;
+		}
+		if (skill->second->targe != NULL && skill->second->targe->_life_current>0) {
+			skill->second->stopAllActions();
+			skill->second->move(skill->second->getPosition(), skill->second->targe->getPosition());
 		}
 		if (dis > skill->second->move_range - 20 && skill->second->targe==NULL) {
 			map->removeChild(skill->second);
@@ -86,7 +92,6 @@ void GameScene::SkillHitCheck() {
 			if (!flag) {
 				continue;
 			}
-			
 			auto tower = tower_map.begin();
 			while (tower != tower_map.end()) {
 				if (skill->second->targe == tower->second &&
@@ -122,15 +127,15 @@ void GameScene::UnitDeadAction() {
 			if (unit->second->_last_attacker != NULL) {
 				unit->second->_last_attacker->_money += unit->second->_kill_award;// 赏金放在这里，升级系统也是
 			}
-			auto money = Sprite::create("money.jpg");
+			auto money = Sprite::create("angle.jpg");
 			money->setPosition(unit->second->getPosition());
-			money->setScale(0.2);
+			money->setScale(0.1);
 			map->addChild(money);
 			auto fed = FadeOut::create(1.0f);
 			money->runAction(fed);
 			if (unit->second == hero) {// 这里是复活的
 				hero->skill_statement = 0;
-				hero->_life_current = 100;
+				hero->_life_current = hero->_life_max;
 				hero->setPosition(hero->reborn_pos);
 				hero->getDamaged(NULL, 1);
 				hero->_money -= 50;
@@ -141,6 +146,21 @@ void GameScene::UnitDeadAction() {
 			unit = unit_map.erase(unit);
 		}
 		else {
+			// 先是受伤
+			if (unit->second->wound) {
+				
+            auto cf_intoRed = CallFunc::create([=]() {
+            if(unit->second!=NULL)
+				unit->second->setColor(cocos2d::Color3B::RED);
+            });
+            auto cf_back = CallFunc::create([=]() {
+			if(unit->second !=NULL)
+				unit->second->setColor(cocos2d::Color3B(255, 255, 255));
+			});
+			auto switchColor = Sequence::create(cf_intoRed, DelayTime::create(0.15), cf_back, nullptr);
+			unit->second->getParent()->runAction(switchColor);
+			unit->second->wound = 0;
+			}
 			// 接下来遍历命令单
 			unit->second->update_follow_attack(0.1);
 			for (auto i = unit->second->order_list.begin(); i != unit->second->order_list.end();) {
@@ -183,9 +203,8 @@ void GameScene::TowerAction() {
 			}
 			map->addChild(money);
 			map->removeChild(tower->second);
-			
-			
 			tower = tower_map.erase(tower);
+			// 胜利条件做在这里
 		}
 		else {
 			float pass_time = clock() - tower->second->_last_release_time;
@@ -254,14 +273,27 @@ bool GameScene::MapInit()
 }
 void GameScene::TowerInit() {
 	auto towerA = Tower::create("tower.jpg", 3);
-	Vec2 pos = { 600,600 };
+	Vec2 pos = {900,900 };
 	towerA->setPosition(pos);
 	towerA->setScale(0.1);
+	towerA->_side = 2;
 	map->addChild(towerA);
 	//log("towerA ready");
 	tower_map[tower_num[0]] = towerA;
 	towerA->setTag(tower_num[0]);
 	tower_num[0]++;
+
+    pos = { 1600,1600 };
+	auto towerB = Tower::create("tower.jpg", 3);
+	
+	towerB->setPosition(pos);
+	towerB->setScale(0.1);
+	towerB->_side = 3;
+	map->addChild(towerB);
+	//log("towerA ready");
+	tower_map[tower_num[1]] = towerB;
+	towerB->setTag(tower_num[1]);
+	tower_num[1]++;
 	return;
 }
 bool GameScene::HeroInit()
@@ -374,20 +406,36 @@ void GameScene::AddSoldiers(float dt)
 
 void GameScene::AddOneSoldier(float dt)
 {
-	Vec2 pos = { 50,50 };
-	Vec2 tar = { 650,650 };
+	pos[0] = { 50,50 };
+	pos[1] = { 2500,2500 };
 	log("come out!");
 	static int kind_by_time = 0;
 	auto soldier = Unit::create("soldier/0.png", "soldier");//暂时只有我方
 	soldier->_side = 0;
 	unit_map[unit_num[soldier->_side]] = soldier;
 	soldier->setTag(unit_num[soldier->_side]);
+	soldier->_it_tag = unit_num[soldier->_side];
 	unit_num[soldier->_side]++;
 	soldier->_money = 0;
-	soldier->setPosition(pos);
+	soldier->setPosition(pos[soldier->_side]);
 	soldier->_kind = 1;
 	map->addChild(soldier);
-	soldier->moveTo_directly(tar);
+	soldier->moveTo_directly(pos[1- soldier->_side]);
+	// 接下来是敌方
+
+	auto soldier2 = Unit::create("soldier/0.png", "soldier");//暂时只有我方
+	soldier2->_side = 1;
+	unit_map[unit_num[soldier2->_side]] = soldier2;
+	soldier2->setTag(unit_num[soldier2->_side]);
+	soldier2->_it_tag = unit_num[soldier2->_side];
+	unit_num[soldier2->_side]++;
+	soldier2->_money = 0;
+	soldier2->setPosition(pos[soldier2->_side]);
+	soldier2->_kind = 1;
+	map->addChild(soldier2);
+	soldier2->moveTo_directly(pos[1-soldier2->_side]);
+
+	
 }
 
 void GameScene::SoldierAction() {
@@ -397,44 +445,43 @@ void GameScene::SoldierAction() {
 			++unit;
 		}
 		else {
-			if (unit->second->_side == 0) {// 0方小兵
-				//log("find tag of s");
-				auto enemy = unit_map.begin();
-				float dis = unit->second->_attackRange;
-				int tag = -1;
-				while (enemy != unit_map.end()) {
-					if (enemy->second->_side == unit->second->_side || enemy->second->_life_current < 0) {
-						++enemy;
-					}
-					else{
-						if (unit->second->getPosition().getDistance(enemy->second->getPosition()) < dis) {
-							
-							tag = enemy->second->getTag();
-							//log("find %d",tag);
-						}
-						++enemy;
-					}
+			//log("find tag of s");
+			auto enemy = unit_map.begin();
+			float dis = unit->second->_attackRange;
+			int tag = -1;
+			while (enemy != unit_map.end()) {
+				if (enemy->second->_side == unit->second->_side || enemy->second->_life_current < 0) {
+					++enemy;
 				}
-				auto tower = tower_map.begin();
-				while (tower != tower_map.end()) {
-					if (tower->second->_side == unit->second->_side || tower->second->_life_current < 0) {
-						++tower;
+				else {
+					if (unit->second->getPosition().getDistance(enemy->second->getPosition()) < dis) {
+
+						tag = enemy->second->getTag();
+						//log("find %d",tag);
 					}
-					else{
-						if (unit->second->getPosition().getDistance(tower->second->getPosition()) < dis) {
-							
-							tag = tower->second->getTag();
-							//log("find %d",tag);
-						}
-						++tower;
-					}
-				}
-				unit->second->_tag_attackTarget = tag;
-				//log("this soilder tag is %d",tag);
-				if (tag == -1) {
-					unit->second->moveTo_directly(Vec2{ 650,650 });
+					++enemy;
 				}
 			}
+			auto tower = tower_map.begin();
+			while (tower != tower_map.end()) {
+				if (tower->second->_side-2 == unit->second->_side || tower->second->_life_current < 0) {
+					++tower;
+				}
+				else {
+					if (unit->second->getPosition().getDistance(tower->second->getPosition()) < dis) {
+
+						tag = tower->second->getTag();
+						//log("find %d",tag);
+					}
+					++tower;
+				}
+			}
+			unit->second->_tag_attackTarget = tag;
+			//log("this soilder tag is %d",tag);
+			if (tag == -1) {
+				unit->second->moveTo_directly(pos[1- unit->second->_side]);
+			}
+			
 			++unit;
 		}
 	}

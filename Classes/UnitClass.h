@@ -18,8 +18,8 @@ class Unit : public Sprite {
 public:
 
 	static Unit* create(const std::string& filename, const std::string& unitType,
-		int maxLife = 100, int attack = 20, int defense = 3, int speed = 100,
-		float rotate_speed = 90.0f, float attackInterval = 2.f, float attackRange = 50.f);
+		int maxLife = 100, int attack = 5, int defense = 3, int speed = 100,
+		float rotate_speed = 90.0f, float attackInterval = 0.3f, float attackRange = 50.f);
 
 	void moveTo_directly(const Vec2& pos_target);
 	void moveTo_directly(const std::vector<Vec2> pos_list);
@@ -46,6 +46,8 @@ public:
 
 	bool _stunned=0;
 	int _it_tag = -1;
+
+	bool wound = 0;
 
 	void Unit::longRangeAttack(Unit* enemy);
 	// 接下来是服务器用的
