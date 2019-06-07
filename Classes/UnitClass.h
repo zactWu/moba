@@ -38,6 +38,8 @@ public:
 	int _life_current;
 	int _tag_attackTarget=-1;
 	int _kill_award;
+	int _kind;
+	float _attackRange;
 	Unit* _last_attacker=NULL;
 	cocos2d::Sprite* _lifeBank;
 	void stunned(double duration);

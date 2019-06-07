@@ -296,7 +296,7 @@ void Hero::specialEffect(const std::string& filename, Vec2 pos, float duration)
 	auto effect = Sprite::create(filename);
 	effect->setPosition(pos);
 	auto gameMap = getParent();
-	gameMap->addChild(effect);
+	gameMap->addChild(effect,0);
 	auto fade = FadeOut::create(duration);
 	auto cf = CallFunc::create([=]() {
 		gameMap->removeChild(effect);
