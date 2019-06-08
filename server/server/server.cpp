@@ -146,7 +146,7 @@ int GameServer::ProcessGameServer()
 			cout << "新玩家加入，IP地址为：" << inet_ntoa(AcceptSocket[index].Client.sin_addr)
 				<< "  端口号为：" << ntohs(AcceptSocket[index].Client.sin_port) << "\n";
 			fflush(stdout);
-			//创建接受者线程 
+			//创建接受者线程
 			int ThreadID;     //线程ID
 
 			//把刚刚连接成功的Client建立一个新的线程
@@ -167,7 +167,6 @@ int GameServer::ProcessGameServer()
 
 			cout << "新玩家" << index << "的接受线程创建成功\n";
 			fflush(stdout);
-			//cout << "#3 AcceptSocket[index].ClientSock: " << AcceptSocket[index].ClientSock << "\n";
 		}
 		else   //玩家已满
 		{
@@ -194,6 +193,7 @@ int GameServer::ProcessGameServer()
 			break;
 		}
 	}
+
 	return 0;
 }
 
@@ -215,7 +215,7 @@ DWORD WINAPI GameServer::ListenThread(void* data) //传进来具体哪个AcceptSocket[x
 		//接收命令 
 
 		char recvBuf[1024];
-
+//		char recvBuf[40];
 		fflush(stdout);
 
 		fd_set Read;//基于select模式对IO进行管理  
@@ -249,6 +249,7 @@ DWORD WINAPI GameServer::ListenThread(void* data) //传进来具体哪个AcceptSocket[x
 
 		//发送命令 
 		char sendBuf[1024];
+//		char sendBuf[40];
 		fd_set write;//基于select模式对IO进行管理  
 		FD_ZERO(&write);    //初始化为0
 		FD_SET(GameSocket->ClientSock, &write); //将ClientSock加入队列
@@ -284,7 +285,6 @@ int GameServer::SendMessageToOneClient(int ID, const string  str)
 	{
 		cout << "向玩家" << ID << "发送消息失败\n";
 		fflush(stdout);
-		//cout << "#5  ，AcceptSocket[index].ClientSock: " << AcceptSocket[ID].ClientSock << "\n";
 		return 0;
 	}
 
@@ -301,7 +301,6 @@ void GameServer::SendMessageToAllClient(const string  str, int ID)
 	bool flag = true;
 	for (int i = 0; i < MAX_NUM; i++)
 	{
-		//cout << "Just In TOALL func, AcceptSocket[ID].ClientSock :" << AcceptSocket[i].ClientSock << "\n";
 		if (ID != i)
 		{
 			if (AcceptSocket[i].ClientSock != INVALID_SOCKET &&
@@ -339,7 +338,6 @@ void GameServer::CleanSocket(int ID)
 	AcceptSocket[ID].Active = false;
 	closesocket(AcceptSocket[ID].ClientSock);
 	AcceptSocket[ID].ClientSock = INVALID_SOCKET;
-	cout << "即将销毁,你怎么会进到这里？？？！.....AcceptSocket[i].ClientSock :" << AcceptSocket[ID].ClientSock << "\n";
 
 	cout << "正在关闭其接受线程:" << AcceptSocket[ID].RecvThreadID << "\n";
 	fflush(stdout);

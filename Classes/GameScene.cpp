@@ -6,7 +6,7 @@
 #include "Hero.h"
 #include "control.h"
 Vec2 pos[2],tar[2];
-//#include "client.h"
+#include "client.h"
 #define SEVER 0
 #define MESIDE 0
 #define ENEMYSIDE 1
@@ -14,6 +14,10 @@ Vec2 pos[2],tar[2];
 #define HEROZERO 15
 #define AnimateLimit 15
 #define SystemLimit 30
+
+GameClient client;
+extern bool fight;
+bool Add = false;
 cocos2d::Scene* GameScene::createScene()
 {
 	auto scene = Scene::create();
@@ -30,10 +34,11 @@ bool GameScene::init() {
 	HeroInit();
 	PointInit();
 	TowerInit();
-	
+	client.init(hero, en_hero);
+	client.ClientProcess();
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
-	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.2);
-	this->schedule(schedule_selector(GameScene::AddSoldiers), 15.0f);		//十五秒出一波兵
+	this->schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.2);
+
 	ListenOutside();
 	return true;
 }
@@ -99,7 +104,7 @@ bool GameScene::HeroInit()
 	hero->Qskill_cd_time = 2000;
 	hero->Qskill_last_release_time = 0;
 
-	Vec2 pos = { 400,400 };
+	Vec2 pos = { mapSize.width*tileSize.width-100,mapSize.height*tileSize.height-100 };
 	en_hero = Hero::create("soldier/0.png", "soldier");
 	en_hero->_side =1;
 	en_hero->setPosition(pos);
@@ -112,7 +117,6 @@ bool GameScene::HeroInit()
 	unit_num[1]++;
 	en_hero->Qskill_cd_time = 2000;
 	en_hero->Qskill_last_release_time = 0;
-	//client.init(hero);
 	return false;
 }
 
@@ -123,7 +127,7 @@ void GameScene::AllActionsTakenEachSecond(float dt) {
 	UnitDeadAction();
 	TowerAction();
 	SoldierAction();
-	log("unit_num is %d", unit_map.size());
+//	log("unit_num is %d", unit_map.size());
 }
 void GameScene::SkillHitCheck() {
 	auto skill = skill_map.begin();
@@ -219,7 +223,7 @@ void GameScene::UnitDeadAction() {
 		else {
 			// 先是受伤
 			if (unit_map.size() < AnimateLimit) {// 动画效果都塞到这里来
-				log("no more animate");
+//				log("no more animate");
 				unit->second->getDamaged();// 重载过的，里面是动画
 
 			}
@@ -240,19 +244,19 @@ void GameScene::UnitDead(Unit *unit) {
 	// 赏金放在这里，升级系统也是
 	if (unit->_last_attacker != NULL) {
 		if (unit->_last_attacker == hero) {
-			log("right");
+//			log("right");
 
 			hero->_money += unit->_kill_award;
 			hero->_kill_award +=100;
 			if (unit->_last_attacker->_money != hero->_money && (unit->_last_attacker==hero)) {
-				log("pointer wrong!");
+//				log("pointer wrong!");
 			}
 			else {
-				log("POINTER right");
+//				log("POINTER right");
 			}
 		}
 		
-		cocos2d::log("you(%d) should get %d money and now is %d", unit->_last_attacker->_it_tag,unit->_kill_award, hero->_money);
+//		cocos2d::log("you(%d) should get %d money and now is %d", unit->_last_attacker->_it_tag,unit->_kill_award, hero->_money);
 	}
 	//死亡动画是下面这段
 	if (unit_map.size() <= AnimateLimit) {
@@ -331,6 +335,11 @@ void GameScene::TowerAction() {
 
 void GameScene::AllActionsTakenEachF(float dt)
 {
+	if (false == Add && true == fight) {		//未出过兵以及开始战斗
+		this->schedule(schedule_selector(GameScene::AddSoldiers), 15.0f);		//十五秒出一波兵
+		log("Add");
+		Add = true;			//出过兵了
+	}
 	UiShow();
 	mapMove();
 	//50是我设定的区域，鼠标位于该区域内则会导致map移动，50可更改

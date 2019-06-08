@@ -282,7 +282,7 @@ void Unit::getDamaged(Unit* producer, int damage) {
 	_life_current -= damage;
 	
 	if (producer == nullptr) {
-		log("warning: this hit has no one declear responsable");
+//		log("warning: this hit has no one declear responsable");
 	}
 	else {
 		_last_attacker = producer;
@@ -333,7 +333,7 @@ void Unit::longRangeAttack(Unit* enemy) {
 
 void Unit::stunned(double duration) {
 	//debug
-	cocos2d::log("stunned!");
+//	cocos2d::log("stunned!");
 
 	auto cf_stun = CallFunc::create([=]() {
 		if (this!=nullptr)

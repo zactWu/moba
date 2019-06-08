@@ -2,11 +2,19 @@
 #include "UnitClass.h"
 #include "GameScene.h"
 #include "control.h"
+#include <mutex>
+#include "client.h"
 USING_NS_CC;
 
+extern std::mutex gameLock;
+extern GameClient client;
+extern bool fight;
 void GameScene::ListenOutside() {
 	auto mouse_listener = EventListenerTouchOneByOne::create();
 	mouse_listener->onTouchBegan = [=](Touch* Touch, Event* Event) {
+		if (false == fight) {
+			fight = true;
+		}
 		auto touchPosition = Touch->getLocation();
 		auto mapPosition = map->getPosition();
 		auto nowPosition = hero->getPosition();
@@ -121,7 +129,11 @@ int GameScene::ClickFindTag(Vec2 pos) {
 
 void control::send_to_sever() {
 	cocos2d::log("this is send to sever");
-
+	gameLock.lock();
+	char inf[GameClient::InformationLength];
+	sprintf_s(inf, "%f#%f#%d#%d", pos.x, pos.y, kind, tar_tag);
+	strcat(&client.SendBuf[GameClient::InformationLength], inf);
+	cocos2d::log("sendbuf is %s", inf);
+	gameLock.unlock();
 	return;
-	// 这里加上服务器就可以了
 }

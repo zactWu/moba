@@ -24,12 +24,12 @@ Skill* Skill::create(const std::string& filename,
 
 bool GameScene::SkillHit(Skill *sk,Unit *un) {
 	if (sk->_side == un->_side) {
-		log("en_gesi is %d", un->_side);
+//		log("en_gesi is %d", un->_side);
 		return 0;
 	}
 	if (sk->targe != NULL) {
 		if (sk->targe != un) {
-			log("you are not the one");
+//			log("you are not the one");
 			return 0;
 		}
 		
