@@ -6,6 +6,11 @@
 //
 
 #include "HelpScene.h"
+#include "ui/CocosGUI.h"
+#include "cocostudio/CocoStudio.h"
+#include "cocos2d.h"
+#include "SimpleAudioEngine.h"
+#include "ShopLayer.h"
 
 USING_NS_CC;
 
@@ -33,8 +38,38 @@ bool HelpScene::init()
     
     addChild(createText());
     addChild(createBGImage());
-    
+    equipment = MenuItemImage::create("shop/shopbutton.png","shop/shopbutton.png",CC_CALLBACK_1(HelpScene::gotoshop,this));
+    equipment->setScale(0.2);
+    equipment->setPosition(1050,625);
+    equipment->setTag(0);
+    auto menu = Menu::create(equipment, NULL);
+    menu->setPosition(Point::ZERO);
+    this->addChild(menu);
     return true;
+}
+void HelpScene::gotoshop(Ref* psender){
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto winsize = Director::getInstance()->getWinSize();
+    if (equipment->getTag() == 0)
+    {
+        Sprite* window = Sprite::create("shop/window.png");
+        auto contentsize = window->getContentSize();
+        window->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+        window->setScale(winsize.width*0.8/contentsize.width,winsize.height*0.5/contentsize.height);
+        this->addChild(window, 0);
+        ShopLayer* scrollView = ShopLayer::createLayer(hero);
+        window->setName("rm1");
+        scrollView->setName("rm2");
+        this->addChild(scrollView);
+        equipment->setTag(1);
+    }
+    else
+    {
+        this->removeChildByName("rm1");
+        this->removeChildByName("rm2");
+        equipment->setTag(0);
+    }
+    
 }
 
 cocos2d::Menu* HelpScene::createText()
@@ -50,8 +85,7 @@ cocos2d::Menu* HelpScene::createText()
     
     backButton->setPosition(backButton->getContentSize().width / 2 + 60, baseY + 30);
     title->setPosition(570, 600);
-    ccColor3B color = ccc3(0,0,0);
-    title->setColor(ccc3(0,0,0));
+    title->setColor(Color3B(0,0,0));
     
     buttons->addChild(backButton, 1);
     buttons->addChild(title,1);

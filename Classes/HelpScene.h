@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include "cocos2d.h"
+#include "Hero.h"
 
 class HelpScene : public cocos2d::Layer
 {
@@ -17,5 +18,8 @@ public:
     void menuBackCallback(cocos2d::Ref* pSender);
     cocos2d::Menu* createText();
     cocos2d::Sprite* createBGImage();
+    cocos2d::MenuItemImage* equipment;
+    Hero* hero;
+    void gotoshop(cocos2d::Ref* psender);
     CREATE_FUNC(HelpScene);
 };
