@@ -15,22 +15,29 @@ void GameScene::ListenOutside() {
 		log("%d", ClickFindTag(newPosition));
 		
 		order od;
+		control this_od;
 		od.tag = ClickFindTag(newPosition);
 		if (hero->skill_statement == 0) {
 			hero->_tag_attackTarget = od.tag;
 			log("this tag is %d", od.tag);
 			od.kind = MOVEORDER;
 			od.pos = newPosition;
-			
+			this_od.kind = MOVEORDER;
 		}
 		else if (hero->skill_statement!=0) {
 			hero->_tag_attackTarget = -1;
 			od.kind = hero->skill_statement;
+			this_od.kind = od.kind;
 			od.pos = newPosition;
 			log("skill %d release", hero->skill_statement);
 			hero->skill_statement = 0;
 		}
+		this_od.pos = newPosition;
+		this_od.tar_tag = od.tag;
+		this_od.send_to_sever();
 		hero->order_list.push_back(od);
+		
+
 		return true;
 	};
 	
@@ -110,4 +117,8 @@ int GameScene::ClickFindTag(Vec2 pos) {
 		}
 	}
 	return tag;
+}
+
+void send_to_sever() {
+	return;// 这里加上服务器就可以了
 }

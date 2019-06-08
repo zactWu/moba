@@ -13,7 +13,7 @@ Vec2 pos[2],tar[2];
 #define MAPZERO 10
 #define HEROZERO 15
 #define AnimateLimit 15
-#define SystemLimit 20
+#define SystemLimit 30
 cocos2d::Scene* GameScene::createScene()
 {
 	auto scene = Scene::create();
