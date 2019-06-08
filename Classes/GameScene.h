@@ -50,6 +50,7 @@ public:
 	void AllActionsTakenEachSecond(float dt);
 	bool MapInit();
 	bool HeroInit();
+	bool ChatInit();
 	void AllActionsTakenEachF(float dt);			
 	void mapMove();//每一帧都调用，监测鼠标位置，判断是否移动地图（后续可能会添加其他功能）
 	void UiShow();

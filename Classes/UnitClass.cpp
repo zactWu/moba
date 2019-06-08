@@ -385,10 +385,11 @@ void Unit::GetOrder() {
 			// 假定这个是英雄
 			_onAttack = 0;
 			if (gs->hero == this) {
-				gs->hero->useSkill(hero_id, i->kind, i->pos, i->tag);
+				gs->hero->useSkill(en_hero_id, i->kind, i->pos, i->tag);
 			}
 			else if (gs->en_hero == this) {
-				gs->en_hero->useSkill(en_hero_id, i->kind, i->pos, i->tag);
+				log("realesse!!!!!!!!!!");
+				gs->en_hero->useSkill(hero_id, i->kind, i->pos, i->tag);
 			}
 		}
 		i = order_list.erase(i);

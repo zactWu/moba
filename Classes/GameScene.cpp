@@ -6,7 +6,9 @@
 #include "Hero.h"
 #include "control.h"
 Vec2 pos[2],tar[2];
-//#include "client.h"
+#include "client.h"
+#include "ui/CocosGUI.h"
+#include <mutex>
 #define SEVER 0
 #define MESIDE 0
 #define ENEMYSIDE 1
@@ -14,6 +16,13 @@ Vec2 pos[2],tar[2];
 #define HEROZERO 15
 #define AnimateLimit 15
 #define SystemLimit 30
+
+GameClient client;
+extern bool fight;
+bool Add = false;
+extern std::mutex gameLock;
+cocos2d::ui::TextField* textField;
+
 cocos2d::Scene* GameScene::createScene()
 {
 	auto scene = Scene::create();
@@ -30,10 +39,11 @@ bool GameScene::init() {
 	HeroInit();
 	PointInit();
 	TowerInit();
-	
+	ChatInit();
+	client.init(en_hero,hero);
+	client.ClientProcess();
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
-	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.2);
-	this->schedule(schedule_selector(GameScene::AddSoldiers), 15.0f);		//十五秒出一波兵
+	this->schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.2);
 	ListenOutside();
 	return true;
 }
@@ -42,7 +52,7 @@ bool GameScene::MapInit()
 {
 	map = TMXTiledMap::create("map.tmx");		//创建map
 	map->setAnchorPoint(Vec2(0, 0));			//设置锚点为左下角
-	map->setPosition(Vec2(0, 0));				//设置位置为窗口左下角
+
 	this->addChild(map,MAPZERO);
 
 	viewSize = Director::getInstance()->getOpenGLView()->getVisibleRect().size;		//初始化窗口大小
@@ -54,7 +64,7 @@ bool GameScene::MapInit()
 	mapMoveLeft_x = viewSize.width - map->getMapSize().width * map->getTileSize().width;
 	mapMoveUp_y = 0;
 	mapMoveDowm_y = viewSize.height - map->getMapSize().height * map->getTileSize().height;
-
+	map->setPosition(Vec2(mapMoveLeft_x, mapMoveDowm_y));
 	
 	return false;
 }
@@ -86,34 +96,42 @@ void GameScene::TowerInit() {
 bool GameScene::HeroInit()
 {
 	Vec2 pos2 = { 100,100 };
-	hero = Hero::create("soldier/0.png", "soldier");
-	hero->_side = MESIDE;
-	this->unit_map[unit_num[0]] = hero;
-	hero->_money = 0;
-	hero->reborn_pos = pos2;
-	hero->setPosition(pos2);
-	hero->setTag(unit_num[0]);
-	hero->_it_tag = unit_num[0];
-	map->addChild(hero);
-	unit_num[0]++;
-	hero->Qskill_cd_time = 2000;
-	hero->Qskill_last_release_time = 0;
-
-	Vec2 pos = { 400,400 };
 	en_hero = Hero::create("soldier/0.png", "soldier");
-	en_hero->_side =1;
-	en_hero->setPosition(pos);
-	unit_map[unit_num[1]] = en_hero;
+	en_hero->_side = MESIDE;
+	this->unit_map[unit_num[0]] = en_hero;
 	en_hero->_money = 0;
-	en_hero->setTag(unit_num[1]);
-	en_hero->_it_tag = unit_num[1];
-	en_hero->reborn_pos = pos;
+	en_hero->reborn_pos = pos2;
+	en_hero->setPosition(pos2);
+	en_hero->setTag(unit_num[0]);
+	en_hero->_it_tag = unit_num[0];
 	map->addChild(en_hero);
+	unit_num[0]++;
+
+	Vec2 pos = { mapSize.width*tileSize.width-100,mapSize.height*tileSize.height-100 };
+	hero = Hero::create("soldier/0.png", "soldier");
+	hero->_side =1;
+	hero->setPosition(pos);
+	unit_map[unit_num[1]] = hero;
+	hero->_money = 0;
+	hero->setTag(unit_num[1]);
+	hero->_it_tag = unit_num[1];
+	hero->reborn_pos = pos;
+	map->addChild(hero);
 	unit_num[1]++;
-	en_hero->Qskill_cd_time = 2000;
-	en_hero->Qskill_last_release_time = 0;
 	//client.init(hero);
 	return false;
+}
+
+bool GameScene::ChatInit()
+{
+	textField = cocos2d::ui::TextField::create("chat", "Arial", 30);
+	textField->setMaxLength(100);
+	this->addChild(textField, 10);
+	textField->setPosition(Vec2(50, 50));
+	textField->addTouchEventListener([&](Ref* sender, cocos2d::ui::Widget::TouchEventType type) {
+		log("chat");
+		});
+	return true;
 }
 
 
@@ -123,7 +141,7 @@ void GameScene::AllActionsTakenEachSecond(float dt) {
 	UnitDeadAction();
 	TowerAction();
 	SoldierAction();
-	log("unit_num is %d", unit_map.size());
+//	log("unit_num is %d", unit_map.size());
 }
 void GameScene::SkillHitCheck() {
 	auto skill = skill_map.begin();
@@ -219,7 +237,7 @@ void GameScene::UnitDeadAction() {
 		else {
 			// 先是受伤
 			if (unit_map.size() < AnimateLimit) {// 动画效果都塞到这里来
-				log("no more animate");
+//				log("no more animate");
 				unit->second->getDamaged();// 重载过的，里面是动画
 
 			}
@@ -331,6 +349,11 @@ void GameScene::TowerAction() {
 
 void GameScene::AllActionsTakenEachF(float dt)
 {
+	if (false == Add && true == fight) {		//未出过并以及开始战斗
+		this->schedule(schedule_selector(GameScene::AddSoldiers), 15.0f);		//十五秒出一波兵
+		log("Add");
+		Add = true;					//出过兵
+	}
 	UiShow();
 	mapMove();
 	//50是我设定的区域，鼠标位于该区域内则会导致map移动，50可更改
@@ -370,6 +393,37 @@ void GameScene::mapMove() {
 	}
 }
 void GameScene::UiShow() {
+	//显示聊天信息
+	if (true == client.UpdateChatMessage) {
+		log("true");
+		if (this->getChildByName("ChatMessage") != nullptr) {
+			this->removeChildByName("ChatMessage");
+		}
+		auto ChatMessage = Label::createWithSystemFont(client.ChattingInfirmationFromTheOther, "Arial", 25);
+		if (ChatMessage != nullptr)
+		{
+			ChatMessage->setPosition(Vec2(50, 100));
+			this->addChild(ChatMessage, 10);
+			ChatMessage->setName("ChatMessage");
+		}
+		client.UpdateChatMessage = false;
+		ZeroMemory(client.ChattingInfirmationFromTheOther, 100);
+	}
+	//等级
+	if (this->getChildByName("level") != nullptr) {
+		this->removeChildByName("level");
+	}
+	char l[20];
+	int level = en_hero->_kill_award / 300;
+	sprintf_s(l, "level: %d", level);
+	auto levelLabel = Label::createWithSystemFont(l, "Arial", 30);
+	if (levelLabel != nullptr)
+	{
+		levelLabel->setPosition(Vec2(viewSize.width - 200, 170));
+		this->addChild(levelLabel, 10);
+		levelLabel->setName("levelLabel");
+	}
+
 	//money
 	if (this->getChildByName("MoneyLabel") != nullptr) {
 		this->removeChildByName("MoneyLabel");

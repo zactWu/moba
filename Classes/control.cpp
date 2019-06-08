@@ -2,11 +2,21 @@
 #include "UnitClass.h"
 #include "GameScene.h"
 #include "control.h"
+#include <mutex>
+#include"client.h"
+#include "ui/CocosGUI.h"
 USING_NS_CC;
 
+extern std::mutex gameLock;
+extern GameClient client;
+extern bool fight;
+extern cocos2d::ui::TextField* textField;
 void GameScene::ListenOutside() {
 	auto mouse_listener = EventListenerTouchOneByOne::create();
 	mouse_listener->onTouchBegan = [=](Touch* Touch, Event* Event) {
+		if (false == fight) {
+			fight = true;
+		}
 		auto touchPosition = Touch->getLocation();
 		auto mapPosition = map->getPosition();
 		auto nowPosition = hero->getPosition();
@@ -43,6 +53,29 @@ void GameScene::ListenOutside() {
 	
 	auto ketboard_listener = EventListenerKeyboard::create();
 	ketboard_listener->onKeyPressed = [=](EventKeyboard::KeyCode keycode, Event* event) {
+		if (keycode == EventKeyboard::KeyCode::KEY_ENTER)		//聊天
+		{
+			std::string message = textField->getString();
+			if (!message.empty()) {
+				std::string danger = "kuanye";
+				
+
+				auto idx = message.find(danger);
+				if (idx != std::string::npos)//存在。
+				{
+					log("%s",message);
+					message = "666";
+				}
+
+				gameLock.lock();
+				client.ChatBuf[0] = ':';
+				for (int i = 0; i < message.size(); i++) {
+					client.ChatBuf[i + 1] = message[i];
+				}
+				gameLock.unlock();
+			}
+			textField->setString("");
+		}
 		if (keycode == EventKeyboard::KeyCode::KEY_Q) {
 			if (hero->skill_statement !=2) {
 				hero->skill_statement = 2;
@@ -121,7 +154,12 @@ int GameScene::ClickFindTag(Vec2 pos) {
 
 void control::send_to_sever() {
 	cocos2d::log("this is send to sever");
-
+	gameLock.lock();
+	char inf[GameClient::InformationLength];
+	sprintf_s(inf, "%f#%f#%d#%d", pos.x, pos.y, kind, tar_tag);
+	strcat(&client.SendBuf[GameClient::InformationLength], inf);
+	cocos2d::log("sendbuf is %s", inf);
+	gameLock.unlock();
 	return;
 	// 这里加上服务器就可以了
 }
