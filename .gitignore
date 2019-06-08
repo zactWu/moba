@@ -5,7 +5,8 @@ proj.win32/Debug.win32
 proj.win32/.vs
 proj.win32/Release.win32
 server/.vs
-server/Debug
 Resources/log2.txt
 server/Release
-server/server
+server/server/Release
+server/Debug
+server/server/Debug
