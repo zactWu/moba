@@ -415,14 +415,20 @@ void GameScene::UiShow() {
 		}
 		client.UpdateChatMessage = false;
 	}
-	////等级
-	//if (this->getChildByName("level") != nullptr) {
-	//	this->removeChildByName("level");
-	//}
-	//char l[20];
-	//int level = hero->_kill_award / 300;
-	//sprintf_s(l, "level: %d", level);
-	//auto level=Label::createWithSystemFont(l,)
+	//等级
+	if (this->getChildByName("level") != nullptr) {
+		this->removeChildByName("level");
+	}
+	char l[20];
+	int level = hero->_kill_award / 300;
+	sprintf_s(l, "level: %d", level);
+	auto levelLabel = Label::createWithSystemFont(l, "Arial", 30);
+	if (levelLabel != nullptr)
+	{
+		levelLabel->setPosition(Vec2(50, 1700));
+		this->addChild(levelLabel, 10);
+		levelLabel->setName("levelLabel");
+	}
 	//money
 	if (this->getChildByName("MoneyLabel") != nullptr) {
 		this->removeChildByName("MoneyLabel");

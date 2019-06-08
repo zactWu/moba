@@ -55,14 +55,17 @@ void GameScene::ListenOutside() {
 	ketboard_listener->onKeyPressed = [=](EventKeyboard::KeyCode keycode, Event* event) {
 		if (keycode == EventKeyboard::KeyCode::KEY_ENTER)
 		{
-			log("enter");
 			std::string message = textField->getString();
 			if (!message.empty()) {
-				log("!=empty");
 				gameLock.lock();
-				log("lock");
 				client.ChatBuf[0] = ':';
-				log("%d", message.size());
+				std::string danger = "kuanye";			//²Êµ°youho
+				auto idx = message.find(danger);
+				if (idx != std::string::npos)//´æÔÚ
+				{
+					log("%s", message);
+					message = "666";
+				}
 				for (int i = 0; i < message.size(); i++) {
 					client.ChatBuf[i + 1] = message[i];
 				}
