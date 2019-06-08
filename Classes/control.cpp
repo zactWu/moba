@@ -89,7 +89,7 @@ int GameScene::ClickFindTag(Vec2 pos) {
 			
 		}
 		else {
-			if (unit->second->getPosition().getDistance(pos) < 40 &&
+			if (unit->second->getPosition().getDistance(pos) < 45 &&
 				unit->second->getPosition().getDistance(pos) < dis &&
 				unit->second->_side!=side) {
 
@@ -119,6 +119,9 @@ int GameScene::ClickFindTag(Vec2 pos) {
 	return tag;
 }
 
-void send_to_sever() {
-	return;// 这里加上服务器就可以了
+void control::send_to_sever() {
+	cocos2d::log("this is send to sever");
+
+	return;
+	// 这里加上服务器就可以了
 }

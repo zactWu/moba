@@ -16,7 +16,7 @@ USING_NS_CC;
 class control {
 public:
 	Vec2 pos;
-	Unit* tar_point = NULL;
+	Unit* tar_point = NULL;//好像用不到
 	int tar_tag = -1;
 	int kind;
 	bool checkself();

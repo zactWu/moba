@@ -30,6 +30,7 @@ bool GameScene::init() {
 	HeroInit();
 	PointInit();
 	TowerInit();
+	
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
 	this-> schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.2);
 	this->schedule(schedule_selector(GameScene::AddSoldiers), 15.0f);		//十五秒出一波兵
@@ -114,9 +115,6 @@ bool GameScene::HeroInit()
 	//client.init(hero);
 	return false;
 }
-
-
-
 
 
 void GameScene::AllActionsTakenEachSecond(float dt) {
@@ -451,7 +449,7 @@ void GameScene::UiShow() {
 }
 void GameScene::AddSoldiers(float dt)
 {
-	this->schedule(schedule_selector(GameScene::AddOneSoldier), 1.0f, 1, 0);
+	this->schedule(schedule_selector(GameScene::AddOneSoldier), 1.0f, 0, 0);
 }
 
 void GameScene::AddOneSoldier(float dt)
