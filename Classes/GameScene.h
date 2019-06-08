@@ -11,8 +11,7 @@ class GameScene :public Layer {
 private:
 
 	
-	Hero* hero;
-	Hero* en_hero;
+	
 	//屏幕尺寸瓦片尺寸
 	Size viewSize;
 	Size mapSize;
@@ -39,16 +38,20 @@ private:
 
 public:
 	TMXTiledMap* map;
+	Hero* hero;
+	Hero* en_hero;
 	static cocos2d::Scene* createScene();
 	void TowerInit();
 	virtual bool init();
 	void SkillHitCheck();
 	void UnitDeadAction();
+	void UnitDead(Unit* unit);
 	void TowerAction();
 	void AllActionsTakenEachSecond(float dt);
 	bool MapInit();
 	bool HeroInit();
-	void AllActionsTakenEachF(float dt);			//每一帧都调用，监测鼠标位置，判断是否移动地图（后续可能会添加其他功能）
+	void AllActionsTakenEachF(float dt);			
+	void mapMove();//每一帧都调用，监测鼠标位置，判断是否移动地图（后续可能会添加其他功能）
 	void UiShow();
 	void AddSoldiers(float dt);
 	void AddOneSoldier(float dt);

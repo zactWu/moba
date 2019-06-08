@@ -18,9 +18,8 @@ void GameScene::ListenOutside() {
 		od.tag = ClickFindTag(newPosition);
 		if (hero->skill_statement == 0) {
 			hero->_tag_attackTarget = od.tag;
-			
 			log("this tag is %d", od.tag);
-			od.kind = MOVEOERDER;
+			od.kind = MOVEORDER;
 			od.pos = newPosition;
 			
 		}

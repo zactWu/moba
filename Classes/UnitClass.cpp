@@ -4,6 +4,8 @@
 #include "skillClass.h"
 #include "GameScene.h"
 #include "MoveFind.h"
+#include "control.h"
+#include "GlobalVal.h"
 USING_NS_CC;
 
 //Unit的create函数，调用：myUnit = Unit::create(...)
@@ -40,14 +42,6 @@ Unit* Unit::create(const std::string& filename, const std::string& unitType,
 	return nullptr;
 }
 
-
-
-
-
-
-
-
-
 //自动判断是否需要停止当前动画并改变移动动画、修改_moveDir
 inline void Unit::animate_move_forever(int dir) {
 	if (_moveDir != dir) {
@@ -72,7 +66,6 @@ inline void Unit::animate_move_forever(int dir) {
 	}
 
 }
-
 
 inline int Unit::getDirByTargetPos(const Vec2& pos_target)const {
 	return Unit::getDirByTargetPos(getPosition(), pos_target);
@@ -131,7 +124,6 @@ void Unit::moveTo_directly(const Vec2& pos_target) {
 
 }
 
-
 void Unit::moveTo_directly(const std::vector<Vec2> pos_list) {
 	if (pos_list.size() == 1) {
 		return;
@@ -163,10 +155,8 @@ void Unit::moveTo_directly(const std::vector<Vec2> pos_list) {
 		});
 	actionListToOnePoint.pushBack(cf_stopAnimate);
 	auto actionList = Sequence::create(actionListToOnePoint);
-
 	actionList->setTag(Tag::move);
 	runAction(actionList);
-
 }
 
 void Unit::attack_once(Unit* sp_enemy) {
@@ -290,7 +280,14 @@ void Unit::getDamaged(Unit* producer, int damage) {
 		return;
 	}
 	_life_current -= damage;
-	_last_attacker = producer;
+	
+	if (producer == nullptr) {
+		log("warning: this hit has no one declear responsable");
+	}
+	else {
+		_last_attacker = producer;
+	}
+	
 	if (_life_current <= 0) {
 	    // 赏金还是放在外面
 		return;
@@ -326,14 +323,12 @@ void Unit::longRangeAttack(Unit* enemy) {
 	skill->setScale(0.3);
 	skill->setPosition(getPosition());
 	skill->_st_pos = getPosition();
-
 	auto gameScene = dynamic_cast<GameScene*>(getParent()->getParent());
-
 	gameScene->skill_map[gameScene->skill_num] = skill;
 	gameScene->skill_num++;
 	skill->_side = _side;
 	skill->_release_time = clock();
-	gameScene->map->addChild(skill);//这里有一点问题要解决
+	gameScene->map->addChild(skill);
 }
 
 void Unit::stunned(double duration) {
@@ -352,3 +347,50 @@ void Unit::stunned(double duration) {
 	getParent()->runAction(seq);
 }
 
+void Unit::getDamaged() {
+	if (!wound) {
+		return;
+	}
+	auto cf_intoRed = CallFunc::create([=]() {
+		if (this!= NULL)
+			setColor(cocos2d::Color3B::RED);
+		});
+	auto cf_back = CallFunc::create([=]() {
+		if (this != NULL)
+			setColor(cocos2d::Color3B(255, 255, 255));
+		});
+	auto switchColor = Sequence::create(cf_intoRed, DelayTime::create(0.15), cf_back, nullptr);
+	if (getParent() != NULL) {
+		getParent()->runAction(switchColor);
+	}
+	wound = 0;
+}
+
+void Unit::GetOrder() {
+	GameScene* gs = dynamic_cast<GameScene*>(getParent()->getParent());
+	if (gs == NULL && gs->map == NULL) {
+		log("sth wrrong!!!!!!!!");
+		return;
+	}
+	for (auto i = order_list.begin(); i != order_list.end();) {
+		if (i->kind == MOVEORDER) {
+			_tag_attackTarget = i->tag;
+			if (i->tag == -1) {// 这个效果你们自己取舍
+				_onAttack = 0;
+			}
+			moveTo_directly(gs->MoveFind(getPosition(), i->pos));
+			//log("unit move");
+		}
+		if (i->kind != 1) {
+			// 假定这个是英雄
+			_onAttack = 0;
+			if (gs->hero == this) {
+				gs->hero->useSkill(hero_id, i->kind, i->pos, i->tag);
+			}
+			else if (gs->en_hero == this) {
+				gs->en_hero->useSkill(en_hero_id, i->kind, i->pos, i->tag);
+			}
+		}
+		i = order_list.erase(i);
+	}
+}

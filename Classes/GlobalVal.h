@@ -17,6 +17,6 @@
 
 extern int hero_id;
 extern int en_hero_id;
-
+extern int this_computer_side;
 
 #endif /* GlobalVal_hpp */

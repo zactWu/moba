@@ -10,7 +10,7 @@ Tower* Tower::create(const std::string& filename,
 
 	auto unit = new (std::nothrow) Tower;
 	if (unit && unit->initWithFile(filename)) {
-		//初始化各项属性
+		//初始化各项属性,这里的unit方式没有管，要改数值这里改就好了
 		unit->_defense = 20;
 		unit->_attack = 100;
 		unit->hit_range = 300;

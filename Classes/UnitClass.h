@@ -33,7 +33,7 @@ public:
 	int getDirByTargetPos(const Vec2& pos_target)const;
 	int getDirByTargetPos(const Vec2& pos_current, const Vec2& pos_target)const;
 	int getMoveDir() { return _moveDir; }
-	int _money;
+	int _money=0;
 	int _side;
 	int _life_current;
 	int _tag_attackTarget=-1;
@@ -43,6 +43,10 @@ public:
 	Unit* _last_attacker=NULL;
 	cocos2d::Sprite* _lifeBank;
 	void stunned(double duration);
+
+	void getDamaged();
+
+	void GetOrder();
 
 	bool _stunned=0;
 	int _it_tag = -1;

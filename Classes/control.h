@@ -4,7 +4,7 @@
 #include "cocos2d.h"
 #include "UnitClass.h"
 #include "GameScene.h"
-#define MOVEOERDER 1
+#define MOVEORDER 1
 #define SKILLQ 2
 #define SKILLW 3
 #define SKILLE 4
