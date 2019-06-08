@@ -7,6 +7,8 @@
 #include "control.h"
 Vec2 pos[2],tar[2];
 #include "client.h"
+#include "ui/CocosGUI.h"
+#include <mutex>
 #define SEVER 0
 #define MESIDE 0
 #define ENEMYSIDE 1
@@ -18,6 +20,9 @@ Vec2 pos[2],tar[2];
 GameClient client;
 extern bool fight;
 bool Add = false;
+extern std::mutex gameLock;
+cocos2d::ui::TextField* textField;
+
 cocos2d::Scene* GameScene::createScene()
 {
 	auto scene = Scene::create();
@@ -34,6 +39,7 @@ bool GameScene::init() {
 	HeroInit();
 	PointInit();
 	TowerInit();
+	ChatInit();
 	client.init(hero, en_hero);
 	client.ClientProcess();
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
@@ -118,6 +124,20 @@ bool GameScene::HeroInit()
 	en_hero->Qskill_cd_time = 2000;
 	en_hero->Qskill_last_release_time = 0;
 	return false;
+}
+
+bool GameScene::ChatInit()
+{
+	//chat
+	textField = cocos2d::ui::TextField::create("chat", "Arial", 30);
+	textField->setMaxLength(100);
+	//下面设置键盘Enter监听，用于聊天
+	this->addChild(textField, 10);
+	textField->setPosition(Vec2(50, 50));
+	textField->addTouchEventListener([&](Ref* sender, cocos2d::ui::Widget::TouchEventType type) {
+		log("chat");
+		});
+	return true;
 }
 
 
@@ -335,6 +355,7 @@ void GameScene::TowerAction() {
 
 void GameScene::AllActionsTakenEachF(float dt)
 {
+
 	if (false == Add && true == fight) {		//未出过兵以及开始战斗
 		this->schedule(schedule_selector(GameScene::AddSoldiers), 15.0f);		//十五秒出一波兵
 		log("Add");
@@ -379,6 +400,22 @@ void GameScene::mapMove() {
 	}
 }
 void GameScene::UiShow() {
+
+	//显示聊天信息
+	if (true == client.UpdateChatMessage) {
+		log("true");
+		if (this->getChildByName("ChatMessage") != nullptr) {
+			this->removeChildByName("ChatMessage");
+		}
+		auto ChatMessage = Label::createWithSystemFont(client.ChattingInfirmationFromTheOther, "Arial", 25);
+		if (ChatMessage != nullptr)
+		{
+			ChatMessage->setPosition(Vec2(50, 100));
+			this->addChild(ChatMessage, 10);
+			ChatMessage->setName("ChatMessage");
+		}
+		client.UpdateChatMessage = false;
+	}
 	//money
 	if (this->getChildByName("MoneyLabel") != nullptr) {
 		this->removeChildByName("MoneyLabel");

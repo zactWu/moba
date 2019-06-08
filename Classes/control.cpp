@@ -4,11 +4,13 @@
 #include "control.h"
 #include <mutex>
 #include "client.h"
+#include "ui/CocosGUI.h"
 USING_NS_CC;
 
 extern std::mutex gameLock;
 extern GameClient client;
 extern bool fight;
+extern cocos2d::ui::TextField* textField;
 void GameScene::ListenOutside() {
 	auto mouse_listener = EventListenerTouchOneByOne::create();
 	mouse_listener->onTouchBegan = [=](Touch* Touch, Event* Event) {
@@ -51,6 +53,23 @@ void GameScene::ListenOutside() {
 	
 	auto ketboard_listener = EventListenerKeyboard::create();
 	ketboard_listener->onKeyPressed = [=](EventKeyboard::KeyCode keycode, Event* event) {
+		if (keycode == EventKeyboard::KeyCode::KEY_ENTER)
+		{
+			log("enter");
+			std::string message = textField->getString();
+			if (!message.empty()) {
+				log("!=empty");
+				gameLock.lock();
+				log("lock");
+				client.ChatBuf[0] = ':';
+				log("%d", message.size());
+				for (int i = 0; i < message.size(); i++) {
+					client.ChatBuf[i + 1] = message[i];
+				}
+				gameLock.unlock();
+			}
+			textField->setString("");
+		}
 		if (keycode == EventKeyboard::KeyCode::KEY_Q) {
 			if (hero->skill_statement !=2) {
 				hero->skill_statement = 2;

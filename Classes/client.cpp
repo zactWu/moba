@@ -83,39 +83,7 @@ void GameClient::ClientProcess()
 		CloseHandle(recvThread);
 	}
 	
-	//controlThread = CreateThread(NULL, 0,
-	//	static_cast<LPTHREAD_START_ROUTINE>(GameClient::control),
-	//	static_cast<LPVOID>(this), 0,
-	//	NULL
-	//);
-	//if (nullptr == controlThread) {
-	//	DWORD k = GetLastError();
-	//	cocos2d::log("send wrong, error is %d", k);
-	//	//		cocos2d::log("send thread wrong");
-	//}
-	//else {
-	//	CloseHandle(controlThread);
-	//}
-	
 
-//	HANDLE  RecvThread = nullptr, SendThread = nullptr;
-//	if ((SendThread = CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)Send, this, 0, &SendThreadID)) == nullptr) {
-////		cocos2d::log("sendThread wrong");
-//		cocos2d::log("wrong sendThreadId is %d", SendThreadID);
-//	}
-//	if (nullptr != SendThread) {
-////		cocos2d::log("sendThreadId is %d", SendThreadID);
-//		CloseHandle(SendThread);
-//	}
-//
-//	if ((RecvThread = CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)Receive, this, 0, &RecvThreadID)) == nullptr) {
-////		cocos2d::log("receiveThread wrong");
-//		cocos2d::log("wrong recvThreadId is %d", SendThreadID);
-//	}
-//	if (nullptr != RecvThread) {
-////		cocos2d::log("recvThreadId is %d", SendThreadID);
-//		CloseHandle(RecvThread);
-//	}
 }
 
 
@@ -139,27 +107,13 @@ DWORD __stdcall GameClient::Send(LPVOID lpParam)
 				ZeroMemory(Client->SendBuf, 30 * 100);
 				cocos2d::log("send message :%s\n", sendbuf);
 			}
-
 			if ('\0' != Client->ChatBuf[0]) {
 				char chatbuf[100] = { 0 };
 				strcpy(chatbuf, Client->ChatBuf);
 				int const chatSend = send(Client->ClientSocket, chatbuf, 100, 0);
+				cocos2d::log("chat %s", chatbuf);
 				ZeroMemory(Client->ChatBuf, 100);
 			}
-//			if (iSend <= 0)
-//			{
-//				if (Client->ClientSocket != NULL)
-//					closesocket(Client->ClientSocket);
-//				Client->ClientSocket = NULL;
-////				printf("发送线程关闭\n");
-////				printf("发送[%d]\n接收[%d]\n", Client->SendThreadID, Client->RecvThreadID);
-//				cocos2d::log("sendTread close");
-//				cocos2d::log("send[%d] receive[%d]", Client->SendThreadID, Client->RecvThreadID);
-//				ExitThread(Client->SendThreadID);
-//				ExitThread(Client->RecvThreadID);
-////				printf("发送线程关闭\n");
-//				return 0;
-//			}
 			gameLock.unlock();
 		}
 	}
@@ -193,7 +147,6 @@ DWORD __stdcall GameClient::Receive(LPVOID lpParam)
 				gameLock.unlock();
 				return 0;
 			}
-			cocos2d::log("recv");
 			ZeroMemory(Client->RecvBuf, InformationLength);
 			strcpy(Client->RecvBuf, recvbuf);
 			cocos2d::log("receive message: %s ", recvbuf);
@@ -201,9 +154,10 @@ DWORD __stdcall GameClient::Receive(LPVOID lpParam)
 				fight = true;
 			}
 			if (':' == recvbuf[0]) {			//'C'代表聊天信息
-				cocos2d::log("%s", recvbuf);
+				cocos2d::log("recv chat %s", recvbuf);
 				strcpy(Client->ChattingInfirmationFromTheOther, recvbuf);
 				Client->UpdateChatMessage = true;  //现在需要更新聊天信息
+				gameLock.unlock();
 			}
 			else {								//如果不是聊天信息
 				order od;
