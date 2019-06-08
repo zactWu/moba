@@ -35,9 +35,10 @@ bool HelpScene::init()
     {
         return false;
     }
-    
+    //整个搬到gamescene里
     addChild(createText());
     addChild(createBGImage());
+    
     equipment = MenuItemImage::create("shop/shopbutton.png","shop/shopbutton.png",CC_CALLBACK_1(HelpScene::gotoshop,this));
     equipment->setScale(0.2);
     equipment->setPosition(1050,625);
@@ -45,8 +46,12 @@ bool HelpScene::init()
     auto menu = Menu::create(equipment, NULL);
     menu->setPosition(Point::ZERO);
     this->addChild(menu);
+    //直到这里
+    
     return true;
 }
+
+//一起搬过去XD
 void HelpScene::gotoshop(Ref* psender){
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto winsize = Director::getInstance()->getWinSize();

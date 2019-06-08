@@ -19,7 +19,7 @@ public:
     cocos2d::Menu* createText();
     cocos2d::Sprite* createBGImage();
     cocos2d::MenuItemImage* equipment;
-    Hero* hero;
+    Hero* hero;//对接hero类
     void gotoshop(cocos2d::Ref* psender);
     CREATE_FUNC(HelpScene);
 };

@@ -9,8 +9,9 @@
 #include<cmath>
 
 int money =500;
-int speed = 2;
-Hero* hero;
+int speed = 2;//记得删掉！！！
+
+Hero* hero;//对接英雄类
 ShopLayer* ShopLayer::createLayer(Hero* hero1)
 {
     hero = hero1;
@@ -71,7 +72,7 @@ bool ShopLayer::init()
         auto buy_wand = MenuItemImage::create("shop/buy.png","shop/buy.png",CC_CALLBACK_1(ShopLayer::buyCallback,this,300));
         buy_wand->setScale(0.3f);buy_wand->setPosition(0.7*winSize.width, 0.55*winSize.height);
         
-        //4.散夜对剑
+        //5.散夜对剑
         Label* doubleswordname = Label::createWithTTF("Double Sword", "fonts/aslangbary.otf", 35);
         doubleswordname->setPosition(0.15 * winSize.width, 0.4* winSize.height);layer->addChild(doubleswordname);
         auto doublesword = MenuItemImage::create("shop/doublesword.png", "shop/doublesword.png");
@@ -80,7 +81,7 @@ bool ShopLayer::init()
         auto buy_doublesword = MenuItemImage::create("shop/buy.png","shop/buy.png",CC_CALLBACK_1(ShopLayer::buyCallback,this,550));
         buy_doublesword->setScale(0.3f);buy_doublesword->setPosition(0.7*winSize.width, 0.4*winSize.height);
         
-        //5.龙心
+        //6.龙心
         Label* heartname = Label::createWithTTF("Heart Of Tarrasque", "fonts/aslangbary.otf", 35);
         heartname->setPosition(0.15 * winSize.width, 0.25* winSize.height);layer->addChild(heartname);
         auto heart = MenuItemImage::create("shop/heart.png", "shop/heart.png");
@@ -89,7 +90,7 @@ bool ShopLayer::init()
         auto buy_heart = MenuItemImage::create("shop/buy.png","shop/buy.png",CC_CALLBACK_1(ShopLayer::buyCallback,this,600));
         buy_heart->setScale(0.3f);buy_heart->setPosition(0.7*winSize.width, 0.25*winSize.height);
         
-        //6.阿哈利姆神杖
+        //7.阿哈利姆神杖
         Label* sceptername = Label::createWithTTF("Aghanim's Scepter", "fonts/aslangbary.otf", 35);
         sceptername->setPosition(0.15 * winSize.width, 0.1* winSize.height);layer->addChild(sceptername);
         auto scepter = MenuItemImage::create("shop/scepter.png", "shop/scepter.png");
@@ -125,7 +126,7 @@ bool ShopLayer::init()
 
 void ShopLayer::buyCallback(Ref* psender,int price)
 {
-    removeChildByTag(100);//删除残留信息
+    removeChildByTag(100);//删除残留提示信息
     Size winSize = Director::getInstance()->getWinSize();
     if (money < price)//调用英雄金币来判断钱够不够
     {
@@ -148,125 +149,28 @@ void ShopLayer::buyCallback(Ref* psender,int price)
     int num = itemSelect->getTag();
     switch (num)
     {
-        case 1:
-            hero->speed += 2;
+        case 1://对接英雄属性
+            hero->speed += 20;
             break;
         case 2:
             hero->Attack += 20;
-            hero->Weapon[2]++;
             break;
         case 3:
-            hero->Attack_Speed += 10;
-            hero->Weapon[3]++;
+            hero->Defense += 20;
             break;
         case 4:
-            hero->Critical_Rate += 10;
-            hero->Weapon[4]++;
+            hero->Spell += 20;
             break;
         case 5:
-            hero->Attack += 80;
-            hero->Weapon[5]++;
+            hero->Attack += 20;
+            hero->Spell +=20;
             break;
         case 6:
-            hero->Attack_Speed += 25;
-            hero->Weapon[6]++;
+            hero->MaxHP += 25;
             break;
         case 7:
-            hero->Critical_Rate += 25;
-            hero->Weapon[7]++;
-            break;
-        case 8:
-            hero->Attack += 160;
-            hero->Weapon[8]++;
-            break;
-        case 9:
-            hero->Attack_Speed += 40;
-            hero->Weapon[9]++;
-            break;
-        case 10:
-            hero->Critical_Rate += 50;
-            hero->Weapon[10]++;
-            break;
-        case 11:
-            hero->Skill_Enhance += 5;
-            hero->Weapon[11]++;
-            break;
-        case 12:
-            hero->MaxMP += 300;
-            hero->Weapon[12]++;
-            break;
-        case 13:
-            hero->MP_Recover += 5;
-            hero->Weapon[13]++;
-            break;
-        case 14:
-            hero->Skill_Enhance += 15;
-            hero->Weapon[14]++;
-            break;
-        case 15:
-            hero->MaxMP += 400;
-            hero->Weapon[15]++;
-            break;
-        case 16:
-            hero->MP_Recover += 15;
-            hero->Weapon[16]++;
-            break;
-        case 17:
-            hero->Skill_Enhance += 50;
-            hero->Weapon[17]++;
-            break;
-        case 18:
-            hero->MaxMP += 1000;
-            hero->Weapon[18]++;
-            break;
-        case 19:
-            hero->MP_Recover += 40;
-            hero->Weapon[19]++;
-            break;
-        case 20:
-            hero->MaxHP += 300;
-            hero->Weapon[20]++;
-            break;
-        case 21:
-            hero->Defense += 90;
-            hero->Weapon[21]++;
-            break;
-        case 22:
-            hero->Resistance += 90;
-            hero->Weapon[22]++;
-            break;
-        case 23:
-            hero->MaxHP += 1000;
-            hero->Weapon[23]++;
-            break;
-        case 24:
-            hero->Defense += 210;
-            hero->Weapon[24]++;
-            break;
-        case 25:
-            hero->Resistance += 150;
-            hero->Weapon[25]++;
-            break;
-        case 26:
-            hero->MaxHP += 2000;
-            hero->Weapon[26]++;
-            break;
-        case 27:
-            hero->Defense += 400;
-            hero->Weapon[27]++;
-            break;
-        case 28:
-            hero->Resistance += 320;
-            hero->Weapon[28]++;
-            break;
-        case 29:
-            
-            break;
-        case 30:
-            
-            break;
-        case 31:
-            
+            hero->speed += 10;
+            //全部加10
             break;
     }
     return;
