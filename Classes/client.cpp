@@ -28,8 +28,8 @@ bool GameClient::init(Hero* h,Hero* e)
 	ServerAddr.sin_family = PF_INET;
 	ServerAddr.sin_port = htons(PORTS);
 
-	//	ServerAddr.sin_addr.S_un.S_addr = inet_pton(AF_INET, "127.0.0.1", &ServerAddr.sin_addr.S_un.S_addr);
-	ServerAddr.sin_addr.S_un.S_addr = inet_addr("192.168.43.168");
+
+	ServerAddr.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
 	ClientSocket = socket(PF_INET, SOCK_STREAM, 0);
 
 	if (ClientSocket == INVALID_SOCKET)
@@ -82,8 +82,6 @@ void GameClient::ClientProcess()
 	else {
 		CloseHandle(recvThread);
 	}
-	
-
 }
 
 
@@ -170,129 +168,6 @@ DWORD __stdcall GameClient::Receive(LPVOID lpParam)
 	}
 	return 0;
 }
-
-//DWORD __stdcall GameClient::control(LPVOID lpParam)
-//{
-//	GameClient* Client = static_cast<GameClient*>(lpParam);
-//	if (nullptr == Client) {
-//		return 0;
-//	}
-//	while (true)
-//	{
-//		information temp{};
-//		
-//		gameLock.lock();
-//		if (!receiveQueue.empty()) {
-//			static clock_t _last_time = 0;
-//			float pass_time = clock() - _last_time;
-//			
-//			temp = receiveQueue.front();
-//			receiveQueue.pop();
-//			if (pass_time > 170) {
-//				_last_time = clock();
-//
-//				switch (temp.c)
-//				{
-//				case 'M':		//移动
-//					Client->MoveControl(Client, &temp);
-//					break;
-//				case 'Q':		//Q技能
-//					Client->Q_Skill(Client, &temp);
-//					break;
-//				case 'W':		//W技能
-//					Client->W_Skill(Client, &temp);
-//					break;
-//				case 'E':		//E技能
-//					Client->E_Skill(Client, &temp);
-//					break;
-//				default:
-//					break;
-//				}
-//				
-//			}
-//			gameLock.unlock();
-//		}
-//		else {
-//			gameLock.unlock();
-//			continue;
-//		}
-//
-//
-//	}
-//
-//	return 0;
-//}
-//
-//
-//
-//bool GameClient::MoveControl(GameClient* Client, const information* temp)
-//{
-//	order od;
-//	od.kind = 1;
-//	od.pos.x = temp->x;
-//	od.pos.y = temp->y;
-//	if (Client->hero->order_list.size() < 3) {
-//		Client->hero->order_list.push_back(od);
-//		return true;
-//	}
-//}
-//
-////技能QWE对应123
-//bool GameClient::Q_Skill(GameClient* Client, const information* temp)
-//{
-//	order od;
-//	od.kind = 1;
-//	od.pos.x = temp->x;
-//	od.pos.y = temp->y;
-//	od.tag = temp->tag;
-//	if (Client->hero->order_list.size() < 3) {
-//		Client->hero->order_list.push_back(od);
-//	}
-//	return true;
-//}
-//
-//bool GameClient::W_Skill(GameClient* Client, const information* temp)
-//{
-//	order od;
-//	od.kind = 2;
-//	od.pos.x = temp->x;
-//	od.pos.y = temp->y;
-//	od.tag = temp->tag;
-//	if (Client->hero->order_list.size() < 3) {
-//		Client->hero->order_list.push_back(od);
-//	}
-//	return true;
-//}
-//
-//bool GameClient::E_Skill(GameClient* Client, const information* temp)
-//{
-//	order od;
-//	od.kind = 3;
-//	od.pos.x = temp->x;
-//	od.pos.y = temp->y;
-//	od.tag = temp->tag;
-//	if (Client->hero->order_list.size() < 3) {
-//		Client->hero->order_list.push_back(od);
-//	}
-//	return true;
-//}
-
-
-//
-//
-//
-//int GameClient::AddBuf(char c, int tag, float x, float y)
-//{
-//	gameLock.lock();
-//	char inf[30];
-//	sprintf_s(inf, "%c%d#%f#%f", c, tag, x, y);
-////	sprintf_s(SendBuf, "%s", inf);
-//	strcat(&client.SendBuf[client.InfNum*30], inf);
-//	client.InfNum++;
-//	cocos2d::log("sendbuf is %s", client.SendBuf);
-//	gameLock.unlock();
-//	return 0;
-//}
 
 void  GameClient::CleanUp()
 {

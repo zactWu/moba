@@ -46,7 +46,6 @@ public:
 	static DWORD WINAPI Send(LPVOID lpParam);    //发送线程
 	static DWORD WINAPI Receive(LPVOID lpParam);  //接受线程
 
-//	static int AddBuf(char c, int tag, float x, float y);
 	void CleanUp();      //资源回收
 	//SOCKET相关
 	SOCKET ClientSocket;
