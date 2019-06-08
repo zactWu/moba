@@ -1,6 +1,6 @@
 #include "GameScene.h"
 #include "cocos2d.h"
-//#include <windows.h>
+#include <windows.h>
 #include "MoveFind.h"
 #include "TowerClass.h"
 #include "Hero.h"
@@ -362,49 +362,47 @@ void GameScene::AllActionsTakenEachF(float dt)
 		Add = true;			//出过兵了
 	}
 	UiShow();
-//	mapMove();
+	mapMove();
 	//50是我设定的区域，鼠标位于该区域内则会导致map移动，50可更改
 	
 }
-//
-//void GameScene::mapMove() {
-//	int RectWidth = viewSize.width;		//窗口宽
-//	int RectHeight = viewSize.height;	//窗口高
-//	//以下几行获取鼠标位于窗口的坐标
-//	POINT p;
-//	GetCursorPos(&p);
-//	HWND hwnd = GetActiveWindow();
-//	ScreenToClient(hwnd, &p);
-//	p.y = RectHeight - p.y;
-//	if (RectWidth - p.x < 50 || RectHeight - p.y < 50 || p.x < 50 || p.y < 50) {
-//		//下面两行的 10 是自定义设置的，即每一设定的时间（目前设定一帧所需要的时间）移动10个像素，可更改，另外，sqrt用于开根号并计算两点距离，感觉式子有点low.....要是有办法写得高大上一点是最好
-//		auto x = 10 * (RectWidth / 2 - p.x) / sqrt((RectWidth / 2 - p.x) * (RectWidth / 2 - p.x) + (RectHeight / 2 - p.y) * (RectHeight / 2 - p.y));
-//		auto y = 10 * (RectHeight / 2 - p.y) / sqrt((RectHeight / 2 - p.y) * (RectHeight / 2 - p.y) + (RectWidth / 2 - p.x) * (RectWidth / 2 - p.x));
-//		//先计算一下移动后的new_x,new_y坐标
-//		auto new_x = map->getPosition().x + x;
-//		auto new_y = map->getPosition().y + y;
-//		//若是移动后的new_x,new_y坐标会导致map超出窗口，则更改x,y坐标
-//		if (new_x < mapMoveLeft_x) {
-//			x = mapMoveLeft_x - map->getPosition().x;
-//		}
-//		if (new_x > mapMoveRight_x) {
-//			x = mapMoveRight_x - map->getPosition().x;
-//		}
-//		if (new_y < mapMoveDowm_y) {
-//			y = mapMoveDowm_y - map->getPosition().y;
-//		}
-//		if (new_y > mapMoveUp_y) {
-//			y = mapMoveUp_y - map->getPosition().y;
-//		}
-//		auto MapMove = MoveBy::create(1 / 60, Vec2(x, y));	//1/60是一帧所需要的时间（目前一秒60帧）
-//		map->runAction(MapMove);
-//	}
-//}
-void GameScene::UiShow() {
 
+void GameScene::mapMove() {
+	int RectWidth = viewSize.width;		//窗口宽
+	int RectHeight = viewSize.height;	//窗口高
+	//以下几行获取鼠标位于窗口的坐标
+	POINT p;
+	GetCursorPos(&p);
+	HWND hwnd = GetActiveWindow();
+	ScreenToClient(hwnd, &p);
+	p.y = RectHeight - p.y;
+	if (RectWidth - p.x < 50 || RectHeight - p.y < 50 || p.x < 50 || p.y < 50) {
+		//下面两行的 10 是自定义设置的，即每一设定的时间（目前设定一帧所需要的时间）移动10个像素，可更改，另外，sqrt用于开根号并计算两点距离，感觉式子有点low.....要是有办法写得高大上一点是最好
+		auto x = 10 * (RectWidth / 2 - p.x) / sqrt((RectWidth / 2 - p.x) * (RectWidth / 2 - p.x) + (RectHeight / 2 - p.y) * (RectHeight / 2 - p.y));
+		auto y = 10 * (RectHeight / 2 - p.y) / sqrt((RectHeight / 2 - p.y) * (RectHeight / 2 - p.y) + (RectWidth / 2 - p.x) * (RectWidth / 2 - p.x));
+		//先计算一下移动后的new_x,new_y坐标
+		auto new_x = map->getPosition().x + x;
+		auto new_y = map->getPosition().y + y;
+		//若是移动后的new_x,new_y坐标会导致map超出窗口，则更改x,y坐标
+		if (new_x < mapMoveLeft_x) {
+			x = mapMoveLeft_x - map->getPosition().x;
+		}
+		if (new_x > mapMoveRight_x) {
+			x = mapMoveRight_x - map->getPosition().x;
+		}
+		if (new_y < mapMoveDowm_y) {
+			y = mapMoveDowm_y - map->getPosition().y;
+		}
+		if (new_y > mapMoveUp_y) {
+			y = mapMoveUp_y - map->getPosition().y;
+		}
+		auto MapMove = MoveBy::create(1 / 60, Vec2(x, y));	//1/60是一帧所需要的时间（目前一秒60帧）
+		map->runAction(MapMove);
+	}
+}
+void GameScene::UiShow() {
 	//显示聊天信息
 	if (true == client.UpdateChatMessage) {
-		log("true");
 		if (this->getChildByName("ChatMessage") != nullptr) {
 			this->removeChildByName("ChatMessage");
 		}
@@ -417,6 +415,14 @@ void GameScene::UiShow() {
 		}
 		client.UpdateChatMessage = false;
 	}
+	////等级
+	//if (this->getChildByName("level") != nullptr) {
+	//	this->removeChildByName("level");
+	//}
+	//char l[20];
+	//int level = hero->_kill_award / 300;
+	//sprintf_s(l, "level: %d", level);
+	//auto level=Label::createWithSystemFont(l,)
 	//money
 	if (this->getChildByName("MoneyLabel") != nullptr) {
 		this->removeChildByName("MoneyLabel");
@@ -430,8 +436,7 @@ void GameScene::UiShow() {
 		this->addChild(MoneyLabel, 10);
 		MoneyLabel->setName("MoneyLabel");
 	}
-
-	//
+	//cd
 	if (this->getChildByName("CdLabel") != nullptr) {
 		this->removeChildByName("CdLabel");
 	}
