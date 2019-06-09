@@ -295,7 +295,13 @@ void GameScene::UnitDead(Unit *unit) {
 	}
 	//死亡动画是下面这段
 	if (unit_map.size() <= AnimateLimit) {
-		auto money = Sprite::create("angle.jpg");
+		Sprite* money;
+		if (unit->_last_attacker == hero) {
+			money = Sprite::create("money.jpg");
+		}
+		else {
+			money = Sprite::create("angle.jpg");
+		}
 		money->setPosition(unit->getPosition());
 		money->setScale(0.1);
 		map->addChild(money);

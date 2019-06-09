@@ -350,11 +350,11 @@ void Unit::getDamaged() {
 		return;
 	}
 	auto cf_intoRed = CallFunc::create([=]() {
-		if (this!= NULL)
+		if (this!= NULL && getParent() != NULL)
 			setColor(cocos2d::Color3B::RED);
 		});
 	auto cf_back = CallFunc::create([=]() {
-		if (this != NULL)
+		if (this != NULL && getParent() != NULL)
 			setColor(cocos2d::Color3B(255, 255, 255));
 		});
 	auto switchColor = Sequence::create(cf_intoRed, DelayTime::create(0.15), cf_back, nullptr);
