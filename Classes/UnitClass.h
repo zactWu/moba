@@ -17,6 +17,14 @@ struct  order
 class Unit : public Sprite {
 public:
 
+
+	int _attack;
+	int _defense;
+	int _speed;
+	int _moveDir;
+	float _attackInterval;
+
+
 	static Unit* create(const std::string& filename, const std::string& unitType,
 		int maxLife = 100, int attack = 5, int defense = 3, int speed = 100,
 		float rotate_speed = 90.0f, float attackInterval = 0.3f, float attackRange = 50.f);
@@ -61,15 +69,8 @@ public:
 	bool _onAttack;
 
 	//接下来就是升级系统
-protected:
-	
-	
-	int _attack;
-	int _defense;
-	int _speed;
-	int _moveDir;
-	float _attackInterval;
-	
+
+
 	Vec2 _pos_moveTarget;
 	std::string _unitType;
 };

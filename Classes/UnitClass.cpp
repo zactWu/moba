@@ -28,6 +28,7 @@ Unit* Unit::create(const std::string& filename, const std::string& unitType,
 		unit->_tag_attackTarget = -1;
 		unit->_onAttack = false;
 		unit->_kill_award = 100;
+		unit->_defense = 2;
 		//创建血条
 		unit->_lifeBank = Sprite::create("lifeBank.jpg");
 
@@ -259,10 +260,7 @@ void Unit::update_follow_attack(float dt) {
 
 	float distance = getPosition().distance(sp_target->getPosition());
 	if (distance > _attackRange) {
-		//log("not in range");
-		//auto gameScene = dynamic_cast<GameScene*>(getParent()->getParent());
-		//moveTo_directly(gameScene->MoveFind(this->getPosition(),sp_target->getPosition()));  //考虑寻路
-		//moveTo_directly( sp_target->getPosition());
+		
 	}
 	else {
 		if (!_onAttack) {
@@ -279,7 +277,7 @@ void Unit::getDamaged(Unit* producer, int damage) {
 	if (damage < 0) {
 		return;
 	}
-	_life_current -= damage;
+	_life_current -= damage/(_defense/2);
 	
 	if (producer == nullptr) {
 //		log("warning: this hit has no one declear responsable");

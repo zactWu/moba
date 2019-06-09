@@ -9,6 +9,9 @@ Vec2 pos[2],tar[2];
 #include "client.h"
 #include "ui/CocosGUI.h"
 #include <mutex>
+#include "ShopLayer.h"
+#include "cocostudio/CocoStudio.h"
+#include "SimpleAudioEngine.h"
 #define SEVER 0
 #define MESIDE 0
 #define ENEMYSIDE 1
@@ -16,6 +19,7 @@ Vec2 pos[2],tar[2];
 #define HEROZERO 15
 #define AnimateLimit 15
 #define SystemLimit 30
+#define Shop 100
 
 GameClient client;
 extern bool fight;
@@ -35,6 +39,15 @@ bool GameScene::init() {
 	{
 		return false;
 	}
+
+	equipment = MenuItemImage::create("shop/shopbutton.png", "shop/shopbutton.png", CC_CALLBACK_1(GameScene::gotoshop, this));//商店
+	equipment->setScale(0.2);
+	equipment->setPosition(1050,625);
+	equipment->setTag(0);
+	auto menu = Menu::create(equipment, NULL);
+	menu->setPosition(Point::ZERO);
+	this->addChild(menu,Shop);
+
 	MapInit();			//map初始化
 	HeroInit();
 	PointInit();
@@ -44,6 +57,8 @@ bool GameScene::init() {
 	client.ClientProcess();
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.2);
+
+
 
 	ListenOutside();
 	return true;
@@ -598,3 +613,31 @@ void GameScene::SoldierAction() {
 		}
 	}
 }
+
+
+void GameScene::gotoshop(Ref* psender) {
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	auto winsize = Director::getInstance()->getWinSize();
+	if (equipment->getTag() == 0)
+	{
+		Sprite* window = Sprite::create("shop/window.png");
+		auto contentsize = window->getContentSize();
+		window->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+		window->setScale(winsize.width * 0.8 / contentsize.width, winsize.height * 0.5 / contentsize.height);
+		this->addChild(window, Shop);
+		ShopLayer* scrollView = ShopLayer::createLayer(hero);
+		window->setName("rm1");
+		scrollView->setName("rm2");
+		this->addChild(scrollView,101);
+		equipment->setTag(1);
+	}
+	else
+	{
+		this->removeChildByName("rm1");
+		this->removeChildByName("rm2");
+		equipment->setTag(0);
+	}
+
+}
+
+

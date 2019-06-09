@@ -6,12 +6,13 @@
 #include "Hero.h"
 #include "TowerClass.h"
 
+
 //GameClient client;// 不用服务器注释掉这行
 class GameScene :public Layer {
 private:
 
-	
-	
+
+
 	//屏幕尺寸瓦片尺寸
 	Size viewSize;
 	Size mapSize;
@@ -31,7 +32,7 @@ private:
 		int has_been = 0;//一律给我的时候是0，跑完也全部是0 
 	};
 
-	
+
 	std::vector<MapPoint> movemark;
 	Vec2 heroSetPosition;
 	Vec2 soldierSetPosition;
@@ -51,7 +52,7 @@ public:
 	bool MapInit();
 	bool HeroInit();
 	bool ChatInit();
-	void AllActionsTakenEachF(float dt);			
+	void AllActionsTakenEachF(float dt);
 	void mapMove();//每一帧都调用，监测鼠标位置，判断是否移动地图（后续可能会添加其他功能）
 	void UiShow();
 	void AddSoldiers(float dt);
@@ -71,13 +72,17 @@ public:
 	bool SkillHit(Skill* sk, Unit* un);
 	// 接下来就各种各样的技能
 	void UsingFireBoll(Unit* hero, Vec2 newPosition, Unit* tar);
-	void UsingFireBoll(Unit* sb,Vec2 newPosition);
+	void UsingFireBoll(Unit* sb, Vec2 newPosition);
 
 	CREATE_FUNC(GameScene);
-	
+
 	void ListenOutside();
 
 	int ClickFindTag(Vec2 pos);
+
+	cocos2d::MenuItemImage* equipment;
+	void gotoshop(cocos2d::Ref* psender);
+
 
 };
 

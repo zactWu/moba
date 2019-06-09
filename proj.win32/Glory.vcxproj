@@ -160,6 +160,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Hero.cpp" />
     <ClCompile Include="..\Classes\MoveFind.cpp" />
     <ClCompile Include="..\Classes\SettingScene.cpp" />
+    <ClCompile Include="..\Classes\ShopLayer.cpp" />
     <ClCompile Include="..\Classes\SkillClass.cpp" />
     <ClCompile Include="..\Classes\SkillKinds.cpp" />
     <ClCompile Include="..\Classes\Startscene.cpp" />
@@ -179,6 +180,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Hero.h" />
     <ClInclude Include="..\Classes\MoveFind.h" />
     <ClInclude Include="..\Classes\SettingScene.h" />
+    <ClInclude Include="..\Classes\ShopLayer.h" />
     <ClInclude Include="..\Classes\skillClass.h" />
     <ClInclude Include="..\Classes\SkillKinds.h" />
     <ClInclude Include="..\Classes\Startscene.h" />

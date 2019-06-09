@@ -149,6 +149,8 @@ int GameScene::ClickFindTag(Vec2 pos) {
 	return tag;
 }
 
+
+
 void control::send_to_sever() {
 	cocos2d::log("this is send to sever");
 	gameLock.lock();
