@@ -157,7 +157,7 @@ bool GameScene::ChatInit()
 
 
 void GameScene::AllActionsTakenEachSecond(float dt) {
-	hero->_money++;// 속풀
+	hero->_money+=1000;// 속풀
 	SkillHitCheck();
 	UnitDeadAction();
 	TowerAction();
@@ -448,7 +448,7 @@ void GameScene::UiShow() {
 	{
 		levelLabel->setPosition(Vec2(50, 1700));
 		this->addChild(levelLabel, 10);
-		levelLabel->setName("levelLabel");
+		levelLabel->setName("level");
 	}
 	//money
 	if (this->getChildByName("MoneyLabel") != nullptr) {

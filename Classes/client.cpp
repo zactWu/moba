@@ -155,15 +155,46 @@ DWORD __stdcall GameClient::Receive(LPVOID lpParam)
 				cocos2d::log("recv chat %s", recvbuf);
 				strcpy(Client->ChattingInfirmationFromTheOther, recvbuf);
 				Client->UpdateChatMessage = true;  //现在需要更新聊天信息
-				gameLock.unlock();
+			}
+			else if ('$' == recvbuf[0]) {
+				char num = recvbuf[1];
+				cocos2d::log("shop %c", num);
+				switch (num)
+				{
+				case '1':
+					client.en_hero->_speed += 30;//购买鞋子没反应
+					break;
+				case '2':
+					client.en_hero->_attack += 5;
+					break;
+				case '3':
+					client.en_hero->_defense += 5;
+					break;
+				case '4':
+					client.en_hero->_attackRange += 10;
+					break;
+				case '5':
+					client.en_hero->_attack += 5;
+					client.en_hero->_attackRange += 10;
+					break;
+				case '6':
+					client.en_hero->_life_max += 25;
+					break;
+				case '7 ':
+					client.en_hero->_speed += 20;
+					client.en_hero->_attack += 3;
+					client.en_hero->_defense += 3;
+					client.en_hero->_attackRange += 8;
+					client.en_hero->_life_max += 20;
+					break;
+				}
 			}
 			else {								//如果不是聊天信息
 				order od;
 				sscanf_s(recvbuf, "%f#%f#%d#%d", &od.pos.x, &od.pos.y, &od.kind, &od.tag);
-				client.en_hero->order_list.push_back(od);
-				gameLock.unlock();
-			
+				client.en_hero->order_list.push_back(od);			
 			}
+			gameLock.unlock();
 		}
 	}
 	return 0;

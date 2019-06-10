@@ -8,8 +8,11 @@
 
 #include "ShopLayer.h"
 #include<cmath>
+#include <mutex>
+#include "client.h"
 
-
+extern GameClient client;
+extern std::mutex gameLock;
 Hero* hero;
 ShopLayer* ShopLayer::createLayer(Hero* hero1)
 {
@@ -39,27 +42,27 @@ bool ShopLayer::init()
         Label* move = Label::createWithTTF("Travel Boots", "fonts/aslangbary.otf", 35);
         move ->setPosition(0.15 * winSize.width,  winSize.height);layer->addChild(move, Shopitem);
         auto shoes = MenuItemImage::create("shop/shoe.png", "shop/shoe.png");
-        shoes->setScale(0.4f);shoes->setPosition(0.3*winSize.width, winSize.height);shoes->setTag(1);
+        shoes->setScale(0.4f);shoes->setPosition(0.3*winSize.width, winSize.height);
         auto content_shoes = MenuItemLabel::create(Label::createWithTTF("Speed+30                  $500", "fonts/Quicksand-Bold.ttf", 20));content_shoes->setPosition(0.5*winSize.width, winSize.height);
-        auto buy_shoes = MenuItemImage::create("shop/buy.png","shop/buy.png");
+        auto buy_shoes = MenuItemImage::create("shop/buy.png","shop/buy.png", CC_CALLBACK_1(ShopLayer::buyCallback, this, 500)); buy_shoes->setTag(1);
         buy_shoes->setScale(0.3f);buy_shoes->setPosition(0.7*winSize.width, winSize.height);
         
         //2.净魂之刃
         Label* swordname = Label::createWithTTF("Diffusal Blade", "fonts/aslangbary.otf", 35);
         swordname->setPosition(0.15 * winSize.width, 0.85* winSize.height);layer->addChild(swordname, Shopitem);
         auto sword = MenuItemImage::create("shop/sword.png", "shop/sword.png");
-        sword->setScale(0.4f);sword->setPosition(0.3*winSize.width,0.85*winSize.height);sword->setTag(2);
+        sword->setScale(0.4f);sword->setPosition(0.3*winSize.width,0.85*winSize.height);
         auto content_sword = MenuItemLabel::create(Label::createWithTTF("Attack+5                  $500", "fonts/Quicksand-Bold.ttf", 20));content_sword->setPosition(0.5*winSize.width, 0.85*winSize.height);
-        auto buy_sword = MenuItemImage::create("shop/buy.png","shop/buy.png",CC_CALLBACK_1(ShopLayer::buyCallback,this,300));
+        auto buy_sword = MenuItemImage::create("shop/buy.png","shop/buy.png",CC_CALLBACK_1(ShopLayer::buyCallback,this,500)); buy_sword->setTag(2);
         buy_sword->setScale(0.3f);buy_sword->setPosition(0.7*winSize.width, 0.85*winSize.height);
         
         //3.先锋盾
         Label* shieldname = Label::createWithTTF("Vanguard", "fonts/aslangbary.otf", 35);
         shieldname->setPosition(0.15 * winSize.width, 0.7* winSize.height);layer->addChild(shieldname, Shopitem);
         auto shield = MenuItemImage::create("shop/shield.png", "shop/shield.png");
-        shield->setScale(0.4f);shield->setPosition(0.3*winSize.width,0.7*winSize.height);shield->setTag(3);
+        shield->setScale(0.4f);shield->setPosition(0.3*winSize.width,0.7*winSize.height);
         auto content_shield = MenuItemLabel::create(Label::createWithTTF("Defence+5                $300", "fonts/Quicksand-Bold.ttf", 20));content_shield->setPosition(0.5*winSize.width, 0.7*winSize.height);
-        auto buy_shield = MenuItemImage::create("shop/buy.png","shop/buy.png",CC_CALLBACK_1(ShopLayer::buyCallback,this,300));
+        auto buy_shield = MenuItemImage::create("shop/buy.png","shop/buy.png",CC_CALLBACK_1(ShopLayer::buyCallback,this,300)); buy_shield->setTag(3);
         buy_shield->setScale(0.3f);buy_shield->setPosition(0.7*winSize.width, 0.7*winSize.height);
         
         //4.大根
@@ -68,34 +71,34 @@ bool ShopLayer::init()
         auto wand = MenuItemImage::create("shop/wand.png", "shop/wand.png");
         wand->setScale(0.4f);wand->setPosition(0.3*winSize.width,0.55*winSize.height);wand->setTag(4);
         auto content_wand = MenuItemLabel::create(Label::createWithTTF("Attackrange+10                   $300", "fonts/Quicksand-Bold.ttf", 20));content_wand->setPosition(0.5*winSize.width, 0.55*winSize.height);
-        auto buy_wand = MenuItemImage::create("shop/buy.png","shop/buy.png",CC_CALLBACK_1(ShopLayer::buyCallback,this,300));
+        auto buy_wand = MenuItemImage::create("shop/buy.png","shop/buy.png",CC_CALLBACK_1(ShopLayer::buyCallback,this,300)); buy_wand->setTag(4);
         buy_wand->setScale(0.3f);buy_wand->setPosition(0.7*winSize.width, 0.55*winSize.height);
         
         //5.散夜对剑
         Label* doubleswordname = Label::createWithTTF("Double Sword", "fonts/aslangbary.otf", 35);
         doubleswordname->setPosition(0.15 * winSize.width, 0.4* winSize.height);layer->addChild(doubleswordname, Shopitem);
         auto doublesword = MenuItemImage::create("shop/doublesword.png", "shop/doublesword.png");
-        doublesword->setScale(0.4f);doublesword->setPosition(0.3*winSize.width,0.4*winSize.height);doublesword->setTag(5);
+        doublesword->setScale(0.4f);doublesword->setPosition(0.3*winSize.width,0.4*winSize.height);
         auto content_doublesword = MenuItemLabel::create(Label::createWithTTF("Attack+5 Attackrange+10        $550", "fonts/Quicksand-Bold.ttf", 20));content_doublesword->setPosition(0.5*winSize.width, 0.4*winSize.height);
-        auto buy_doublesword = MenuItemImage::create("shop/buy.png","shop/buy.png",CC_CALLBACK_1(ShopLayer::buyCallback,this,550));
+        auto buy_doublesword = MenuItemImage::create("shop/buy.png","shop/buy.png",CC_CALLBACK_1(ShopLayer::buyCallback,this,550)); buy_doublesword->setTag(5);
         buy_doublesword->setScale(0.3f);buy_doublesword->setPosition(0.7*winSize.width, 0.4*winSize.height);
         
         //6.龙心
         Label* heartname = Label::createWithTTF("Heart Of Tarrasque", "fonts/aslangbary.otf", 35);
         heartname->setPosition(0.15 * winSize.width, 0.25* winSize.height);layer->addChild(heartname, Shopitem);
         auto heart = MenuItemImage::create("shop/heart.png", "shop/heart.png");
-        heart->setScale(0.4f);heart->setPosition(0.3*winSize.width,0.25*winSize.height);heart->setTag(6);
+        heart->setScale(0.4f);heart->setPosition(0.3*winSize.width,0.25*winSize.height);
         auto content_heart = MenuItemLabel::create(Label::createWithTTF("Max HP+25                  $600", "fonts/Quicksand-Bold.ttf", 20));content_heart->setPosition(0.5*winSize.width, 0.25*winSize.height);
-        auto buy_heart = MenuItemImage::create("shop/buy.png","shop/buy.png",CC_CALLBACK_1(ShopLayer::buyCallback,this,600));
+        auto buy_heart = MenuItemImage::create("shop/buy.png","shop/buy.png",CC_CALLBACK_1(ShopLayer::buyCallback,this,600)); buy_heart->setTag(6);
         buy_heart->setScale(0.3f);buy_heart->setPosition(0.7*winSize.width, 0.25*winSize.height);
         
         //7.阿哈利姆神杖
         Label* sceptername = Label::createWithTTF("Aghanim's Scepter", "fonts/aslangbary.otf", 35);
         sceptername->setPosition(0.15 * winSize.width, 0.1* winSize.height);layer->addChild(sceptername, Shopitem);
         auto scepter = MenuItemImage::create("shop/scepter.png", "shop/scepter.png");
-        scepter->setScale(0.4f);scepter->setPosition(0.3*winSize.width,0.1*winSize.height);scepter->setTag(7);
+        scepter->setScale(0.4f);scepter->setPosition(0.3*winSize.width,0.1*winSize.height);
         auto content_scepter = MenuItemLabel::create(Label::createWithTTF("All Promote!                         $1000", "fonts/Quicksand-Bold.ttf", 20));content_scepter->setPosition(0.5*winSize.width, 0.1*winSize.height);
-        auto buy_scepter = MenuItemImage::create("shop/buy.png","shop/buy.png",CC_CALLBACK_1(ShopLayer::buyCallback,this,1000));
+		auto buy_scepter = MenuItemImage::create("shop/buy.png", "shop/buy.png", CC_CALLBACK_1(ShopLayer::buyCallback, this, 1000)); buy_scepter->setTag(7);	
         buy_scepter->setScale(0.3f);buy_scepter->setPosition(0.7*winSize.width, 0.1*winSize.height);
         
        
@@ -146,6 +149,12 @@ void ShopLayer::buyCallback(Ref* psender,int price)
     hero->_money -= price;
     auto itemSelect = (MenuItem*)psender;
     int num = itemSelect->getTag();
+	cocos2d::log("tag is %d", num);
+	gameLock.lock();
+	char inf[GameClient::InformationLength];
+	sprintf_s(inf, "$%d", num);
+	strcat(&client.SendBuf[GameClient::InformationLength], inf);
+	gameLock.unlock();
     switch (num)
     {
         case 1:
