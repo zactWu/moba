@@ -29,7 +29,7 @@ bool GameClient::init(Hero* h,Hero* e)
 	ServerAddr.sin_port = htons(PORTS);
 
 
-	ServerAddr.sin_addr.S_un.S_addr = inet_addr("192.168.43.168");
+	ServerAddr.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
 	ClientSocket = socket(PF_INET, SOCK_STREAM, 0);
 
 	if (ClientSocket == INVALID_SOCKET)
