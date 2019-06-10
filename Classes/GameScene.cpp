@@ -113,7 +113,12 @@ void GameScene::TowerInit() {
 bool GameScene::HeroInit()
 {
 	Vec2 pos2 = { 100,100 };
-	
+	Vec2 pos = { mapSize.width * tileSize.width - 100,mapSize.height * tileSize.height - 100 };
+	if (this_computer_side == 1) {
+		Vec2 temp = pos2;
+		pos2 = pos;
+		pos = temp;
+	}
 	std::string herotype;
 	switch (hero_id)
 	{
@@ -128,7 +133,6 @@ bool GameScene::HeroInit()
 		break;
 	}
 	hero = Hero::create(herotype + "/0.png", herotype);
-
 	hero->_side = MESIDE;
 	this->unit_map[unit_num[0]] = hero;
 	hero->_money = 0;
@@ -141,7 +145,7 @@ bool GameScene::HeroInit()
 	hero->Qskill_cd_time = 2000;
 	hero->Qskill_last_release_time = 0;
 
-	Vec2 pos = { mapSize.width*tileSize.width-100,mapSize.height*tileSize.height-100 };
+	
 
 	switch (en_hero_id)
 	{
@@ -158,12 +162,13 @@ bool GameScene::HeroInit()
 	en_hero = Hero::create(herotype + "/0.png", herotype);
 
 	en_hero->_side =1;
-	en_hero->setPosition(pos);
+	en_hero->reborn_pos = pos;
+	en_hero->setPosition(en_hero->reborn_pos);
 	unit_map[unit_num[1]] = en_hero;
 	en_hero->_money = 0;
 	en_hero->setTag(unit_num[1]);
 	en_hero->_it_tag = unit_num[1];
-	en_hero->reborn_pos = pos;
+	
 	map->addChild(en_hero);
 	unit_num[1]++;
 	en_hero->Qskill_cd_time = 2000;
