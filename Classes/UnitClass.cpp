@@ -35,7 +35,6 @@ Unit* Unit::create(const std::string& filename, const std::string& unitType,
 		unit->_lifeBank->setPosition(unit->getPosition() + Vec2(30.f, 60.f));
 		unit->addChild(unit->_lifeBank, 1);
 		unit->autorelease();
-
 		return unit;
 	}
 

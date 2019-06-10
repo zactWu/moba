@@ -19,7 +19,7 @@ Vec2 pos[2],tar[2];
 #define MAPZERO 10
 #define HEROZERO 15
 #define AnimateLimit 15
-#define SystemLimit 30
+#define SystemLimit 20
 #define Shop 100
 
 GameClient client;
@@ -114,10 +114,13 @@ bool GameScene::HeroInit()
 {
 	Vec2 pos2 = { 100,100 };
 	Vec2 pos = { mapSize.width * tileSize.width - 100,mapSize.height * tileSize.height - 100 };
+	this_computer_side = 1;
 	if (this_computer_side == 1) {
 		Vec2 temp = pos2;
 		pos2 = pos;
 		pos = temp;
+		auto move = MoveTo::create(0.1, Vec2(viewSize.width - mapSize.width * tileSize.width, viewSize.height - mapSize.height * tileSize.height));
+		map->runAction(move);
 	}
 	std::string herotype;
 	switch (hero_id)
@@ -133,9 +136,9 @@ bool GameScene::HeroInit()
 		break;
 	}
 	hero = Hero::create(herotype + "/0.png", herotype);
-	hero->_side = MESIDE;
+	hero->_side = this_computer_side;
 	this->unit_map[unit_num[0]] = hero;
-	hero->_money = 0;
+	hero->_money = this_computer_side;
 	hero->reborn_pos = pos2;
 	hero->setPosition(pos2);
 	hero->setTag(unit_num[0]);
@@ -161,7 +164,7 @@ bool GameScene::HeroInit()
 	}
 	en_hero = Hero::create(herotype + "/0.png", herotype);
 
-	en_hero->_side =1;
+	en_hero->_side =1-this_computer_side;
 	en_hero->reborn_pos = pos;
 	en_hero->setPosition(en_hero->reborn_pos);
 	unit_map[unit_num[1]] = en_hero;
@@ -291,7 +294,7 @@ void GameScene::UnitDeadAction() {
 		}
 		else {
 			// 先是受伤
-			if (unit_map.size() < AnimateLimit) {// 动画效果都塞到这里来
+			if (unit_map.size() < AnimateLimit && false) {// 动画效果都塞到这里来
 //				log("no more animate");
 				unit->second->getDamaged();// 重载过的，里面是动画
 
