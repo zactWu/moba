@@ -301,7 +301,7 @@ void GameServer::SendMessageToAllClient(const string  str, int ID)
 	bool flag = true;
 	for (int i = 0; i < MAX_NUM; i++)
 	{
-		if (ID != i)
+	if (ID != i)
 		{
 			if (AcceptSocket[i].ClientSock != INVALID_SOCKET &&
 				!SendMessageToOneClient(i, str))

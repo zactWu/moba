@@ -150,7 +150,6 @@ bool GameScene::ChatInit()
 	this->addChild(textField, 10);
 	textField->setPosition(Vec2(50, 50));
 	textField->addTouchEventListener([&](Ref* sender, cocos2d::ui::Widget::TouchEventType type) {
-		log("chat");
 		});
 	return true;
 }
@@ -280,7 +279,9 @@ void GameScene::UnitDead(Unit *unit) {
 	if (unit->_last_attacker != NULL) {
 		if (unit->_last_attacker == hero) {
 //			log("right");
-
+			if (unit == en_hero) {
+				hero->_kill_times++;
+			}
 			hero->_money += unit->_kill_award;
 			hero->_kill_award +=100;
 			if (unit->_last_attacker->_money != hero->_money && (unit->_last_attacker==hero)) {
@@ -290,7 +291,11 @@ void GameScene::UnitDead(Unit *unit) {
 //				log("POINTER right");
 			}
 		}
-		
+		if (unit->_last_attacker == en_hero) {
+			if (unit == hero) {
+				en_hero->_kill_times++;
+			}
+		}
 //		cocos2d::log("you(%d) should get %d money and now is %d", unit->_last_attacker->_it_tag,unit->_kill_award, hero->_money);
 	}
 	//死亡动画是下面这段
@@ -311,6 +316,7 @@ void GameScene::UnitDead(Unit *unit) {
 	}
 	
 	if (unit == hero) {// 这里是复活的
+		hero->_dead_times++;
 		hero->skill_statement = 0;
 		hero->_life_current = hero->_life_max;
 		hero->setPosition(hero->reborn_pos);
@@ -319,6 +325,7 @@ void GameScene::UnitDead(Unit *unit) {
 		return;
 	}
 	if (unit == en_hero) {
+		en_hero->_dead_times++;
 		en_hero->skill_statement = 0;
 		en_hero->_life_current = en_hero->_life_max;
 		en_hero->setPosition(en_hero->reborn_pos);
@@ -437,8 +444,8 @@ void GameScene::UiShow() {
 		client.UpdateChatMessage = false;
 	}
 	//等级
-	if (this->getChildByName("level") != nullptr) {
-		this->removeChildByName("level");
+	if (this->getChildByName("levelLabel") != nullptr) {
+		this->removeChildByName("levelLabel");
 	}
 	char l[20];
 	int level = hero->_kill_award / 300;
@@ -446,9 +453,22 @@ void GameScene::UiShow() {
 	auto levelLabel = Label::createWithSystemFont(l, "Arial", 30);
 	if (levelLabel != nullptr)
 	{
-		levelLabel->setPosition(Vec2(50, 1700));
+		levelLabel->setPosition(Vec2(100, 200));
 		this->addChild(levelLabel, 10);
-		levelLabel->setName("level");
+		levelLabel->setName("levelLabel");
+	}
+	//战绩
+	if (this->getChildByName("MyScore") != nullptr) {
+		this->removeChildByName("MyScore");
+	}
+	char score[20] = { 123 };
+	sprintf_s(score, "%d : %d", hero->_kill_times,hero->_dead_times);
+	auto MyScore = Label::createWithSystemFont(score, "Arial", 30);
+	if (MyScore != nullptr)
+	{
+		MyScore->setPosition(Vec2(viewSize.width / 2, viewSize.height - 100));
+		this->addChild(MyScore, 10);
+		MyScore->setName("MyScore");
 	}
 	//money
 	if (this->getChildByName("MoneyLabel") != nullptr) {

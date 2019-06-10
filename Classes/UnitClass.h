@@ -23,7 +23,8 @@ public:
 	int _speed;
 	int _moveDir;
 	float _attackInterval;
-
+	int _kill_times = 0;
+	int _dead_times = 0;
 
 	static Unit* create(const std::string& filename, const std::string& unitType,
 		int maxLife = 100, int attack = 5, int defense = 3, int speed = 100,

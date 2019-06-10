@@ -156,7 +156,7 @@ DWORD __stdcall GameClient::Receive(LPVOID lpParam)
 				strcpy(Client->ChattingInfirmationFromTheOther, recvbuf);
 				Client->UpdateChatMessage = true;  //现在需要更新聊天信息
 			}
-			else if ('$' == recvbuf[0]) {
+			else if ('$' == recvbuf[0]) {		//装备
 				char num = recvbuf[1];
 				cocos2d::log("shop %c", num);
 				switch (num)
