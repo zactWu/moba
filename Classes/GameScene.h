@@ -64,8 +64,6 @@ public:
 	std::map<int, Unit*> unit_map;
 	std::map<int, Tower*> tower_map;
 	std::map<int, Skill*> skill_map;
-	int my_hero_id;
-	int en_hero_id;//最后是通过全局看
 	int unit_num[2] = { 1,1000 };
 	int skill_num = 0;
 	int tower_num[2] = { 10000,20000 };

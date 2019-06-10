@@ -21,7 +21,8 @@ Vec2 pos[2],tar[2];
 #define AnimateLimit 15
 #define SystemLimit 20
 #define Shop 100
-
+#define HEROTAG 1234
+#define ENHEROTAG 4321
 GameClient client;
 extern bool fight;
 bool Add = false;
@@ -141,8 +142,8 @@ bool GameScene::HeroInit()
 	hero->_money = this_computer_side;
 	hero->reborn_pos = pos2;
 	hero->setPosition(pos2);
-	hero->setTag(unit_num[0]);
-	hero->_it_tag = unit_num[0];
+	hero->setTag(ENHEROTAG);
+	hero->_it_tag = ENHEROTAG;
 	map->addChild(hero);
 	unit_num[0]++;
 	hero->Qskill_cd_time = 2000;
@@ -169,8 +170,8 @@ bool GameScene::HeroInit()
 	en_hero->setPosition(en_hero->reborn_pos);
 	unit_map[unit_num[1]] = en_hero;
 	en_hero->_money = 0;
-	en_hero->setTag(unit_num[1]);
-	en_hero->_it_tag = unit_num[1];
+	en_hero->setTag(HEROTAG);
+	en_hero->_it_tag = HEROTAG;
 	
 	map->addChild(en_hero);
 	unit_num[1]++;
@@ -423,7 +424,7 @@ void GameScene::AllActionsTakenEachF(float dt)
 {
 
 	if (false == Add && true == fight) {		//未出过兵以及开始战斗
-		this->schedule(schedule_selector(GameScene::AddSoldiers), 15.0f);		//十五秒出一波兵
+		this->schedule(schedule_selector(GameScene::AddSoldiers), 35.0f);		//十五秒出一波兵
 		log("Add");
 		Add = true;			//出过兵了
 	}
