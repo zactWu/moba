@@ -12,6 +12,7 @@ Vec2 pos[2],tar[2];
 #include "ShopLayer.h"
 #include "cocostudio/CocoStudio.h"
 #include "SimpleAudioEngine.h"
+#include "GlobalVal.h"
 #define SEVER 0
 #define MESIDE 0
 #define ENEMYSIDE 1
@@ -112,7 +113,22 @@ void GameScene::TowerInit() {
 bool GameScene::HeroInit()
 {
 	Vec2 pos2 = { 100,100 };
-	hero = Hero::create("soldier/0.png", "soldier");
+	
+	std::string herotype;
+	switch (hero_id)
+	{
+	case WARRIOR:
+		herotype = "warrior";
+		break;
+	case ARCHER:
+		herotype = "archer";
+		break;
+	case MAGICIAN:
+		herotype = "magician";
+		break;
+	}
+	hero = Hero::create(herotype + "/0.png", herotype);
+
 	hero->_side = MESIDE;
 	this->unit_map[unit_num[0]] = hero;
 	hero->_money = 0;
@@ -126,7 +142,21 @@ bool GameScene::HeroInit()
 	hero->Qskill_last_release_time = 0;
 
 	Vec2 pos = { mapSize.width*tileSize.width-100,mapSize.height*tileSize.height-100 };
-	en_hero = Hero::create("soldier/0.png", "soldier");
+
+	switch (en_hero_id)
+	{
+	case WARRIOR:
+		herotype = "warrior";
+		break;
+	case ARCHER:
+		herotype = "archer";
+		break;
+	case MAGICIAN:
+		herotype = "magician";
+		break;
+	}
+	en_hero = Hero::create(herotype + "/0.png", herotype);
+
 	en_hero->_side =1;
 	en_hero->setPosition(pos);
 	unit_map[unit_num[1]] = en_hero;
@@ -548,7 +578,7 @@ void GameScene::UiShow() {
 }
 void GameScene::AddSoldiers(float dt)
 {
-	this->schedule(schedule_selector(GameScene::AddOneSoldier), 1.0f, 0, 0);
+	this->schedule(schedule_selector(GameScene::AddOneSoldier), 1.0f, 2, 0);
 }
 
 void GameScene::AddOneSoldier(float dt)
@@ -557,12 +587,34 @@ void GameScene::AddOneSoldier(float dt)
 		log("no more soider");
 		return;
 	}
-
+	
 	pos[0] = { 50,50 };
 	pos[1] = { 2500,2500 };
 	log("come out!");// 这个可以修改为出兵的出生点和到达点
 	static int kind_by_time = 0;
-	auto soldier = Unit::create("soldier/0.png", "soldier");//暂时只有我方
+	std::string my_name;
+	std::string en_name;
+	int acr = 0;
+	switch (kind_by_time%3)
+	{
+	case 0:
+		my_name = "soldier_blue";
+		en_name = "soldier_yellow";
+		acr = 80;
+		break;
+	case 1:
+		my_name = "long_green";
+		en_name = "long_brown";
+		acr = 200;
+		break;
+	case 2:
+		my_name = "helicopter1";
+		en_name = "helicopter2";
+		acr = 280;
+		break;
+
+	}
+	auto soldier = Unit::create(my_name + "/0.png", my_name);//暂时只有我方
 	soldier->_side = 0;
 	unit_map[unit_num[soldier->_side]] = soldier;
 	soldier->setTag(unit_num[soldier->_side]);
@@ -574,9 +626,10 @@ void GameScene::AddOneSoldier(float dt)
 	map->addChild(soldier);
 	soldier->moveTo_directly(pos[1- soldier->_side]);
 	soldier->_kill_award = 100;
+	soldier->_attackRange = acr;
 	// 接下来是敌方
 
-	auto soldier2 = Unit::create("soldier/0.png", "soldier");//暂时只有我方
+	auto soldier2 = Unit::create(en_name + "/0.png", en_name);
 	soldier2->_side = 1;
 	unit_map[unit_num[soldier2->_side]] = soldier2;
 	soldier2->setTag(unit_num[soldier2->_side]);
@@ -588,6 +641,7 @@ void GameScene::AddOneSoldier(float dt)
 	map->addChild(soldier2);
 	soldier2->moveTo_directly(pos[1-soldier2->_side]);
 	soldier2->_kill_award = 100;
+	soldier2->_attackRange = acr;
 	kind_by_time++;
 }
 

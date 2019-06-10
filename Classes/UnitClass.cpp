@@ -52,11 +52,11 @@ inline void Unit::animate_move_forever(int dir) {
 		animFrames.reserve(2);
 		animFrames.pushBack(SpriteFrame::create(
 			_unitType + "/" + std::to_string(dir) + "_" + std::to_string(1) + ".png",
-			Rect(0, 0, 64, 64)
+			Rect(0, 0, 156, 156)
 		));
 		animFrames.pushBack(SpriteFrame::create(
 			_unitType + "/" + std::to_string(dir) + "_" + std::to_string(2) + ".png",
-			Rect(0, 0, 64, 64)
+			Rect(0, 0, 156, 156)
 		));
 		Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.5f);
 		Animate* animate = Animate::create(animation);
@@ -176,7 +176,7 @@ void Unit::attack_once(Unit* sp_enemy) {
 	animFrames1.reserve(1);
 	animFrames1.pushBack(SpriteFrame::create(
 		_unitType + "/" + std::to_string(iDir) + ".png",
-		Rect(0, 0, 64, 64)
+		Rect(0, 0, 156, 156)
 	));
 	Animation* animation1 = Animation::createWithSpriteFrames(animFrames1, _attackInterval / 2.f);
 	Animate* animate1 = Animate::create(animation1);
@@ -192,7 +192,7 @@ void Unit::attack_once(Unit* sp_enemy) {
 	animFrames2.reserve(1);
 	animFrames2.pushBack(SpriteFrame::create(
 		_unitType + "/" + std::to_string(iDir) + "a.png",
-		Rect(0, 0, 64, 64)
+		Rect(0, 0, 156, 156)
 	));
 	Animation* animation2 = Animation::createWithSpriteFrames(animFrames2, _attackInterval / 2.f);
 	Animate* animate2 = Animate::create(animation2);
@@ -218,7 +218,7 @@ void Unit::attack_once(Unit* sp_enemy) {
 	animFrames3.reserve(1);
 	animFrames3.pushBack(SpriteFrame::create(
 		_unitType + "/" + std::to_string(iDir) + ".png",
-		Rect(0, 0, 64, 64)
+		Rect(0, 0, 156, 156)
 	));
 	Animation* animation3 = Animation::createWithSpriteFrames(animFrames3, 0.05);
 	Animate* animate3 = Animate::create(animation3);
@@ -315,7 +315,11 @@ void Unit::longRangeAttack(Unit* enemy) {
 		return;
 	}
 
-	auto skill = Skill::create("fireboll.jpg", 300, _attack, 500, 50);
+	auto skill = Skill::create("bullet_" + _unitType + ".png", 300, _attack, 500, 50);
+	if (skill == nullptr) {
+		cocos2d::log("bullet init failed!");
+		return;
+	}
 	skill->targe = enemy;
 	skill->_skiller = this;
 	skill->setScale(0.3);
