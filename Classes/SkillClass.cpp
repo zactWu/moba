@@ -24,21 +24,22 @@ Skill* Skill::create(const std::string& filename,
 
 bool GameScene::SkillHit(Skill *sk,Unit *un) {
 	if (sk->_side == un->_side) {
+//		log("en_gesi is %d", un->_side);
 		return 0;
 	}
 	if (sk->targe != NULL) {
 		if (sk->targe != un) {
+//			log("you are not the one");
 			return 0;
 		}
 		
 	}
 	if (un->getPosition().getDistance(sk->getPosition()) < sk->hit_range) {
 		float dis = un->getPosition().getDistance(sk->getPosition());
-		log("dis is %f", dis);
-		un->_life_current -= 10;
 		//log("dead!");
 		return 1;
 	}
+	log("dis is %f", un->getPosition().getDistance(sk->getPosition()));
 	return 0;
 }
 void Skill::move(Vec2 from, Vec2 to) {
@@ -51,25 +52,3 @@ void Skill::move(Vec2 from, Vec2 to) {
 	return;
 }
 
-void GameScene::UsingFireBoll(Unit *hero,Vec2 newPosition,Unit *tar) {
-	static clock_t last_time = 0;
-	clock_t now_time = clock();
-	float pass_time = now_time - last_time;
-	if (pass_time < 2000) {// cd时间在这里调整
-		log("fireboll still cd");
-		return;
-	}
-	last_time = now_time;
-	auto skill = Skill::create("fireboll.jpg", 300, 10, 300, 50);
-	skill->_skiller = hero;
-	skill->setScale(0.3);
-	skill->setPosition(hero->getPosition());
-	skill->_st_pos = hero->getPosition();
-	skill_map[skill_num] = skill;
-	skill_num++;
-	skill->_side = hero->_side;
-	skill->_release_time = clock();
-	map->addChild(skill, 12);//这里有一点问题要解决
-	skill->targe = tar;
-	skill->move(skill->_st_pos, newPosition);
-}

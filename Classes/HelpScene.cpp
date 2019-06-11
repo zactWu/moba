@@ -35,47 +35,33 @@ bool HelpScene::init()
     {
         return false;
     }
-    //整个搬到gamescene里
-    addChild(createText());
+    const auto content1 = Label::createWithTTF("1.Run server, open client and choose hero in Setting, then enjoy the game!", "fonts/Quicksand-Bold.ttf", 24);
+    const auto content2 = Label::createWithTTF("2.Control your hero by mouse and release skills by Q W E on keyboard!", "fonts/Quicksand-Bold.ttf", 24);
+    const auto content3 = Label::createWithTTF("3.Don't forget to use chatbox button in the left-bottom side to chat!", "fonts/Quicksand-Bold.ttf", 24);
+    const auto content4 = Label::createWithTTF("4.The crazy creeps will march after a while, be careful of them!", "fonts/Quicksand-Bold.ttf", 24);
+    const auto content5 = Label::createWithTTF("5.Heartfelt thanks to all developer and supporter of Glory!", "fonts/Quicksand-Bold.ttf", 24);
+    auto contentbg = Sprite::create("shop/window.png");
+    
+    content1->setPosition(570,500);
+    content2->setPosition(570,400);
+    content3->setPosition(570,300);
+    content4->setPosition(570,200);
+    content5->setPosition(570,100);
+    contentbg->setPosition(570,300);
+    contentbg->setScale(3.3);
+    addChild(content1,2);
+    addChild(content2,2);
+    addChild(content3,2);
+    addChild(content4,2);
+    addChild(content5,2);
+    addChild(contentbg,1);
+    addChild(createText(),2);
     addChild(createBGImage());
     
-    equipment = MenuItemImage::create("shop/shopbutton.png","shop/shopbutton.png",CC_CALLBACK_1(HelpScene::gotoshop,this));
-    equipment->setScale(0.2);
-    equipment->setPosition(1050,625);
-    equipment->setTag(0);
-    auto menu = Menu::create(equipment, NULL);
-    menu->setPosition(Point::ZERO);
-    this->addChild(menu);
-    //直到这里
-    
+
     return true;
 }
 
-//一起搬过去XD
-void HelpScene::gotoshop(Ref* psender){
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    auto winsize = Director::getInstance()->getWinSize();
-    if (equipment->getTag() == 0)
-    {
-        Sprite* window = Sprite::create("shop/window.png");
-        auto contentsize = window->getContentSize();
-        window->setPosition(visibleSize.width / 2, visibleSize.height / 2);
-        window->setScale(winsize.width*0.8/contentsize.width,winsize.height*0.5/contentsize.height);
-        this->addChild(window, 0);
-        ShopLayer* scrollView = ShopLayer::createLayer(hero);
-        window->setName("rm1");
-        scrollView->setName("rm2");
-        this->addChild(scrollView);
-        equipment->setTag(1);
-    }
-    else
-    {
-        this->removeChildByName("rm1");
-        this->removeChildByName("rm2");
-        equipment->setTag(0);
-    }
-    
-}
 
 cocos2d::Menu* HelpScene::createText()
 {
@@ -84,7 +70,6 @@ cocos2d::Menu* HelpScene::createText()
     const auto backButton=MenuItemLabel::create(Label::createWithTTF("Back", "fonts/OpenSans-Regular.ttf", 25),
                                                 CC_CALLBACK_1(HelpScene::menuBackCallback, this));
     const auto title = MenuItemLabel::create(Label::createWithTTF("Help", "fonts/Quicksand-Bold.ttf", 45));
-    
     const auto visibleSize = Director::getInstance()->getVisibleSize();
     const auto baseY = visibleSize.height * 0.85f;
     

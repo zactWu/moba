@@ -68,7 +68,7 @@ void Hero::UsingFireBall(Vec2 newPosition) {
 	clock_t now_time = clock();
 	float pass_time = now_time - last_time;
 	last_time = now_time;
-	auto skill = Skill::create("fireboll.jpg", 300, 10, 300, 50);
+	auto skill = Skill::create("fireball.png", 300, 10, 300, 50);
 	skill->_skiller = this;
 	skill->setScale(0.3);
 	skill->setPosition(getPosition());
@@ -90,7 +90,7 @@ void Hero::useSkill_trample() {
 	Wskill_last_release_time = clock();
 
 	stopAllActions();
-	specialEffect("trample.png", getPosition());
+	specialEffect("trample.png", getPosition(), 1.5f);
 	auto gameScene = dynamic_cast<GameScene*> (getParent()->getParent());
 	auto it = gameScene->unit_map.begin();
 	while (it != gameScene->unit_map.end()) {
@@ -104,7 +104,7 @@ void Hero::useSkill_trample() {
 }
 
 void Hero::useSkill_blinkToEnemy(Unit* enemy)
-{   
+{
 	if (enemy == nullptr) {
 		return;
 	}
@@ -114,18 +114,20 @@ void Hero::useSkill_blinkToEnemy(Unit* enemy)
 	}
 	Qskill_last_release_time = clock();
 
-	
+
 	stopAllActions();
 	auto pos_current = getPosition();
+	specialEffect("blink_1.png", pos_current, 0.5);
 	auto pos_enemy = enemy->getPosition();
 	auto diffVec = pos_enemy - pos_current;
 	auto diffVec_unt = diffVec / diffVec.length();
 	auto pos_target = pos_enemy - 64 * diffVec_unt;
 	setPosition(pos_target);
+	specialEffect("blink_1.png", pos_target, 0.5);
 	enemy->getDamaged(this, 20);
 }
 
-void Hero::useSkill_ConeWave(const Vec2 &pos_target) {
+void Hero::useSkill_ConeWave(const Vec2& pos_target) {
 	Qskill_cd_time = 2000;
 	if (clock() - Qskill_last_release_time < Qskill_cd_time) {
 		return;
@@ -137,8 +139,12 @@ void Hero::useSkill_ConeWave(const Vec2 &pos_target) {
 	auto diffVec = pos_target - pos_current;
 	auto diffVec_unt = diffVec / diffVec.length();
 	auto point1 = pos_current + 64 * diffVec_unt;
-	auto point2 = pos_current + 128 * diffVec_unt;
+	auto point2 = pos_current + 140 * diffVec_unt;
 	auto point3 = pos_current + 256 * diffVec_unt;
+
+	specialEffect("cone_wave1.png", point1, 1.0f);
+	specialEffect("cone_wave2.png", point2, 1.5f);
+	specialEffect("cone_wave3.png", point3, 2.0f);
 
 	auto gameScene = dynamic_cast<GameScene*> (getParent()->getParent());
 	auto it = gameScene->unit_map.begin();
@@ -146,11 +152,11 @@ void Hero::useSkill_ConeWave(const Vec2 &pos_target) {
 		auto enemy = it->second;
 		auto pos_enemy = enemy->getPosition();
 		if (
-			enemy->_side != _side && 
-			(pos_enemy.distance(point1)<64||
-			pos_enemy.distance(point2)<160||
-			pos_enemy.distance(point3)<320)
-			) 
+			enemy->_side != _side &&
+			(pos_enemy.distance(point1) < 48 ||
+				pos_enemy.distance(point2) < 90 ||
+				pos_enemy.distance(point3) < 130)
+			)
 		{
 			enemy->getDamaged(this, 20);
 			enemy->stunned(2.0);
@@ -171,10 +177,12 @@ void Hero::useSkill_switchLife(Unit* enemy) {
 	Eskill_last_release_time = clock();
 
 	stopAllActions();
+	specialEffect("switchlife_1.png", getPosition(), 1.5);
 	int life_this = _life_current;
 	_life_current = enemy->_life_current;
 	enemy->_life_current = life_this;
 	enemy->getDamaged(this, 0);
+	specialEffect("switchlife_3.png", enemy->getPosition(), 2.0);
 	this->heal(0);
 }
 
@@ -187,6 +195,7 @@ void Hero::useSkill_heal()
 	Wskill_last_release_time = clock();
 
 	stopAllActions();
+	specialEffect("heal.png", getPosition(), 1.0f);
 	heal(static_cast<int>(_life_max * 0.3));
 }
 
@@ -201,8 +210,9 @@ void Hero::useSkill_ultra(Unit* enemy)
 	}
 	Eskill_last_release_time = clock();
 	stopAllActions();
+	specialEffect("ultra.png", enemy->getPosition(), 2.0);
 	enemy->stunned(2.0);
-	enemy->getDamaged(this, static_cast<int>(enemy->_life_max*0.3));
+	enemy->getDamaged(this, static_cast<int>(enemy->_life_max * 0.3));
 }
 
 void Hero::useSkill_percentageDamage(Unit* enemy) {
@@ -215,6 +225,7 @@ void Hero::useSkill_percentageDamage(Unit* enemy) {
 	}
 	Qskill_last_release_time = clock();
 	stopAllActions();
+	specialEffect("percent.png", enemy->getPosition(), 1.0);
 	enemy->getDamaged(this, static_cast<int>(enemy->_life_current * 0.15));
 }
 
@@ -233,6 +244,9 @@ void Hero::useSkill(int heroID, int kind, Vec2 pos, int tag) {
 	Unit* enemy = NULL;
 	if (tag >= 0) {
 		enemy = dynamic_cast<Unit*>(getParent()->getChildByTag(tag));
+		if (enemy == nullptr) {
+			return;
+		}
 	}
 	switch (heroID) {
 	case WARRIOR:
@@ -277,17 +291,17 @@ void Hero::useSkill(int heroID, int kind, Vec2 pos, int tag) {
 	}
 }
 
-void Hero::specialEffect(const std::string& filename, Vec2 pos)
+void Hero::specialEffect(const std::string& filename, Vec2 pos, float duration)
 {
 	auto effect = Sprite::create(filename);
 	effect->setPosition(pos);
 	auto gameMap = getParent();
-	gameMap->addChild(effect);
-	auto fade = FadeOut::create(1.5f);
+	gameMap->addChild(effect,0);
+	auto fade = FadeOut::create(duration);
 	auto cf = CallFunc::create([=]() {
 		gameMap->removeChild(effect);
 		});
-	auto seq = Sequence::create(DelayTime::create(1.5f), cf, nullptr);
+	auto seq = Sequence::create(DelayTime::create(duration), cf, nullptr);
 
 	effect->runAction(fade);
 	gameMap->runAction(seq);

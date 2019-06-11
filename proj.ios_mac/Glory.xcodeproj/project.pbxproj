@@ -48,22 +48,22 @@
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
 		989410692296CEBF00FBC077 /* HelpScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9894105D2296CEBF00FBC077 /* HelpScene.cpp */; };
 		9894106A2296CEBF00FBC077 /* HelpScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9894105D2296CEBF00FBC077 /* HelpScene.cpp */; };
+		9894106B2296CEBF00FBC077 /* HelloWorldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989410612296CEBF00FBC077 /* HelloWorldScene.cpp */; };
+		9894106C2296CEBF00FBC077 /* HelloWorldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989410612296CEBF00FBC077 /* HelloWorldScene.cpp */; };
 		9894106D2296CEBF00FBC077 /* SettingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989410622296CEBF00FBC077 /* SettingScene.cpp */; };
 		9894106E2296CEBF00FBC077 /* SettingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989410622296CEBF00FBC077 /* SettingScene.cpp */; };
 		9894106F2296CEBF00FBC077 /* Startscene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989410632296CEBF00FBC077 /* Startscene.cpp */; };
 		989410702296CEBF00FBC077 /* Startscene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989410632296CEBF00FBC077 /* Startscene.cpp */; };
+		989410712296CEBF00FBC077 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989410642296CEBF00FBC077 /* AppDelegate.cpp */; };
+		989410722296CEBF00FBC077 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989410642296CEBF00FBC077 /* AppDelegate.cpp */; };
 		989410732296CEBF00FBC077 /* UnitClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989410652296CEBF00FBC077 /* UnitClass.cpp */; };
 		989410742296CEBF00FBC077 /* UnitClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989410652296CEBF00FBC077 /* UnitClass.cpp */; };
 		98941179229AC42100FBC077 /* SettingScene.h in Sources */ = {isa = PBXBuildFile; fileRef = 9894105C2296CEBF00FBC077 /* SettingScene.h */; };
+		9894117A229AC42100FBC077 /* HelloWorldScene.h in Sources */ = {isa = PBXBuildFile; fileRef = 9894105E2296CEBF00FBC077 /* HelloWorldScene.h */; };
+		9894117B229AC42100FBC077 /* AppDelegate.h in Sources */ = {isa = PBXBuildFile; fileRef = 9894105F2296CEBF00FBC077 /* AppDelegate.h */; };
 		9894117C229AC42100FBC077 /* Startscene.h in Sources */ = {isa = PBXBuildFile; fileRef = 989410602296CEBF00FBC077 /* Startscene.h */; };
 		9894117D229AC42100FBC077 /* UnitClass.h in Sources */ = {isa = PBXBuildFile; fileRef = 989410662296CEBF00FBC077 /* UnitClass.h */; };
 		9894117E229AC42100FBC077 /* HelpScene.h in Sources */ = {isa = PBXBuildFile; fileRef = 989410672296CEBF00FBC077 /* HelpScene.h */; };
-		989411C9229FE3AB00FBC077 /* MoveFind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989411C5229FE3AA00FBC077 /* MoveFind.cpp */; };
-		989411CA229FE3AB00FBC077 /* MoveFind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989411C5229FE3AA00FBC077 /* MoveFind.cpp */; };
-		989411CB229FE3AB00FBC077 /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989411C6229FE3AB00FBC077 /* GameScene.cpp */; };
-		989411CC229FE3AB00FBC077 /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989411C6229FE3AB00FBC077 /* GameScene.cpp */; };
-		989411D122A01F8400FBC077 /* GlobalVal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989411CF22A01F8400FBC077 /* GlobalVal.cpp */; };
-		989411D222A01F8400FBC077 /* GlobalVal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989411CF22A01F8400FBC077 /* GlobalVal.cpp */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
@@ -154,18 +154,16 @@
 		9894105B2296CEBF00FBC077 /* helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = helper.h; sourceTree = "<group>"; };
 		9894105C2296CEBF00FBC077 /* SettingScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingScene.h; sourceTree = "<group>"; };
 		9894105D2296CEBF00FBC077 /* HelpScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HelpScene.cpp; sourceTree = "<group>"; };
+		9894105E2296CEBF00FBC077 /* HelloWorldScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloWorldScene.h; sourceTree = "<group>"; };
+		9894105F2296CEBF00FBC077 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		989410602296CEBF00FBC077 /* Startscene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Startscene.h; sourceTree = "<group>"; };
+		989410612296CEBF00FBC077 /* HelloWorldScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HelloWorldScene.cpp; sourceTree = "<group>"; };
 		989410622296CEBF00FBC077 /* SettingScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SettingScene.cpp; sourceTree = "<group>"; };
 		989410632296CEBF00FBC077 /* Startscene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Startscene.cpp; sourceTree = "<group>"; };
+		989410642296CEBF00FBC077 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
 		989410652296CEBF00FBC077 /* UnitClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitClass.cpp; sourceTree = "<group>"; };
 		989410662296CEBF00FBC077 /* UnitClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitClass.h; sourceTree = "<group>"; };
 		989410672296CEBF00FBC077 /* HelpScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpScene.h; sourceTree = "<group>"; };
-		989411C5229FE3AA00FBC077 /* MoveFind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MoveFind.cpp; sourceTree = "<group>"; };
-		989411C6229FE3AB00FBC077 /* GameScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameScene.cpp; sourceTree = "<group>"; };
-		989411C7229FE3AB00FBC077 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
-		989411C8229FE3AB00FBC077 /* MoveFind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoveFind.h; sourceTree = "<group>"; };
-		989411CF22A01F8400FBC077 /* GlobalVal.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GlobalVal.cpp; sourceTree = "<group>"; };
-		989411D022A01F8400FBC077 /* GlobalVal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalVal.h; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -350,15 +348,13 @@
 				9894105B2296CEBF00FBC077 /* helper.h */,
 				9894105C2296CEBF00FBC077 /* SettingScene.h */,
 				9894105D2296CEBF00FBC077 /* HelpScene.cpp */,
+				9894105E2296CEBF00FBC077 /* HelloWorldScene.h */,
+				9894105F2296CEBF00FBC077 /* AppDelegate.h */,
 				989410602296CEBF00FBC077 /* Startscene.h */,
-				989411C6229FE3AB00FBC077 /* GameScene.cpp */,
-				989411C7229FE3AB00FBC077 /* GameScene.h */,
-				989411C5229FE3AA00FBC077 /* MoveFind.cpp */,
-				989411C8229FE3AB00FBC077 /* MoveFind.h */,
+				989410612296CEBF00FBC077 /* HelloWorldScene.cpp */,
 				989410622296CEBF00FBC077 /* SettingScene.cpp */,
-				989411CF22A01F8400FBC077 /* GlobalVal.cpp */,
-				989411D022A01F8400FBC077 /* GlobalVal.h */,
 				989410632296CEBF00FBC077 /* Startscene.cpp */,
+				989410642296CEBF00FBC077 /* AppDelegate.cpp */,
 				989410652296CEBF00FBC077 /* UnitClass.cpp */,
 				989410662296CEBF00FBC077 /* UnitClass.h */,
 				989410672296CEBF00FBC077 /* HelpScene.h */,
@@ -501,21 +497,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				98941179229AC42100FBC077 /* SettingScene.h in Sources */,
+				9894117A229AC42100FBC077 /* HelloWorldScene.h in Sources */,
+				9894117B229AC42100FBC077 /* AppDelegate.h in Sources */,
 				9894117C229AC42100FBC077 /* Startscene.h in Sources */,
-				989411D122A01F8400FBC077 /* GlobalVal.cpp in Sources */,
 				9894117D229AC42100FBC077 /* UnitClass.h in Sources */,
 				9894117E229AC42100FBC077 /* HelpScene.h in Sources */,
 				1AF87B781F6F77F7007BE51C /* AppController.mm in Sources */,
 				1AF87B8B1F6F782A007BE51C /* RootViewController.mm in Sources */,
+				989410712296CEBF00FBC077 /* AppDelegate.cpp in Sources */,
 				9894106F2296CEBF00FBC077 /* Startscene.cpp in Sources */,
+				9894106B2296CEBF00FBC077 /* HelloWorldScene.cpp in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				989410732296CEBF00FBC077 /* UnitClass.cpp in Sources */,
 				1AF87B8A1F6F7822007BE51C /* main.m in Sources */,
-				989411CB229FE3AB00FBC077 /* GameScene.cpp in Sources */,
 				9894106D2296CEBF00FBC077 /* SettingScene.cpp in Sources */,
 				46880B8A19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */,
 				989410692296CEBF00FBC077 /* HelpScene.cpp in Sources */,
-				989411C9229FE3AB00FBC077 /* MoveFind.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,14 +521,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
+				9894106C2296CEBF00FBC077 /* HelloWorldScene.cpp in Sources */,
 				9894106A2296CEBF00FBC077 /* HelpScene.cpp in Sources */,
 				989410742296CEBF00FBC077 /* UnitClass.cpp in Sources */,
 				9894106E2296CEBF00FBC077 /* SettingScene.cpp in Sources */,
+				989410722296CEBF00FBC077 /* AppDelegate.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
-				989411CA229FE3AB00FBC077 /* MoveFind.cpp in Sources */,
-				989411D222A01F8400FBC077 /* GlobalVal.cpp in Sources */,
 				46880B8B19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */,
-				989411CC229FE3AB00FBC077 /* GameScene.cpp in Sources */,
 				989410702296CEBF00FBC077 /* Startscene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

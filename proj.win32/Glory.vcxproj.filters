@@ -18,9 +18,6 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\client.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\GameScene.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -28,9 +25,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\HelpScene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Hero.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\MoveFind.cpp">
@@ -54,10 +48,19 @@
     <ClCompile Include="..\Classes\UnitClass.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\control.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\GlobalVal.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\control.cpp">
+    <ClCompile Include="..\Classes\Hero.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\client.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ShopLayer.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -66,9 +69,6 @@
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\AppDelegate.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\client.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameScene.h">
@@ -81,9 +81,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\HelpScene.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Hero.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\MoveFind.h">
@@ -107,10 +104,19 @@
     <ClInclude Include="..\Classes\UnitClass.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\control.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="..\Classes\GlobalVal.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\control.h">
+    <ClInclude Include="..\Classes\Hero.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\client.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ShopLayer.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
