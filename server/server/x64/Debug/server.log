@@ -5,4 +5,5 @@ C:\TreeUse\server\server\server.cpp(157,5): warning C4302:  “类型强制转�
 C:\TreeUse\server\server\server.cpp(187,85): warning C4267:  “参数”: 从“size_t”转换到“int”，可能丢失数据
   正在生成代码...
 C:\TreeUse\server\server\server.cpp(281,46): warning C4267:  “参数”: 从“size_t”转换到“int”，可能丢失数据
+  LINK : 没有找到 C:\TreeUse\server\x64\Debug\server.exe 或上一个增量链接没有生成它；正在执行完全链接
   server.vcxproj -> C:\TreeUse\server\x64\Debug\server.exe

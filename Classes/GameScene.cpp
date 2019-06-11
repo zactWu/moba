@@ -5,6 +5,7 @@
 #include "TowerClass.h"
 #include "Hero.h"
 #include "control.h"
+#define POSKIND 100
 Vec2 pos[2],tar[2];
 #include "client.h"
 #include "ui/CocosGUI.h"
@@ -59,13 +60,33 @@ bool GameScene::init() {
 	client.ClientProcess();
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.2);
-
+	if (this_computer_side == 0) {
+		this->schedule(schedule_selector(GameScene::updatepos), 0.5);
+	}
 
 
 	ListenOutside();
 	return true;
 }
-
+void GameScene::updatepos(float dt) {
+	auto unit = unit_map.begin();
+	while (unit != unit_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
+		if (unit->second->_life_current <= 0) {
+			control de;
+			de.kind = 101;
+			de.pos = Vec2(0, 0);
+			de.tar_tag = unit->second->_it_tag;
+			de.send_to_sever();
+		}
+		else {
+			control de;
+			de.kind = 100;
+			de.pos = unit->second->getPosition();
+			de.tar_tag = unit->second->_it_tag;
+			de.send_to_sever();
+		}
+	}
+}
 bool GameScene::MapInit()
 {
 	map = TMXTiledMap::create("map.tmx");		//创建map
@@ -176,7 +197,6 @@ bool GameScene::HeroInit()
 	en_hero->Qskill_last_release_time = 0;
 	return false;
 }
-
 bool GameScene::ChatInit()
 {
 	//chat

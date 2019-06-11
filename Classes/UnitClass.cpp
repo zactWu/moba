@@ -385,7 +385,32 @@ void Unit::GetOrder() {
 			moveTo_directly(gs->MoveFind(getPosition(), i->pos));
 			//log("unit move");
 		}
-		if (i->kind != 1) {
+		else if (i->kind == 100) {//同步服务器
+			auto changenode = gs->getChildByTag(i->tag);
+			if (changenode != NULL) {
+				
+				changenode->setPosition(i->pos);
+			}
+			else {
+
+				log("unable to keep same pos!!!!!!!!!!!!!!!!!!!!");
+				control dead;
+				dead.kind = 101;
+				dead.tar_tag = i->tag;
+				dead.pos = Vec2(0, 0);
+			}
+		}
+		else if (i->kind == 101) {
+			auto de = dynamic_cast<Unit*>(gs->getChildByTag(i->tag));
+			if (de != NULL) {
+				log("unable to keep same life!!!!!!!!!!!!!");
+				de->_life_current = 0;
+			}
+			else {
+
+			}
+		}
+		else if (i->kind != 1) {
 			// 假定这个是英雄
 			_onAttack = 0;
 			if (gs->hero == this) {
