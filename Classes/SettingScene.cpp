@@ -36,17 +36,17 @@ bool SettingScene::init()
     
     addChild(createText());
     addChild(createBGImage());
-    auto hero1 = Sprite::create("SettingScene/test1.png");
-    auto hero2 = Sprite::create("SettingScene/test2.png");
-    auto hero3 = Sprite::create("SettingScene/test3.png");
+    auto hero1 = Sprite::create("SettingScene/warrior.jpg");
+    auto hero2 = Sprite::create("SettingScene/archer.jpg");
+    auto hero3 = Sprite::create("SettingScene/magician.jpg");
     auto dark = Label::createWithTTF("Dark", "fonts/Quicksand-Bold.ttf", 25);
     auto bright = Label::createWithTTF("Bright", "fonts/Quicksand-Bold.ttf", 25);
     auto heroselect = Label::createWithTTF("Your Hero", "fonts/Montserrat-Medium.ttf", 27);
     auto e_heroselect = Label::createWithTTF("Enemy Hero", "fonts/Montserrat-Medium.ttf", 27);
     auto side = Label::createWithTTF("Side", "fonts/Montserrat-Medium.ttf", 27);
-    hero1->setScale(0.5);
-    hero2->setScale(0.5);
-    hero3->setScale(0.5);
+    hero1->setScale(0.2);
+    hero2->setScale(0.2);
+    hero3->setScale(0.2);
     hero1->setPosition(Vec2(320,480));
     hero2->setPosition(Vec2(570,480));
     hero3->setPosition(Vec2(820,480));
