@@ -19,8 +19,12 @@ public:
     virtual bool init();
     void menuBackCallback(cocos2d::Ref* pSender);
     CheckBox* checkbox[3] = {nullptr};
+    CheckBox* e_checkbox[3] = {nullptr};
+    CheckBox* c_checkbox[2] = {nullptr};
     void addCheckBox();
     void CheckButtontouchEvent(CheckBox* sender, CheckBox::EventType type);
+    void e_CheckButtontouchEvent(CheckBox* sender, CheckBox::EventType type);
+    void c_CheckButtontouchEvent(CheckBox* sender, CheckBox::EventType type);
     cocos2d::Menu* createText();
     cocos2d::Sprite* createBGImage();
     CREATE_FUNC(SettingScene);

@@ -39,7 +39,6 @@ bool Startscene::init()
 
 
 void Startscene::menuPlayCallback(cocos2d::Ref * pSender) {
-	log("play");
     const auto scene = GameScene::createScene();
     Director::getInstance()->pushScene(scene);
 }
@@ -66,12 +65,13 @@ void Startscene::menuExitCallback(Ref* pSender)
 
 cocos2d::Menu* Startscene::createText() {
     auto buttons = Menu::create();
-    
+    auto label1content = Label::createWithTTF("Play", "fonts/Quicksand-Bold.ttf", 39);
     auto title = MenuItemLabel::create(Label::createWithTTF("Glory", "fonts/KingArthurLegend.ttf", 45));
-    auto label1 = MenuItemLabel::create(Label::createWithTTF("Play", "fonts/Quicksand-Bold.ttf", 39),CC_CALLBACK_1(Startscene::menuPlayCallback, this));
+    auto label1 = MenuItemLabel::create(label1content,CC_CALLBACK_1(Startscene::menuPlayCallback, this));
     auto label2 = MenuItemLabel::create(Label::createWithTTF("Setting", "fonts/OpenSans-Regular.ttf", 25),CC_CALLBACK_1(Startscene::menuSettingCallback, this));
     auto label3 = MenuItemLabel::create(Label::createWithTTF("Help", "fonts/OpenSans-Regular.ttf", 25),CC_CALLBACK_1(Startscene::menuHelpCallback, this));
     auto closeItem = MenuItemLabel::create(Label::createWithTTF("Exit", "fonts/OpenSans-Regular.ttf", 25),CC_CALLBACK_1(Startscene::menuExitCallback, this));
+    
     
     title->setPosition(570, 600);
     label1->setPosition(570, 430);
@@ -79,9 +79,9 @@ cocos2d::Menu* Startscene::createText() {
     label2->setPosition(370, 75);
     closeItem->setPosition(770, 75);
     
-    ccColor3B color = ccc3(0,0,0);
-    title->setColor(ccc3(0,0,0));
-    label1->setColor(ccc3(34,139,34));
+    label1content->enableOutline(Color4B(0,0,0,255),2);
+    title->setColor(Color3B(0,0,0));
+    label1->setColor(Color3B(34,139,34));
     buttons->addChild(title, 1);
     buttons->addChild(label1, 1);
     buttons->addChild(label2, 1);
