@@ -57,11 +57,11 @@ void GameScene::UsingFireBoll(Unit *hero,Vec2 newPosition,Unit *tar) {
 	clock_t now_time = clock();
 	float pass_time = now_time - last_time;
 	if (pass_time < 2000) {// cd时间在这里调整
-		log("fireboll still cd");
+		log("fireball still cd");
 		return;
 	}
 	last_time = now_time;
-	auto skill = Skill::create("fireboll.jpg", 300, 10, 300, 50);
+	auto skill = Skill::create("fireball.png", 300, 10, 300, 50);
 	skill->_skiller = hero;
 	skill->setScale(0.3);
 	skill->setPosition(hero->getPosition());

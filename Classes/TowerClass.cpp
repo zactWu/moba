@@ -32,7 +32,7 @@ Tower* Tower::create(const std::string& filename,
 
 void Tower::fire(Unit *tar) {
 	_last_release_time = clock();
-	auto skill = Skill::create("fireboll.jpg", 300, 10, 300, 50);
+	auto skill = Skill::create("fireball.png", 300, 10, 300, 50);
 	skill->_skiller = this;
 	skill->setScale(0.25);
 	skill->setPosition(this->getPosition());
