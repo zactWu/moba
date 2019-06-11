@@ -61,30 +61,36 @@ bool GameScene::init() {
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachF));		//设置一个update，每一帧都调用，做各种检测
 	this->schedule(schedule_selector(GameScene::AllActionsTakenEachSecond),0.2);
 	if (this_computer_side == 0) {
-		this->schedule(schedule_selector(GameScene::updatepos), 0.5);
+		schedule(schedule_selector(GameScene::updatepos), 2);
 	}
-
 
 	ListenOutside();
 	return true;
 }
 void GameScene::updatepos(float dt) {
 	auto unit = unit_map.begin();
+	log("here");
 	while (unit != unit_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
 		if (unit->second->_life_current <= 0) {
 			control de;
 			de.kind = 101;
 			de.pos = Vec2(0, 0);
 			de.tar_tag = unit->second->_it_tag;
-			de.send_to_sever();
+			log("this");
+			//de.send_to_sever();
+
 		}
 		else {
 			control de;
 			de.kind = 100;
 			de.pos = unit->second->getPosition();
 			de.tar_tag = unit->second->_it_tag;
-			de.send_to_sever();
+			log("why");
+			//de.send_to_sever();
 		}
+
+		++unit;
+
 	}
 }
 bool GameScene::MapInit()
@@ -217,6 +223,7 @@ void GameScene::AllActionsTakenEachSecond(float dt) {
 	UnitDeadAction();
 	TowerAction();
 	SoldierAction();
+	//updatepos(dt);
 //	log("unit_num is %d", unit_map.size());
 }
 void GameScene::SkillHitCheck() {

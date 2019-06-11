@@ -301,12 +301,12 @@ void GameServer::SendMessageToAllClient(const string  str, int ID)
 	bool flag = true;
 	for (int i = 0; i < MAX_NUM; i++)
 	{
-	if (ID != i)
-		{
+//	if (ID != i)
+//		{
 			if (AcceptSocket[i].ClientSock != INVALID_SOCKET &&
 				!SendMessageToOneClient(i, str))
 				flag = false;
-		}
+//		}
 	}
 	if (flag) {
 		cout << "服务器向全体(除了玩家" << ID << ")发送了消息:"
