@@ -378,7 +378,7 @@ void GameScene::UnitDead(Unit *unit) {
 			money = Sprite::create("money.jpg");
 		}
 		else {
-			money = Sprite::create("angle.jpg");
+			money = Sprite::create("angle.png");
 		}
 		money->setPosition(unit->getPosition());
 		money->setScale(0.1);

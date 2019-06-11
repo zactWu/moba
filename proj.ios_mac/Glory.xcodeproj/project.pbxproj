@@ -46,6 +46,26 @@
 		521A8EAA19F11F5000D177D7 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 521A8EA819F11F5000D177D7 /* fonts */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
+		9828812722AFE0D200CE7892 /* GlobalVal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828811422AFE0D000CE7892 /* GlobalVal.cpp */; };
+		9828812822AFE0D200CE7892 /* GlobalVal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828811422AFE0D000CE7892 /* GlobalVal.cpp */; };
+		9828812922AFE0D200CE7892 /* MoveFind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828811622AFE0D100CE7892 /* MoveFind.cpp */; };
+		9828812A22AFE0D200CE7892 /* MoveFind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828811622AFE0D100CE7892 /* MoveFind.cpp */; };
+		9828812B22AFE0D200CE7892 /* ShopLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828811822AFE0D100CE7892 /* ShopLayer.cpp */; };
+		9828812C22AFE0D200CE7892 /* ShopLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828811822AFE0D100CE7892 /* ShopLayer.cpp */; };
+		9828812D22AFE0D200CE7892 /* SkillKinds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828811A22AFE0D100CE7892 /* SkillKinds.cpp */; };
+		9828812E22AFE0D200CE7892 /* SkillKinds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828811A22AFE0D100CE7892 /* SkillKinds.cpp */; };
+		9828812F22AFE0D200CE7892 /* SkillClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828811B22AFE0D100CE7892 /* SkillClass.cpp */; };
+		9828813022AFE0D200CE7892 /* SkillClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828811B22AFE0D100CE7892 /* SkillClass.cpp */; };
+		9828813122AFE0D200CE7892 /* TowerClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828811C22AFE0D100CE7892 /* TowerClass.cpp */; };
+		9828813222AFE0D200CE7892 /* TowerClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828811C22AFE0D100CE7892 /* TowerClass.cpp */; };
+		9828813322AFE0D200CE7892 /* client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828811E22AFE0D100CE7892 /* client.cpp */; };
+		9828813422AFE0D200CE7892 /* client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828811E22AFE0D100CE7892 /* client.cpp */; };
+		9828813522AFE0D200CE7892 /* Hero.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828812422AFE0D200CE7892 /* Hero.cpp */; };
+		9828813622AFE0D200CE7892 /* Hero.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828812422AFE0D200CE7892 /* Hero.cpp */; };
+		9828813722AFE0D200CE7892 /* control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828812522AFE0D200CE7892 /* control.cpp */; };
+		9828813822AFE0D200CE7892 /* control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828812522AFE0D200CE7892 /* control.cpp */; };
+		9828813922AFE0D200CE7892 /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828812622AFE0D200CE7892 /* GameScene.cpp */; };
+		9828813A22AFE0D200CE7892 /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9828812622AFE0D200CE7892 /* GameScene.cpp */; };
 		989410692296CEBF00FBC077 /* HelpScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9894105D2296CEBF00FBC077 /* HelpScene.cpp */; };
 		9894106A2296CEBF00FBC077 /* HelpScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9894105D2296CEBF00FBC077 /* HelpScene.cpp */; };
 		9894106B2296CEBF00FBC077 /* HelloWorldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989410612296CEBF00FBC077 /* HelloWorldScene.cpp */; };
@@ -151,6 +171,26 @@
 		521A8EA819F11F5000D177D7 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		9828811222AFE0D000CE7892 /* Hero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hero.h; sourceTree = "<group>"; };
+		9828811422AFE0D000CE7892 /* GlobalVal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GlobalVal.cpp; sourceTree = "<group>"; };
+		9828811522AFE0D000CE7892 /* skillClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = skillClass.h; sourceTree = "<group>"; };
+		9828811622AFE0D100CE7892 /* MoveFind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MoveFind.cpp; sourceTree = "<group>"; };
+		9828811722AFE0D100CE7892 /* ShopLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopLayer.h; sourceTree = "<group>"; };
+		9828811822AFE0D100CE7892 /* ShopLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShopLayer.cpp; sourceTree = "<group>"; };
+		9828811922AFE0D100CE7892 /* GlobalVal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalVal.h; sourceTree = "<group>"; };
+		9828811A22AFE0D100CE7892 /* SkillKinds.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkillKinds.cpp; sourceTree = "<group>"; };
+		9828811B22AFE0D100CE7892 /* SkillClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkillClass.cpp; sourceTree = "<group>"; };
+		9828811C22AFE0D100CE7892 /* TowerClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TowerClass.cpp; sourceTree = "<group>"; };
+		9828811D22AFE0D100CE7892 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
+		9828811E22AFE0D100CE7892 /* client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = client.cpp; sourceTree = "<group>"; };
+		9828811F22AFE0D100CE7892 /* SkillKinds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillKinds.h; sourceTree = "<group>"; };
+		9828812022AFE0D100CE7892 /* client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client.h; sourceTree = "<group>"; };
+		9828812122AFE0D100CE7892 /* TowerClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TowerClass.h; sourceTree = "<group>"; };
+		9828812222AFE0D200CE7892 /* control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = control.h; sourceTree = "<group>"; };
+		9828812322AFE0D200CE7892 /* MoveFind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoveFind.h; sourceTree = "<group>"; };
+		9828812422AFE0D200CE7892 /* Hero.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hero.cpp; sourceTree = "<group>"; };
+		9828812522AFE0D200CE7892 /* control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = control.cpp; sourceTree = "<group>"; };
+		9828812622AFE0D200CE7892 /* GameScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameScene.cpp; sourceTree = "<group>"; };
 		9894105B2296CEBF00FBC077 /* helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = helper.h; sourceTree = "<group>"; };
 		9894105C2296CEBF00FBC077 /* SettingScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingScene.h; sourceTree = "<group>"; };
 		9894105D2296CEBF00FBC077 /* HelpScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HelpScene.cpp; sourceTree = "<group>"; };
@@ -314,6 +354,26 @@
 			isa = PBXGroup;
 			children = (
 				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
+				9828811E22AFE0D100CE7892 /* client.cpp */,
+				9828812022AFE0D100CE7892 /* client.h */,
+				9828812522AFE0D200CE7892 /* control.cpp */,
+				9828812222AFE0D200CE7892 /* control.h */,
+				9828812622AFE0D200CE7892 /* GameScene.cpp */,
+				9828811D22AFE0D100CE7892 /* GameScene.h */,
+				9828811422AFE0D000CE7892 /* GlobalVal.cpp */,
+				9828811922AFE0D100CE7892 /* GlobalVal.h */,
+				9828812422AFE0D200CE7892 /* Hero.cpp */,
+				9828811222AFE0D000CE7892 /* Hero.h */,
+				9828811622AFE0D100CE7892 /* MoveFind.cpp */,
+				9828812322AFE0D200CE7892 /* MoveFind.h */,
+				9828811822AFE0D100CE7892 /* ShopLayer.cpp */,
+				9828811722AFE0D100CE7892 /* ShopLayer.h */,
+				9828811B22AFE0D100CE7892 /* SkillClass.cpp */,
+				9828811522AFE0D000CE7892 /* skillClass.h */,
+				9828811A22AFE0D100CE7892 /* SkillKinds.cpp */,
+				9828811F22AFE0D100CE7892 /* SkillKinds.h */,
+				9828811C22AFE0D100CE7892 /* TowerClass.cpp */,
+				9828812122AFE0D100CE7892 /* TowerClass.h */,
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
 				46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */,
 				46880B8719C43A87006E1F66 /* HelloWorldScene.h */,
@@ -496,9 +556,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9828812922AFE0D200CE7892 /* MoveFind.cpp in Sources */,
+				9828812B22AFE0D200CE7892 /* ShopLayer.cpp in Sources */,
+				9828813322AFE0D200CE7892 /* client.cpp in Sources */,
 				98941179229AC42100FBC077 /* SettingScene.h in Sources */,
 				9894117A229AC42100FBC077 /* HelloWorldScene.h in Sources */,
+				9828812722AFE0D200CE7892 /* GlobalVal.cpp in Sources */,
 				9894117B229AC42100FBC077 /* AppDelegate.h in Sources */,
+				9828812F22AFE0D200CE7892 /* SkillClass.cpp in Sources */,
 				9894117C229AC42100FBC077 /* Startscene.h in Sources */,
 				9894117D229AC42100FBC077 /* UnitClass.h in Sources */,
 				9894117E229AC42100FBC077 /* HelpScene.h in Sources */,
@@ -507,12 +572,17 @@
 				989410712296CEBF00FBC077 /* AppDelegate.cpp in Sources */,
 				9894106F2296CEBF00FBC077 /* Startscene.cpp in Sources */,
 				9894106B2296CEBF00FBC077 /* HelloWorldScene.cpp in Sources */,
+				9828813922AFE0D200CE7892 /* GameScene.cpp in Sources */,
+				9828813122AFE0D200CE7892 /* TowerClass.cpp in Sources */,
+				9828813722AFE0D200CE7892 /* control.cpp in Sources */,
+				9828812D22AFE0D200CE7892 /* SkillKinds.cpp in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				989410732296CEBF00FBC077 /* UnitClass.cpp in Sources */,
 				1AF87B8A1F6F7822007BE51C /* main.m in Sources */,
 				9894106D2296CEBF00FBC077 /* SettingScene.cpp in Sources */,
 				46880B8A19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */,
 				989410692296CEBF00FBC077 /* HelpScene.cpp in Sources */,
+				9828813522AFE0D200CE7892 /* Hero.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,9 +595,19 @@
 				9894106A2296CEBF00FBC077 /* HelpScene.cpp in Sources */,
 				989410742296CEBF00FBC077 /* UnitClass.cpp in Sources */,
 				9894106E2296CEBF00FBC077 /* SettingScene.cpp in Sources */,
+				9828812C22AFE0D200CE7892 /* ShopLayer.cpp in Sources */,
+				9828813A22AFE0D200CE7892 /* GameScene.cpp in Sources */,
 				989410722296CEBF00FBC077 /* AppDelegate.cpp in Sources */,
+				9828812822AFE0D200CE7892 /* GlobalVal.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				46880B8B19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */,
+				9828813422AFE0D200CE7892 /* client.cpp in Sources */,
+				9828812A22AFE0D200CE7892 /* MoveFind.cpp in Sources */,
+				9828813222AFE0D200CE7892 /* TowerClass.cpp in Sources */,
+				9828813622AFE0D200CE7892 /* Hero.cpp in Sources */,
+				9828812E22AFE0D200CE7892 /* SkillKinds.cpp in Sources */,
+				9828813822AFE0D200CE7892 /* control.cpp in Sources */,
+				9828813022AFE0D200CE7892 /* SkillClass.cpp in Sources */,
 				989410702296CEBF00FBC077 /* Startscene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
