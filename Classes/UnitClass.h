@@ -70,7 +70,8 @@ public:
 	bool _onAttack;
 
 	//接下来就是升级系统
-
+	int exp = 300;
+	int level = 1;
 
 	Vec2 _pos_moveTarget;
 	std::string _unitType;

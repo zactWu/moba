@@ -218,7 +218,7 @@ bool GameScene::ChatInit()
 
 
 void GameScene::AllActionsTakenEachSecond(float dt) {
-	hero->_money+=1000;// 加钱
+	hero->_money++;// 加钱
 	SkillHitCheck();
 	UnitDeadAction();
 	TowerAction();
@@ -309,6 +309,7 @@ void GameScene::UnitDeadAction() {
 	auto unit = unit_map.begin();
 	while (unit != unit_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
 		if (unit->second->_life_current <= 0) {
+			stopAllActions();
 			UnitDead(unit->second);
 			if (unit->second->_life_current < 0) {
 				unit = unit_map.erase(unit);
@@ -346,17 +347,26 @@ void GameScene::UnitDead(Unit *unit) {
 				hero->_kill_times++;
 			}
 			hero->_money += unit->_kill_award;
+			hero->exp -= unit->_kill_award;
+			if (hero->exp < 0) {
+				hero->level++;
+				hero->_life_max += 50;
+				hero->_speed += 10;
+				hero->exp = 300 * hero->level;
+			}
 			hero->_kill_award +=100;
-			if (unit->_last_attacker->_money != hero->_money && (unit->_last_attacker==hero)) {
-//				log("pointer wrong!");
-			}
-			else {
-//				log("POINTER right");
-			}
+			
 		}
 		if (unit->_last_attacker == en_hero) {
 			if (unit == hero) {
 				en_hero->_kill_times++;
+			}
+			en_hero->exp -= unit->_kill_award;
+			if (en_hero->exp < 0) {
+				en_hero->level++;
+				en_hero->_life_max += 50;
+				en_hero->_speed += 10;
+				en_hero->exp = 300 * en_hero->level;
 			}
 		}
 //		cocos2d::log("you(%d) should get %d money and now is %d", unit->_last_attacker->_it_tag,unit->_kill_award, hero->_money);
@@ -511,7 +521,7 @@ void GameScene::UiShow() {
 		this->removeChildByName("levelLabel");
 	}
 	char l[20];
-	int level = hero->_kill_award / 300;
+	int level = hero->level;
 	sprintf_s(l, "level: %d", level);
 	auto levelLabel = Label::createWithSystemFont(l, "Arial", 30);
 	if (levelLabel != nullptr)
