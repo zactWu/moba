@@ -171,7 +171,7 @@ void SettingScene::c_CheckButtontouchEvent(CheckBox* sender, CheckBox::EventType
         c_checkbox[i]->setSelected(false);//先让全部按钮设为处于未选中状态
         if(i+21 == tag){
             c_checkbox[i]->setSelected(true);//让当前按钮为选中
-            this_computer_side = tag-20;
+            this_computer_side = tag-21;
             log("computer is %d", this_computer_side);
         }
     }
