@@ -1,10 +1,7 @@
 #pragma once
 #include <winsock2.h>
-#include <process.h>               //C中的线程 
 #include <string>
 #pragma comment(lib,"ws2_32.lib")
-
-
 
 struct  ClientInformation           //Client 相关信息
 {

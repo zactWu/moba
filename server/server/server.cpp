@@ -9,10 +9,6 @@ using std::string;
 
 
 ClientInformation GameServer::AcceptSocket[GameServer::MAX_NUM];
-/*
-名称：构造函数
-描述：用于Socket初始化
-*/
 
 GameServer::GameServer()
 {
@@ -68,16 +64,11 @@ GameServer::GameServer()
 	//将所有信息初始化
 	for (int i = 0; i < MAX_NUM; i++)
 		AcceptSocket[i].ClientSock = INVALID_SOCKET;
-
 	cout << "网络初始化成功\n";
 	fflush(stdout);
 	return;
 }
 
-/*
-名称：析构函数
-作用：用于资源释放
-*/
 GameServer::~GameServer()
 {
 	if (ListenSocket != INVALID_SOCKET)
@@ -88,11 +79,6 @@ GameServer::~GameServer()
 	return;
 }
 
-
-/*
-名称：检测ID
-描述：用于检测当前没有用的ID号
-*/
 int GameServer::CheckSocket()
 {
 	for (int i = 0; i < MAX_NUM; i++)
@@ -103,11 +89,6 @@ int GameServer::CheckSocket()
 	return -1;
 }
 
-/*
-名称：线程处理
-描述：为每一个新玩家创建一个接受线程
-	  如果人数达到上限，就拒绝
-*/
 int GameServer::ProcessGameServer()
 {
 	while (true)
@@ -121,14 +102,12 @@ int GameServer::ProcessGameServer()
 		{
 
 			//对应前面的listen，这里是对应操作accept
-
 			cout << "等待Client连接...\n";
 			fflush(stdout);
 			AcceptSocket[index].ClientSock = accept(
 				ListenSocket,
 				(struct sockaddr*) & AcceptSocket[index].Client,
 				&ClntLen);
-			//cout << "#1 AcceptSocket[index].ClientSock: " << AcceptSocket[index].ClientSock << "\n";
 			AcceptSocket[index].ID = index;       //记录这个Client的ID啊，以后要寻找它
 			AcceptSocket[index].Active = false;
 
@@ -138,17 +117,14 @@ int GameServer::ProcessGameServer()
 				fflush(stdout);
 				break;
 			}
-			//cout << "#2 AcceptSocket[index].ClientSock: " << AcceptSocket[index].ClientSock << "\n";
 			cout << "连接成功\n";
 			fflush(stdout);
 			//至此client与server连接成功,欢呼
-
 			cout << "新玩家加入，IP地址为：" << inet_ntoa(AcceptSocket[index].Client.sin_addr)
 				<< "  端口号为：" << ntohs(AcceptSocket[index].Client.sin_port) << "\n";
 			fflush(stdout);
 			//创建接受者线程
 			int ThreadID;     //线程ID
-
 			//把刚刚连接成功的Client建立一个新的线程
 			ThreadID = (int)CreateThread(NULL, 0,
 				(LPTHREAD_START_ROUTINE)(GameServer::ListenThread), //线程点函数
@@ -197,11 +173,6 @@ int GameServer::ProcessGameServer()
 	return 0;
 }
 
-/*
-名称：接受线程
-描述：Select模式
-	首先判断该线程是否可读，如果可读就读取其上的信息
-*/
 DWORD WINAPI GameServer::ListenThread(void* data) //传进来具体哪个AcceptSocket[xx]的地址
 {
 
@@ -215,7 +186,6 @@ DWORD WINAPI GameServer::ListenThread(void* data) //传进来具体哪个AcceptSocket[x
 		//接收命令 
 
 		char recvBuf[1024];
-//		char recvBuf[40];
 		fflush(stdout);
 
 		fd_set Read;//基于select模式对IO进行管理  
@@ -249,7 +219,6 @@ DWORD WINAPI GameServer::ListenThread(void* data) //传进来具体哪个AcceptSocket[x
 
 		//发送命令 
 		char sendBuf[1024];
-//		char sendBuf[40];
 		fd_set write;//基于select模式对IO进行管理  
 		FD_ZERO(&write);    //初始化为0
 		FD_SET(GameSocket->ClientSock, &write); //将ClientSock加入队列
@@ -260,7 +229,6 @@ DWORD WINAPI GameServer::ListenThread(void* data) //传进来具体哪个AcceptSocket[x
 		{
 			//接受客户端的数据
 			strcpy(sendBuf, recvBuf);
-			//cout << "Just Before Enter TOALL func, AcceptSocket[ID].ClientSock: " << GameSocket->ClientSock << "\n";
 			SendMessageToAllClient(sendBuf, GameSocket->ID);
 		}
 
@@ -268,10 +236,6 @@ DWORD WINAPI GameServer::ListenThread(void* data) //传进来具体哪个AcceptSocket[x
 	return 1;
 }
 
-/*
-名称：发送信息给一个client
-描述：发送信息给一个client
-*/
 int GameServer::SendMessageToOneClient(int ID, const string  str)
 {
 	if (ID < 0)
@@ -291,22 +255,18 @@ int GameServer::SendMessageToOneClient(int ID, const string  str)
 	return 1;
 }
 
-/*
-名称：全发送
-描述：给所有Client发送信息
-*/
 void GameServer::SendMessageToAllClient(const string  str, int ID)
 {
 
 	bool flag = true;
 	for (int i = 0; i < MAX_NUM; i++)
 	{
-//	if (ID != i)
-//		{
+	if (ID != i)
+		{
 			if (AcceptSocket[i].ClientSock != INVALID_SOCKET &&
 				!SendMessageToOneClient(i, str))
 				flag = false;
-//		}
+		}
 	}
 	if (flag) {
 		cout << "服务器向全体(除了玩家" << ID << ")发送了消息:"
@@ -318,10 +278,6 @@ void GameServer::SendMessageToAllClient(const string  str, int ID)
 	fflush(stdout);
 }
 
-/*
-名称：清理Socket
-描述：清理退出游戏的线程
-*/
 void GameServer::CleanSocket(int ID)
 {
 	if (ID < 0)
@@ -342,8 +298,6 @@ void GameServer::CleanSocket(int ID)
 	cout << "正在关闭其接受线程:" << AcceptSocket[ID].RecvThreadID << "\n";
 	fflush(stdout);
 	ExitThread(AcceptSocket[ID].RecvThreadID);
-
-
 
 	cout << "关闭成功!\n";
 	fflush(stdout);
