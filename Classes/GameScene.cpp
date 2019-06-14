@@ -168,6 +168,13 @@ bool GameScene::HeroInit()
 	hero->setPosition(pos2);
 	hero->setTag(HEROTAG);
 	hero->_it_tag = HEROTAG;
+	if (hero_id == WARRIOR) {
+		hero->_attackRange = 60;
+	}
+	else {
+		hero->_attackRange = 200;
+	}
+	hero->_attackInterval = 0.5f;
 	map->addChild(hero);
 	unit_num[0]++;
 	hero->Qskill_cd_time = 2000;
@@ -196,7 +203,13 @@ bool GameScene::HeroInit()
 	en_hero->_money = 0;
 	en_hero->setTag(ENHEROTAG);
 	en_hero->_it_tag = unit_num[1];
-	
+	if (en_hero_id == WARRIOR) {
+		en_hero->_attackRange = 60;
+	}
+	else {
+		en_hero->_attackRange = 200;
+	}
+	en_hero->_attackInterval = 0.5f;
 	map->addChild(en_hero);
 	unit_num[1]++;
 	en_hero->Qskill_cd_time = 2000;

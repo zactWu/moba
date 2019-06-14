@@ -237,6 +237,47 @@ void Hero::useSkill_tornado()
 	}
 	Eskill_last_release_time = clock();
 	stopAllActions();
+	//动画部分
+	auto effect = Sprite::create("tornado.png");
+	Vec2 pos_current = getPosition();
+	effect->setPosition(pos_current);
+	auto gameMap = getParent();
+	gameMap->addChild(effect, 0);
+	auto rotate = RotateBy::create(4.f, 1400.f);
+	effect->runAction(rotate);
+	
+	auto cf_fade= CallFunc::create([=]() {
+		auto fade = FadeOut::create(1.f);
+		effect->runAction(fade);
+		});
+	auto cf_remove = CallFunc::create([=]() {
+		gameMap->removeChild(effect);
+		});
+	auto seq_anim = Sequence::create(DelayTime::create(4.1f), cf_fade,
+		DelayTime::create(1.1f), cf_remove, nullptr);
+	gameMap->runAction(seq_anim);
+	//伤害部分
+	auto gameScene = dynamic_cast<GameScene*> (getParent()->getParent());
+	Vector<FiniteTimeAction*> action_list;
+	int i = 0;
+	for (; i < 5; ++i) {
+		auto cf_damage= CallFunc::create([=]() {
+			auto it = gameScene->unit_map.begin();
+			while (it != gameScene->unit_map.end()) {
+				auto enemy = it->second;
+				if (enemy->_side != _side && enemy->getPosition().distance(pos_current) < 280) {
+					enemy->getDamaged(this, 35);
+				}
+				++it;
+			}
+			});
+		action_list.pushBack(cf_damage);
+		if (i < 4) {
+			action_list.pushBack(DelayTime::create(1.f));
+		}
+	}
+	auto seq_dmg = Sequence::create(action_list);
+	gameScene->runAction(seq_dmg);
 }
 
 
