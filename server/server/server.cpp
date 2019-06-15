@@ -185,7 +185,8 @@ DWORD WINAPI GameServer::ListenThread(void* data) //传进来具体哪个AcceptSocket[x
 
 		//接收命令 
 
-		char recvBuf[1024];
+//		char recvBuf[1024];
+		char recvBuf[110];
 		fflush(stdout);
 
 		fd_set Read;//基于select模式对IO进行管理  
@@ -218,7 +219,8 @@ DWORD WINAPI GameServer::ListenThread(void* data) //传进来具体哪个AcceptSocket[x
 		}
 
 		//发送命令 
-		char sendBuf[1024];
+//		char sendBuf[1024];
+		char sendBuf[110];
 		fd_set write;//基于select模式对IO进行管理  
 		FD_ZERO(&write);    //初始化为0
 		FD_SET(GameSocket->ClientSock, &write); //将ClientSock加入队列
