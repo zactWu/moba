@@ -54,7 +54,7 @@ void Hero::turnTo(Vec2 pos)
 
 
 void Hero::UsingFireBall(Vec2 newPosition) {
-	Wskill_cd_time = 2000;
+	//Wskill_cd_time = 2000;
 	if (clock() - Wskill_last_release_time < Wskill_cd_time) {
 		return;
 	}
@@ -83,7 +83,7 @@ void Hero::UsingFireBall(Vec2 newPosition) {
 }
 
 void Hero::useSkill_trample() {
-	Wskill_cd_time = 2000;
+	//Wskill_cd_time = 2000;
 	if (clock() - Wskill_last_release_time < Wskill_cd_time) {
 		return;
 	}
@@ -108,7 +108,7 @@ void Hero::useSkill_blinkToEnemy(Unit* enemy)
 	if (enemy == nullptr) {
 		return;
 	}
-	Qskill_cd_time = 2000;
+	//Qskill_cd_time = 2000;
 	if (clock() - Qskill_last_release_time < Qskill_cd_time) {
 		return;
 	}
@@ -128,7 +128,7 @@ void Hero::useSkill_blinkToEnemy(Unit* enemy)
 }
 
 void Hero::useSkill_ConeWave(const Vec2& pos_target) {
-	Qskill_cd_time = 2000;
+	//Qskill_cd_time = 2000;
 	if (clock() - Qskill_last_release_time < Qskill_cd_time) {
 		return;
 	}
@@ -170,7 +170,7 @@ void Hero::useSkill_switchLife(Unit* enemy) {
 	if (enemy == nullptr) {
 		return;
 	}
-	Eskill_cd_time = 2000;
+	//Eskill_cd_time = 2000;
 	if (clock() - Eskill_last_release_time < Eskill_cd_time) {
 		return;
 	}
@@ -188,7 +188,7 @@ void Hero::useSkill_switchLife(Unit* enemy) {
 
 void Hero::useSkill_heal()
 {
-	Wskill_cd_time = 2000;
+	//Wskill_cd_time = 2000;
 	if (clock() - Wskill_last_release_time < Wskill_cd_time) {
 		return;
 	}
@@ -204,7 +204,7 @@ void Hero::useSkill_ultra(Unit* enemy)
 	if (enemy == nullptr) {
 		return;
 	}
-	Eskill_cd_time = 2000;
+	//Eskill_cd_time = 2000;
 	if (clock() - Eskill_last_release_time < Eskill_cd_time) {
 		return;
 	}
@@ -219,7 +219,7 @@ void Hero::useSkill_percentageDamage(Unit* enemy) {
 	if (enemy == nullptr) {
 		return;
 	}
-	Qskill_cd_time = 2000;
+	//Qskill_cd_time = 2000;
 	if (clock() - Qskill_last_release_time < Qskill_cd_time) {
 		return;
 	}
@@ -231,7 +231,7 @@ void Hero::useSkill_percentageDamage(Unit* enemy) {
 
 void Hero::useSkill_tornado()
 {
-	Eskill_cd_time = 2000;
+	//Eskill_cd_time = 2000;
 	if (clock() - Eskill_last_release_time < Eskill_cd_time) {
 		return;
 	}
