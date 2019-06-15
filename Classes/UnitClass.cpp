@@ -279,7 +279,7 @@ void Unit::getDamaged(Unit* producer, int damage) {
 	if (damage < 0) {
 		return;
 	}
-	_life_current -= damage/(_defense/2);
+	_life_current -= (damage/(_defense/2));
 	
 	if (producer == nullptr) {
 //		log("warning: this hit has no one declear responsable");
@@ -382,6 +382,16 @@ void Unit::GetOrder() {
 			if (i->tag == -1) {// 这个效果你们自己取舍
 				_onAttack = 0;
 			}
+			if (_tag_attackTarget != -1) {
+				auto enemy = gs->map->getChildByTag(_tag_attackTarget);
+				if (enemy == NULL) {
+
+					log("_tag_attackTarget IS %d", _tag_attackTarget);
+					++i;
+					continue;
+				}
+			}
+			
 			moveTo_directly(gs->MoveFind(getPosition(), i->pos));
 			//log("unit move");
 		}

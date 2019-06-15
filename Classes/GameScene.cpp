@@ -69,14 +69,14 @@ bool GameScene::init() {
 }
 void GameScene::updatepos(float dt) {
 	auto unit = unit_map.begin();
-	log("here");
+	//log("here");
 	while (unit != unit_map.end()) {// 这一行是用来检查外部引用getdamage的指向性（放出技能的时候就知道能不能打中）技能的
 		if (unit->second->_life_current <= 0) {
 			control de;
 			de.kind = 101;
 			de.pos = Vec2(0, 0);
 			de.tar_tag = unit->second->_it_tag;
-			log("this");
+			//log("this");
 			//de.send_to_sever();
 
 		}
@@ -85,7 +85,7 @@ void GameScene::updatepos(float dt) {
 			de.kind = 100;
 			de.pos = unit->second->getPosition();
 			de.tar_tag = unit->second->_it_tag;
-			log("why");
+			//log("why");
 			//de.send_to_sever();
 		}
 
@@ -114,7 +114,7 @@ bool GameScene::MapInit()
 	return false;
 }
 void GameScene::TowerInit() {
-	auto towerA = Tower::create("tower.jpg", 3);
+	auto towerA = Tower::create("tower.jpg", 2);
 	Vec2 pos = {900,900 };
 	towerA->setPosition(pos);
 	towerA->setScale(0.1);
@@ -161,8 +161,8 @@ bool GameScene::HeroInit()
 		break;
 	}
 	hero = Hero::create(herotype + "/0.png", herotype);
-	hero->_side = MESIDE;
-	this->unit_map[unit_num[0]] = hero;
+	hero->_side = this_computer_side;
+	this->unit_map[unit_num[hero->_side]] = hero;
 	hero->_money = 0;
 	hero->reborn_pos = pos2;
 	hero->setPosition(pos2);
@@ -176,11 +176,13 @@ bool GameScene::HeroInit()
 	}
 	hero->_attackInterval = 0.5f;
 	map->addChild(hero);
-	unit_num[0]++;
+	unit_num[hero->_side]++;
 	hero->Qskill_cd_time = 2000;
 	hero->Qskill_last_release_time = 0;
-
-	
+	hero->Wskill_cd_time = 5000;
+	hero->Wskill_last_release_time = 0;
+	hero->Eskill_cd_time = 20000;
+	hero->Eskill_last_release_time = 0;
 
 	switch (en_hero_id)
 	{
@@ -196,10 +198,10 @@ bool GameScene::HeroInit()
 	}
 	en_hero = Hero::create(herotype + "/0.png", herotype);
 
-	en_hero->_side =1;
+	en_hero->_side =1- hero->_side;
 	en_hero->reborn_pos = pos;
 	en_hero->setPosition(en_hero->reborn_pos);
-	unit_map[unit_num[1]] = en_hero;
+	unit_map[unit_num[en_hero->_side]] = en_hero;
 	en_hero->_money = 0;
 	en_hero->setTag(ENHEROTAG);
 	en_hero->_it_tag = unit_num[1];
@@ -211,9 +213,14 @@ bool GameScene::HeroInit()
 	}
 	en_hero->_attackInterval = 0.5f;
 	map->addChild(en_hero);
-	unit_num[1]++;
+	unit_num[en_hero->_side]++;
 	en_hero->Qskill_cd_time = 2000;
 	en_hero->Qskill_last_release_time = 0;
+	en_hero->Wskill_cd_time = 5000;
+	en_hero->Wskill_last_release_time = 0;
+	en_hero->Eskill_cd_time = 20000;
+	en_hero->Eskill_last_release_time = 0;
+
 	return false;
 }
 bool GameScene::ChatInit()
@@ -231,14 +238,17 @@ bool GameScene::ChatInit()
 
 
 void GameScene::AllActionsTakenEachSecond(float dt) {
-	hero->_money++;// 加钱
+	if (fight) {
+		hero->_money++;// 加钱
+	}
+	log("at start of this loop unit_map is %d", unit_map.size());
 	SkillHitCheck();
 	UnitDeadAction();
 	TowerAction();
 	SoldierAction();
-	//updatepos(dt);
-//	log("unit_num is %d", unit_map.size());
+
 }
+
 void GameScene::SkillHitCheck() {
 	auto skill = skill_map.begin();
 	clock_t start = clock();
@@ -324,7 +334,7 @@ void GameScene::UnitDeadAction() {
 		if (unit->second->_life_current <= 0) {
 			stopAllActions();
 			UnitDead(unit->second);
-			if (unit->second->_life_current < 0) {
+			if (unit->second->_life_current <= 0) {
 				unit = unit_map.erase(unit);
 			}
 			else {
@@ -336,7 +346,6 @@ void GameScene::UnitDeadAction() {
 			if (unit_map.size() < AnimateLimit) {// 动画效果都塞到这里来
 //				log("no more animate");
 				unit->second->getDamaged();// 重载过的，里面是动画
-
 			}
 			// 接下来遍历命令单
 			unit->second->update_follow_attack(0.1);
@@ -394,7 +403,7 @@ void GameScene::UnitDead(Unit *unit) {
 			money = Sprite::create("angle.png");
 		}
 		money->setPosition(unit->getPosition());
-		money->setScale(0.1);
+		money->setScale(0.2);
 		map->addChild(money);
 		auto fed = FadeOut::create(1.0f);
 		money->runAction(fed);
@@ -446,14 +455,16 @@ void GameScene::TowerAction() {
 				auto unit = unit_map.begin();
 				//log("has check");
 				while (unit != unit_map.end()) {
+					if (unit->second->_life_current <= 0 || unit->second->getParent()==NULL) {
+						++unit;
+						continue;
+					}
 					if (unit->second->getPosition().getDistance(tower->second->getPosition())
 						< best_dis &&
 						unit->second->_side != tower->second->_side - 2 &&
 						unit->second->_life_current > 0) {
-
 						best_dis = unit->second->getPosition().getDistance(tower->second->getPosition());
 						firetar = unit->second;
-
 					}
 					++unit;
 				}
@@ -471,8 +482,9 @@ void GameScene::AllActionsTakenEachF(float dt)
 {
 
 	if (false == Add && true == fight) {		//未出过兵以及开始战斗
-		this->schedule(schedule_selector(GameScene::AddSoldiers), 35.0f);		//十五秒出一波兵
-		log("Add");
+		this->schedule(schedule_selector(GameScene::AddSoldiers), 35.0f);	
+		hero->_money = 1;
+		log("game start!!");
 		Add = true;			//出过兵了
 	}
 	UiShow();
@@ -713,13 +725,23 @@ void GameScene::SoldierAction() {
 			float dis = unit->second->_attackRange;
 			int tag = -1;
 			while (enemy != unit_map.end()) {
+				if (enemy->second->getParent() == NULL) {
+					log("enemy problem");
+					return;
+				}
+				if (unit->second->getParent() == NULL) {
+					log("unit problem");
+					return;
+				}
+				float disbewteen = unit->second->getPosition().getDistance(enemy->second->getPosition());
 				if (enemy->second->_side == unit->second->_side || enemy->second->_life_current < 0) {
 					++enemy;
 				}
 				else {
-					if (unit->second->getPosition().getDistance(enemy->second->getPosition()) < dis) {
+					if (disbewteen < dis) {
 
 						tag = enemy->second->getTag();
+						
 						//log("find %d",tag);
 					}
 					++enemy;

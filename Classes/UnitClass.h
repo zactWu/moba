@@ -2,7 +2,7 @@
 #define UNITCLASS
 
 #include "cocos2d.h"
-
+#include "GlobalVal.h"
 USING_NS_CC;
 
 enum Dir { down, down_right, right, up_right, up, up_left, left, down_left };
@@ -18,11 +18,11 @@ class Unit : public Sprite {
 public:
 
 
-	int _attack;
-	int _defense;
-	int _speed;
-	int _moveDir;
-	float _attackInterval;
+	int _attack = 1;
+	int _defense = 1;
+	int _speed = 1;
+	int _moveDir = 1;
+	float _attackInterval = 1;
 	int _kill_times = 0;
 	int _dead_times = 0;
 
@@ -43,12 +43,12 @@ public:
 	int getDirByTargetPos(const Vec2& pos_current, const Vec2& pos_target)const;
 	int getMoveDir() { return _moveDir; }
 	int _money=0;
-	int _side;
-	int _life_current;
+	int _side = this_computer_side;
+	int _life_current = 1;
 	int _tag_attackTarget=-1;
-	int _kill_award;
-	int _kind;
-	float _attackRange;
+	int _kill_award = 1;
+	int _kind = 0;
+	float _attackRange = 1;
 	Unit* _last_attacker=NULL;
 	cocos2d::Sprite* _lifeBank;
 	void stunned(double duration);
@@ -66,8 +66,8 @@ public:
 	// 接下来是服务器用的
 	
 	std::vector<order> order_list;
-	int _life_max;
-	bool _onAttack;
+	int _life_max = 100;
+	bool _onAttack = 0;
 
 	//接下来就是升级系统
 	int exp = 300;
