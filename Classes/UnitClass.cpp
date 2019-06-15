@@ -411,13 +411,13 @@ void Unit::GetOrder() {
 			}
 		}
 		else if (i->kind == 101) {
-			auto de = dynamic_cast<Unit*>(gs->map->getChildByTag(i->tag));
+			auto de = dynamic_cast<Unit*>(gs->getChildByTag(i->tag));
 			if (de != NULL) {
 				log("unable to keep same life!!!!!!!!!!!!!");
 				de->_life_current = 0;
 			}
 			else {
-				log("this %d unit has dead", i->tag);
+
 			}
 		}
 		else if (i->kind != 1) {

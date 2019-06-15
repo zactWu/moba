@@ -357,18 +357,10 @@ void GameScene::UnitDeadAction() {
 }
 
 void GameScene::UnitDead(Unit *unit) {
-	if (unit == NULL) {
-		return;
-	}
 	unit->stopAllActions();
 	if (unit->getParent() == NULL) {
 		return;
 	}
-	control dyingmessage;
-	dyingmessage.kind = 101;
-	dyingmessage.pos = unit->getPosition();
-	dyingmessage.tar_tag= unit->getTag();
-	dyingmessage.send_to_sever();
 	// 赏金放在这里，升级系统也是
 	if (unit->_last_attacker != NULL) {
 		if (unit->_last_attacker == hero) {
