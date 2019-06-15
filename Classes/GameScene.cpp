@@ -216,6 +216,11 @@ bool GameScene::HeroInit()
 	unit_num[en_hero->_side]++;
 	en_hero->Qskill_cd_time = 2000;
 	en_hero->Qskill_last_release_time = 0;
+	en_hero->Wskill_cd_time = 5000;
+	en_hero->Wskill_last_release_time = 0;
+	en_hero->Eskill_cd_time = 20000;
+	en_hero->Eskill_last_release_time = 0;
+
 	return false;
 }
 bool GameScene::ChatInit()
@@ -233,23 +238,17 @@ bool GameScene::ChatInit()
 
 
 void GameScene::AllActionsTakenEachSecond(float dt) {
-	hero->_money++;// 加钱
+	if (fight) {
+		hero->_money++;// 加钱
+	}
 	log("at start of this loop unit_map is %d", unit_map.size());
 	SkillHitCheck();
 	UnitDeadAction();
 	TowerAction();
 	SoldierAction();
 
-	if (!saftycheck()) {
-		log("sth wrong!!");
-	}
-
-	//updatepos(dt);
-//	log("unit_num is %d", unit_map.size());
 }
-void GameScene::saftycheck() {
 
-}
 void GameScene::SkillHitCheck() {
 	auto skill = skill_map.begin();
 	clock_t start = clock();
@@ -484,6 +483,7 @@ void GameScene::AllActionsTakenEachF(float dt)
 
 	if (false == Add && true == fight) {		//未出过兵以及开始战斗
 		this->schedule(schedule_selector(GameScene::AddSoldiers), 35.0f);	
+		hero->_money = 1;
 		log("game start!!");
 		Add = true;			//出过兵了
 	}
