@@ -39,7 +39,7 @@ bool GameScene::SkillHit(Skill *sk,Unit *un) {
 		//log("dead!");
 		return 1;
 	}
-	log("dis is %f", un->getPosition().getDistance(sk->getPosition()));
+	//log("dis is %f", un->getPosition().getDistance(sk->getPosition()));
 	return 0;
 }
 void Skill::move(Vec2 from, Vec2 to) {

@@ -18,7 +18,7 @@ Tower* Tower::create(const std::string& filename,
 		unit->_last_release_time = 0;
 		unit->_kill_award = 300;
 		unit->_last_attacker = NULL;
-		unit->_life_current = 1000;
+		unit->_life_current = 2000;
 
 		unit->_lifeBank = Sprite::create("lifeBank.jpg");
 		unit->_lifeBank->setPosition(unit->getPosition() + Vec2(60.f, 120.f));
@@ -32,7 +32,7 @@ Tower* Tower::create(const std::string& filename,
 
 void Tower::fire(Unit *tar) {
 	_last_release_time = clock();
-	auto skill = Skill::create("fireball.jpg", 300, 10, 300, 50);
+	auto skill = Skill::create("fireball.png", 300, 30, 300, 50);
 	skill->_skiller = this;
 	skill->setScale(0.25);
 	skill->setPosition(this->getPosition());

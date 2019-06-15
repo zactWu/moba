@@ -266,11 +266,13 @@ void Hero::useSkill_tornado()
 			while (it != gameScene->unit_map.end()) {
 				auto enemy = it->second;
 				if (enemy->_side != _side && enemy->getPosition().distance(pos_current) < 280) {
+					log("strom damage %d en,he left %d life", enemy->getTag(), enemy->_life_current);
 					enemy->getDamaged(this, 35);
 				}
+				log("unit %d life is %d", enemy->getTag(), enemy->_life_current);
 				++it;
 			}
-			});
+		});
 		action_list.pushBack(cf_damage);
 		if (i < 4) {
 			action_list.pushBack(DelayTime::create(1.f));
