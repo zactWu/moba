@@ -427,6 +427,7 @@ void Unit::GetOrder() {
 				gs->hero->useSkill(hero_id, i->kind, i->pos, i->tag);
 			}
 			else if (gs->en_hero == this) {
+				log("enenmy hero using %d , to %d", i->kind, i->tag);
 				gs->en_hero->useSkill(en_hero_id, i->kind, i->pos, i->tag);
 			}
 		}

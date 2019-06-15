@@ -166,8 +166,8 @@ bool GameScene::HeroInit()
 	hero->_money = 0;
 	hero->reborn_pos = pos2;
 	hero->setPosition(pos2);
-	hero->setTag(HEROTAG);
-	hero->_it_tag = HEROTAG;
+	hero->setTag(unit_num[hero->_side]);
+	hero->_it_tag = unit_num[hero->_side];
 	if (hero_id == WARRIOR) {
 		hero->_attackRange = 60;
 	}
@@ -203,8 +203,8 @@ bool GameScene::HeroInit()
 	en_hero->setPosition(en_hero->reborn_pos);
 	unit_map[unit_num[en_hero->_side]] = en_hero;
 	en_hero->_money = 0;
-	en_hero->setTag(ENHEROTAG);
-	en_hero->_it_tag = unit_num[1];
+	en_hero->setTag(unit_num[en_hero->_side]);
+	en_hero->_it_tag = unit_num[en_hero->_side];
 	if (en_hero_id == WARRIOR) {
 		en_hero->_attackRange = 60;
 	}
@@ -241,7 +241,7 @@ void GameScene::AllActionsTakenEachSecond(float dt) {
 	if (fight) {
 		hero->_money++;// 加钱
 	}
-	log("at start of this loop unit_map is %d", unit_map.size());
+	//log("at start of this loop unit_map is %d", unit_map.size());
 	SkillHitCheck();
 	UnitDeadAction();
 	TowerAction();
@@ -284,7 +284,7 @@ void GameScene::SkillHitCheck() {
 			auto unit = unit_map.begin();
 			while (unit != unit_map.end()) {
 				if (this->SkillHit(skill->second, unit->second)) {
-					log("HIT!!");
+					//log("HIT!!");
 					// 还有伤害加进去
 					unit->second->getDamaged(skill->second->_skiller, skill->second->_damage);
 					map->removeChild(skill->second);
