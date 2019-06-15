@@ -1,0 +1,374 @@
+﻿  AppDelegate.cpp
+  client.cpp
+  control.cpp
+  GameScene.cpp
+  GlobalVal.cpp
+  HelloWorldScene.cpp
+  HelpScene.cpp
+  Hero.cpp
+  D:\c++\c++bigproject\moba\Classes\GlobalVal.cpp: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+  D:\c++\c++bigproject\moba\Classes\GlobalVal.h: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 ..\Classes\GlobalVal.cpp)
+  D:\c++\c++bigproject\moba\Classes\HelpScene.cpp: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+  D:\c++\c++bigproject\moba\Classes\HelpScene.h: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 ..\Classes\HelpScene.cpp)
+  D:\c++\c++bigproject\moba\Classes\GlobalVal.h: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 ..\Classes\Hero.cpp)
+D:\c++\c++bigproject\moba\Classes\Hero.cpp(73,21): warning C4305:  “参数”: 从“double”到“float”截断
+D:\c++\c++bigproject\moba\Classes\Hero.cpp(73,21): warning C4305: D:\c++\c++bigproject\moba\Classes\Startscene.h: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 ..\Classes\AppDelegate.cpp)
+D:\c++\c++bigproject\moba\Classes\Hero.cpp(73,21): warning C4305: D:\c++\c++bigproject\moba\Classes\SettingScene.h: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 ..\Classes\AppDelegate.cpp)
+D:\c++\c++bigproject\moba\Classes\client.cpp(32,1): warning C4996:  'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\um\winsock2.h(1831): message :  参见“inet_addr”的声明
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\um\winsock2.h(1831): message : D:\c++\c++bigproject\moba\Classes\ShopLayer.h: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 ..\Classes\GameScene.cpp)
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\um\winsock2.h(1831): message : D:\c++\c++bigproject\moba\Classes\HelpScene.h: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 ..\Classes\AppDelegate.cpp)
+D:\c++\c++bigproject\moba\Classes\control.cpp(69,23): warning C4018:  “<”: 有符号/无符号不匹配
+D:\c++\c++bigproject\moba\Classes\control.cpp(69,23): warning C4018: D:\c++\c++bigproject\moba\Classes\GlobalVal.h: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 ..\Classes\GameScene.cpp)
+D:\c++\c++bigproject\moba\Classes\control.cpp(69,23): warning C4018: D:\c++\c++bigproject\moba\Classes\ShopLayer.h: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 ..\Classes\HelpScene.cpp)
+  MoveFind.cpp
+D:\c++\c++bigproject\moba\Classes\GameScene.cpp(47,25): warning C4305:  “参数”: 从“double”到“float”截断
+D:\c++\c++bigproject\moba\Classes\GameScene.cpp(62,76): warning C4305:  “参数”: 从“double”到“float”截断
+D:\c++\c++bigproject\moba\Classes\GameScene.cpp(120,22): warning C4305:  “参数”: 从“double”到“float”截断
+D:\c++\c++bigproject\moba\Classes\GameScene.cpp(132,22): warning C4305:  “参数”: 从“double”到“float”截断
+D:\c++\c++bigproject\moba\Classes\GameScene.cpp(342,42): warning C4305:  “参数”: 从“double”到“float”截断
+D:\c++\c++bigproject\moba\Classes\GameScene.cpp(397,22): warning C4305:  “参数”: 从“double”到“float”截断
+  SettingScene.cpp
+D:\c++\c++bigproject\moba\Classes\GameScene.cpp(431,24): warning C4305:  “参数”: 从“double”到“float”截断
+  ShopLayer.cpp
+  SkillClass.cpp
+  SkillKinds.cpp
+  Startscene.cpp
+  TowerClass.cpp
+  UnitClass.cpp
+D:\c++\c++bigproject\moba\Classes\HelpScene.cpp(51,28): warning C4305:  “参数”: 从“double”到“float”截断
+D:\c++\c++bigproject\moba\Classes\HelpScene.cpp(51,28): warning C4305: D:\c++\c++bigproject\moba\Classes\SettingScene.cpp: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+D:\c++\c++bigproject\moba\Classes\HelpScene.cpp(51,28): warning C4305: D:\c++\c++bigproject\moba\Classes\SettingScene.h: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 ..\Classes\SettingScene.cpp)
+D:\c++\c++bigproject\moba\Classes\HelpScene.cpp(51,28): warning C4305: D:\c++\c++bigproject\moba\Classes\ShopLayer.cpp: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+D:\c++\c++bigproject\moba\Classes\HelpScene.cpp(51,28): warning C4305: D:\c++\c++bigproject\moba\Classes\ShopLayer.h: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 ..\Classes\ShopLayer.cpp)
+D:\c++\c++bigproject\moba\Classes\HelpScene.cpp(51,28): warning C4305: D:\c++\c++bigproject\moba\Classes\Startscene.cpp: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+D:\c++\c++bigproject\moba\Classes\HelpScene.cpp(51,28): warning C4305: D:\c++\c++bigproject\moba\Classes\Startscene.h: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 ..\Classes\Startscene.cpp)
+D:\c++\c++bigproject\moba\Classes\MoveFind.cpp(83,19): warning C4018:  “<”: 有符号/无符号不匹配
+D:\c++\c++bigproject\moba\Classes\MoveFind.cpp(84,25): warning C4018:  “<”: 有符号/无符号不匹配
+D:\c++\c++bigproject\moba\Classes\MoveFind.cpp(119,20): warning C4018:  “<”: 有符号/无符号不匹配
+D:\c++\c++bigproject\moba\Classes\MoveFind.cpp(168,21): warning C4018:  “<”: 有符号/无符号不匹配
+D:\c++\c++bigproject\moba\Classes\MoveFind.cpp(192,20): warning C4018:  “<”: 有符号/无符号不匹配
+D:\c++\c++bigproject\moba\Classes\MoveFind.cpp(192,20): warning C4018: D:\c++\c++bigproject\moba\Classes\GlobalVal.h: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 ..\Classes\SettingScene.cpp)
+D:\c++\c++bigproject\moba\Classes\SettingScene.cpp(47,24): warning C4305:  “参数”: 从“double”到“float”截断
+D:\c++\c++bigproject\moba\Classes\SettingScene.cpp(48,24): warning C4305:  “参数”: 从“double”到“float”截断
+D:\c++\c++bigproject\moba\Classes\SettingScene.cpp(49,24): warning C4305:  “参数”: 从“double”到“float”截断
+D:\c++\c++bigproject\moba\Classes\SettingScene.cpp(90,5): warning C4996:  'cocos2d::ccColor3B': 被声明为已否决
+D:\c++\c++bigproject\moba\cocos2d\cocos\deprecated\CCDeprecated.h(837): message :  参见“cocos2d::ccColor3B”的声明
+D:\c++\c++bigproject\moba\Classes\SettingScene.cpp(90,1): warning C4996:  'cocos2d::ccc3': 被声明为已否决
+D:\c++\c++bigproject\moba\cocos2d\cocos\deprecated\CCDeprecated.h(476): message :  参见“cocos2d::ccc3”的声明
+D:\c++\c++bigproject\moba\Classes\SettingScene.cpp(91,1): warning C4996:  'cocos2d::ccc3': 被声明为已否决
+D:\c++\c++bigproject\moba\cocos2d\cocos\deprecated\CCDeprecated.h(476): message :  参见“cocos2d::ccc3”的声明
+D:\c++\c++bigproject\moba\Classes\SettingScene.cpp(117,35): warning C4305:  “参数”: 从“double”到“float”截断
+D:\c++\c++bigproject\moba\Classes\SettingScene.cpp(125,37): warning C4305:  “参数”: 从“double”到“float”截断
+D:\c++\c++bigproject\moba\Classes\SettingScene.cpp(133,37): warning C4305:  “参数”: 从“double”到“float”截断
+D:\c++\c++bigproject\moba\Classes\SettingScene.cpp(120,1): warning C4996:  'cocos2d::ui::CheckBox::addEventListenerCheckBox': 被声明为已否决
+D:\c++\c++bigproject\moba\cocos2d\cocos\ui\UICheckBox.h(154): message :  参见“cocos2d::ui::CheckBox::addEventListenerCheckBox”的声明
+D:\c++\c++bigproject\moba\Classes\SettingScene.cpp(128,1): warning C4996:  'cocos2d::ui::CheckBox::addEventListenerCheckBox': 被声明为已否决
+D:\c++\c++bigproject\moba\cocos2d\cocos\ui\UICheckBox.h(154): message :  参见“cocos2d::ui::CheckBox::addEventListenerCheckBox”的声明
+D:\c++\c++bigproject\moba\Classes\SettingScene.cpp(136,1): warning C4996:  'cocos2d::ui::CheckBox::addEventListenerCheckBox': 被声明为已否决
+D:\c++\c++bigproject\moba\cocos2d\cocos\ui\UICheckBox.h(154): message :  参见“cocos2d::ui::CheckBox::addEventListenerCheckBox”的声明
+D:\c++\c++bigproject\moba\cocos2d\cocos\ui\UICheckBox.h(154): message : D:\c++\c++bigproject\moba\Classes\SettingScene.h: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 ..\Classes\Startscene.cpp)
+D:\c++\c++bigproject\moba\cocos2d\cocos\ui\UICheckBox.h(154): message : D:\c++\c++bigproject\moba\Classes\HelpScene.h: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 ..\Classes\Startscene.cpp)
+D:\c++\c++bigproject\moba\Classes\ShopLayer.cpp(32,1): warning C4996:  'cocos2d::Node::ignoreAnchorPointForPosition': 被声明为已否决
+  main.cpp
+D:\c++\c++bigproject\moba\cocos2d\cocos\2d\CCNode.h(713): message :  参见“cocos2d::Node::ignoreAnchorPointForPosition”的声明
+D:\c++\c++bigproject\moba\cocos2d\cocos\2d\CCNode.h(713): message : D:\c++\c++bigproject\moba\Classes\GlobalVal.h: warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失 (编译源文件 ..\Classes\UnitClass.cpp)
+D:\c++\c++bigproject\moba\Classes\UnitClass.cpp(225,77): warning C4305:  “参数”: 从“double”到“float”截断
+D:\c++\c++bigproject\moba\Classes\UnitClass.cpp(327,21): warning C4305:  “参数”: 从“double”到“float”截断
+D:\c++\c++bigproject\moba\Classes\UnitClass.cpp(366,72): warning C4305:  “参数”: 从“double”到“float”截断
+    正在创建库 D:\c++\c++bigproject\moba\proj.win32\Release.win32\Glory.lib 和对象 D:\c++\c++bigproject\moba\proj.win32\Release.win32\Glory.exp
+  正在生成代码
+  Previous IPDB not found, fall back to full compilation.
+  All 2185 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  Glory.vcxproj -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Glory.exe
+  Performing Custom Build Step
+  D:\c++\c++bigproject\moba\Resources\angle.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\angle.png
+  D:\c++\c++bigproject\moba\Resources\blink_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\blink_1.png
+  D:\c++\c++bigproject\moba\Resources\bullet.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\bullet.png
+  D:\c++\c++bigproject\moba\Resources\bullet_archer.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\bullet_archer.png
+  D:\c++\c++bigproject\moba\Resources\bullet_helicopter1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\bullet_helicopter1.png
+  D:\c++\c++bigproject\moba\Resources\bullet_helicopter2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\bullet_helicopter2.png
+  D:\c++\c++bigproject\moba\Resources\bullet_long_brown.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\bullet_long_brown.png
+  D:\c++\c++bigproject\moba\Resources\bullet_long_green.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\bullet_long_green.png
+  D:\c++\c++bigproject\moba\Resources\bullet_magician.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\bullet_magician.png
+  D:\c++\c++bigproject\moba\Resources\bullet_soldier_blue.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\bullet_soldier_blue.png
+  D:\c++\c++bigproject\moba\Resources\bullet_soldier_yellow.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\bullet_soldier_yellow.png
+  D:\c++\c++bigproject\moba\Resources\bullet_warrior.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\bullet_warrior.png
+  D:\c++\c++bigproject\moba\Resources\CloseNormal.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\CloseNormal.png
+  D:\c++\c++bigproject\moba\Resources\CloseSelected.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\CloseSelected.png
+  D:\c++\c++bigproject\moba\Resources\cone_wave1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\cone_wave1.png
+  D:\c++\c++bigproject\moba\Resources\cone_wave2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\cone_wave2.png
+  D:\c++\c++bigproject\moba\Resources\cone_wave3.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\cone_wave3.png
+  D:\c++\c++bigproject\moba\Resources\fireball.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\fireball.png
+  D:\c++\c++bigproject\moba\Resources\fireboll.jpg -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\fireboll.jpg
+  D:\c++\c++bigproject\moba\Resources\grass.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\grass.png
+  D:\c++\c++bigproject\moba\Resources\heal.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\heal.png
+  D:\c++\c++bigproject\moba\Resources\HelloWorld.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\HelloWorld.png
+  D:\c++\c++bigproject\moba\Resources\lifeBank.jpg -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\lifeBank.jpg
+  D:\c++\c++bigproject\moba\Resources\log2.txt -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\log2.txt
+  D:\c++\c++bigproject\moba\Resources\map.tmx -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\map.tmx
+  D:\c++\c++bigproject\moba\Resources\money.jpg -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\money.jpg
+  D:\c++\c++bigproject\moba\Resources\money.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\money.png
+  D:\c++\c++bigproject\moba\Resources\percent.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\percent.png
+  D:\c++\c++bigproject\moba\Resources\switchlife_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\switchlife_1.png
+  D:\c++\c++bigproject\moba\Resources\switchlife_3.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\switchlife_3.png
+  D:\c++\c++bigproject\moba\Resources\tornado.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\tornado.png
+  D:\c++\c++bigproject\moba\Resources\tower.jpg -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\tower.jpg
+  D:\c++\c++bigproject\moba\Resources\trample.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\trample.png
+  D:\c++\c++bigproject\moba\Resources\tree.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\tree.png
+  D:\c++\c++bigproject\moba\Resources\ultra.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\ultra.png
+  D:\c++\c++bigproject\moba\Resources\archer\0.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\0.png
+  D:\c++\c++bigproject\moba\Resources\archer\0a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\0a.png
+  D:\c++\c++bigproject\moba\Resources\archer\0_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\0_1.png
+  D:\c++\c++bigproject\moba\Resources\archer\0_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\0_2.png
+  D:\c++\c++bigproject\moba\Resources\archer\1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\1.png
+  D:\c++\c++bigproject\moba\Resources\archer\1a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\1a.png
+  D:\c++\c++bigproject\moba\Resources\archer\1_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\1_1.png
+  D:\c++\c++bigproject\moba\Resources\archer\1_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\1_2.png
+  D:\c++\c++bigproject\moba\Resources\archer\2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\2.png
+  D:\c++\c++bigproject\moba\Resources\archer\2a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\2a.png
+  D:\c++\c++bigproject\moba\Resources\archer\2_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\2_1.png
+  D:\c++\c++bigproject\moba\Resources\archer\2_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\2_2.png
+  D:\c++\c++bigproject\moba\Resources\archer\3.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\3.png
+  D:\c++\c++bigproject\moba\Resources\archer\3a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\3a.png
+  D:\c++\c++bigproject\moba\Resources\archer\3_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\3_1.png
+  D:\c++\c++bigproject\moba\Resources\archer\3_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\3_2.png
+  D:\c++\c++bigproject\moba\Resources\archer\4.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\4.png
+  D:\c++\c++bigproject\moba\Resources\archer\4a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\4a.png
+  D:\c++\c++bigproject\moba\Resources\archer\4_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\4_1.png
+  D:\c++\c++bigproject\moba\Resources\archer\4_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\4_2.png
+  D:\c++\c++bigproject\moba\Resources\archer\5.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\5.png
+  D:\c++\c++bigproject\moba\Resources\archer\5a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\5a.png
+  D:\c++\c++bigproject\moba\Resources\archer\5_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\5_1.png
+  D:\c++\c++bigproject\moba\Resources\archer\5_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\5_2.png
+  D:\c++\c++bigproject\moba\Resources\archer\6.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\6.png
+  D:\c++\c++bigproject\moba\Resources\archer\6a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\6a.png
+  D:\c++\c++bigproject\moba\Resources\archer\6_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\6_1.png
+  D:\c++\c++bigproject\moba\Resources\archer\6_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\6_2.png
+  D:\c++\c++bigproject\moba\Resources\archer\7.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\7.png
+  D:\c++\c++bigproject\moba\Resources\archer\7a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\7a.png
+  D:\c++\c++bigproject\moba\Resources\archer\7_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\7_1.png
+  D:\c++\c++bigproject\moba\Resources\archer\7_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\archer\7_2.png
+  D:\c++\c++bigproject\moba\Resources\fonts\arial.ttf -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\fonts\arial.ttf
+  D:\c++\c++bigproject\moba\Resources\fonts\KingArthurLegend.ttf -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\fonts\KingArthurLegend.ttf
+  D:\c++\c++bigproject\moba\Resources\fonts\Marker Felt.ttf -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\fonts\Marker Felt.ttf
+  D:\c++\c++bigproject\moba\Resources\fonts\Montserrat-Medium.ttf -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\fonts\Montserrat-Medium.ttf
+  D:\c++\c++bigproject\moba\Resources\fonts\OpenSans-Regular.ttf -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\fonts\OpenSans-Regular.ttf
+  D:\c++\c++bigproject\moba\Resources\fonts\Playtime.ttf -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\fonts\Playtime.ttf
+  D:\c++\c++bigproject\moba\Resources\fonts\Quicksand-Bold.ttf -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\fonts\Quicksand-Bold.ttf
+  D:\c++\c++bigproject\moba\Resources\helicopter1\0.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\0.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\0a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\0a.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\1.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\1a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\1a.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\2.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\2a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\2a.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\3.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\3.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\3a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\3a.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\3_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\3_1.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\3_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\3_2.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\4.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\4.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\4a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\4a.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\5.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\5.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\5a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\5a.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\6.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\6.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\6_a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\6_a.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\7.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\7.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\7_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\7_1.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\7_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\7_2.png
+  D:\c++\c++bigproject\moba\Resources\helicopter1\7_a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter1\7_a.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\0.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\0.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\0a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\0a.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\1.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\1a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\1a.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\2.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\2a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\2a.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\3.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\3.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\3a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\3a.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\3_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\3_1.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\3_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\3_2.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\4.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\4.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\4a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\4a.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\5.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\5.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\5a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\5a.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\6.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\6.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\6a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\6a.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\7.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\7.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\7a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\7a.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\7_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\7_1.png
+  D:\c++\c++bigproject\moba\Resources\helicopter2\7_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\helicopter2\7_2.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\0.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\0.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\0a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\0a.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\1.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\1a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\1a.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\2.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\2a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\2a.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\3.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\3.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\3a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\3a.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\3_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\3_1.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\3_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\3_2.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\4.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\4.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\4a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\4a.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\5.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\5.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\5a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\5a.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\6.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\6.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\6a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\6a.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\7.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\7.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\7a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\7a.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\7_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\7_1.png
+  D:\c++\c++bigproject\moba\Resources\long_brown\7_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_brown\7_2.png
+  D:\c++\c++bigproject\moba\Resources\long_green\0.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\0.png
+  D:\c++\c++bigproject\moba\Resources\long_green\0a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\0a.png
+  D:\c++\c++bigproject\moba\Resources\long_green\1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\1.png
+  D:\c++\c++bigproject\moba\Resources\long_green\1a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\1a.png
+  D:\c++\c++bigproject\moba\Resources\long_green\2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\2.png
+  D:\c++\c++bigproject\moba\Resources\long_green\2a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\2a.png
+  D:\c++\c++bigproject\moba\Resources\long_green\3.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\3.png
+  D:\c++\c++bigproject\moba\Resources\long_green\3a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\3a.png
+  D:\c++\c++bigproject\moba\Resources\long_green\3_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\3_1.png
+  D:\c++\c++bigproject\moba\Resources\long_green\3_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\3_2.png
+  D:\c++\c++bigproject\moba\Resources\long_green\4.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\4.png
+  D:\c++\c++bigproject\moba\Resources\long_green\4a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\4a.png
+  D:\c++\c++bigproject\moba\Resources\long_green\5.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\5.png
+  D:\c++\c++bigproject\moba\Resources\long_green\5a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\5a.png
+  D:\c++\c++bigproject\moba\Resources\long_green\6.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\6.png
+  D:\c++\c++bigproject\moba\Resources\long_green\6a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\6a.png
+  D:\c++\c++bigproject\moba\Resources\long_green\7.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\7.png
+  D:\c++\c++bigproject\moba\Resources\long_green\7a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\7a.png
+  D:\c++\c++bigproject\moba\Resources\long_green\7_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\7_1.png
+  D:\c++\c++bigproject\moba\Resources\long_green\7_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\long_green\7_2.png
+  D:\c++\c++bigproject\moba\Resources\magician\0.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\0.png
+  D:\c++\c++bigproject\moba\Resources\magician\0a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\0a.png
+  D:\c++\c++bigproject\moba\Resources\magician\0_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\0_1.png
+  D:\c++\c++bigproject\moba\Resources\magician\0_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\0_2.png
+  D:\c++\c++bigproject\moba\Resources\magician\1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\1.png
+  D:\c++\c++bigproject\moba\Resources\magician\1a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\1a.png
+  D:\c++\c++bigproject\moba\Resources\magician\1_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\1_1.png
+  D:\c++\c++bigproject\moba\Resources\magician\1_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\1_2.png
+  D:\c++\c++bigproject\moba\Resources\magician\2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\2.png
+  D:\c++\c++bigproject\moba\Resources\magician\2a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\2a.png
+  D:\c++\c++bigproject\moba\Resources\magician\2_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\2_1.png
+  D:\c++\c++bigproject\moba\Resources\magician\2_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\2_2.png
+  D:\c++\c++bigproject\moba\Resources\magician\3.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\3.png
+  D:\c++\c++bigproject\moba\Resources\magician\3a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\3a.png
+  D:\c++\c++bigproject\moba\Resources\magician\3_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\3_1.png
+  D:\c++\c++bigproject\moba\Resources\magician\3_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\3_2.png
+  D:\c++\c++bigproject\moba\Resources\magician\4.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\4.png
+  D:\c++\c++bigproject\moba\Resources\magician\4a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\4a.png
+  D:\c++\c++bigproject\moba\Resources\magician\4_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\4_1.png
+  D:\c++\c++bigproject\moba\Resources\magician\4_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\4_2.png
+  D:\c++\c++bigproject\moba\Resources\magician\5.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\5.png
+  D:\c++\c++bigproject\moba\Resources\magician\5a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\5a.png
+  D:\c++\c++bigproject\moba\Resources\magician\5_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\5_1.png
+  D:\c++\c++bigproject\moba\Resources\magician\5_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\5_2.png
+  D:\c++\c++bigproject\moba\Resources\magician\6.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\6.png
+  D:\c++\c++bigproject\moba\Resources\magician\6a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\6a.png
+  D:\c++\c++bigproject\moba\Resources\magician\6_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\6_1.png
+  D:\c++\c++bigproject\moba\Resources\magician\6_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\6_2.png
+  D:\c++\c++bigproject\moba\Resources\magician\7.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\7.png
+  D:\c++\c++bigproject\moba\Resources\magician\7a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\7a.png
+  D:\c++\c++bigproject\moba\Resources\magician\7_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\7_1.png
+  D:\c++\c++bigproject\moba\Resources\magician\7_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\magician\7_2.png
+  D:\c++\c++bigproject\moba\Resources\res\.gitkeep -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\res\.gitkeep
+  D:\c++\c++bigproject\moba\Resources\SettingScene\archer.jpg -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\SettingScene\archer.jpg
+  D:\c++\c++bigproject\moba\Resources\SettingScene\choose.jpg -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\SettingScene\choose.jpg
+  D:\c++\c++bigproject\moba\Resources\SettingScene\dchoose.jpg -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\SettingScene\dchoose.jpg
+  D:\c++\c++bigproject\moba\Resources\SettingScene\magician.jpg -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\SettingScene\magician.jpg
+  D:\c++\c++bigproject\moba\Resources\SettingScene\warrior.jpg -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\SettingScene\warrior.jpg
+  D:\c++\c++bigproject\moba\Resources\shop\buy.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\shop\buy.png
+  D:\c++\c++bigproject\moba\Resources\shop\doublesword.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\shop\doublesword.png
+  D:\c++\c++bigproject\moba\Resources\shop\heart.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\shop\heart.png
+  D:\c++\c++bigproject\moba\Resources\shop\scepter.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\shop\scepter.png
+  D:\c++\c++bigproject\moba\Resources\shop\sell.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\shop\sell.png
+  D:\c++\c++bigproject\moba\Resources\shop\shield.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\shop\shield.png
+  D:\c++\c++bigproject\moba\Resources\shop\shoe.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\shop\shoe.png
+  D:\c++\c++bigproject\moba\Resources\shop\shopbutton.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\shop\shopbutton.png
+  D:\c++\c++bigproject\moba\Resources\shop\sword.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\shop\sword.png
+  D:\c++\c++bigproject\moba\Resources\shop\wand.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\shop\wand.png
+  D:\c++\c++bigproject\moba\Resources\shop\window.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\shop\window.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\0.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\0.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\0a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\0a.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\0_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\0_1.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\0_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\0_2.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\1.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\1a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\1a.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\1_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\1_1.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\1_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\1_2.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\2.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\2a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\2a.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\2_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\2_1.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\2_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\2_2.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\3.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\3.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\3a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\3a.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\3_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\3_1.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\3_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\3_2.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\4.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\4.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\4a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\4a.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\4_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\4_1.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\4_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\4_2.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\5.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\5.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\5a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\5a.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\5_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\5_1.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\5_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\5_2.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\6.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\6.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\6a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\6a.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\6_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\6_1.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\6_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\6_2.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\7.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\7.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\7a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\7a.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\7_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\7_1.png
+  D:\c++\c++bigproject\moba\Resources\soldier_blue\7_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_blue\7_2.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\0.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\0.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\0a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\0a.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\1.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\1a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\1a.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\2.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\2a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\2a.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\3.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\3.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\3a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\3a.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\3_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\3_1.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\3_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\3_2.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\4.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\4.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\4a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\4a.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\5.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\5.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\5a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\5a.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\6.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\6.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\6a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\6a.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\7.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\7.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\7a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\7a.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\7_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\7_1.png
+  D:\c++\c++bigproject\moba\Resources\soldier_yellow\7_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\soldier_yellow\7_2.png
+  D:\c++\c++bigproject\moba\Resources\Startscene\background.jpg -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\Startscene\background.jpg
+  D:\c++\c++bigproject\moba\Resources\warrior\0.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\0.png
+  D:\c++\c++bigproject\moba\Resources\warrior\0a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\0a.png
+  D:\c++\c++bigproject\moba\Resources\warrior\0_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\0_1.png
+  D:\c++\c++bigproject\moba\Resources\warrior\0_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\0_2.png
+  D:\c++\c++bigproject\moba\Resources\warrior\1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\1.png
+  D:\c++\c++bigproject\moba\Resources\warrior\1a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\1a.png
+  D:\c++\c++bigproject\moba\Resources\warrior\1_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\1_1.png
+  D:\c++\c++bigproject\moba\Resources\warrior\1_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\1_2.png
+  D:\c++\c++bigproject\moba\Resources\warrior\2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\2.png
+  D:\c++\c++bigproject\moba\Resources\warrior\2a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\2a.png
+  D:\c++\c++bigproject\moba\Resources\warrior\2_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\2_1.png
+  D:\c++\c++bigproject\moba\Resources\warrior\2_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\2_2.png
+  D:\c++\c++bigproject\moba\Resources\warrior\3.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\3.png
+  D:\c++\c++bigproject\moba\Resources\warrior\3a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\3a.png
+  D:\c++\c++bigproject\moba\Resources\warrior\3_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\3_1.png
+  D:\c++\c++bigproject\moba\Resources\warrior\3_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\3_2.png
+  D:\c++\c++bigproject\moba\Resources\warrior\4.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\4.png
+  D:\c++\c++bigproject\moba\Resources\warrior\4a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\4a.png
+  D:\c++\c++bigproject\moba\Resources\warrior\4_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\4_1.png
+  D:\c++\c++bigproject\moba\Resources\warrior\4_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\4_2.png
+  D:\c++\c++bigproject\moba\Resources\warrior\5.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\5.png
+  D:\c++\c++bigproject\moba\Resources\warrior\5a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\5a.png
+  D:\c++\c++bigproject\moba\Resources\warrior\5_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\5_1.png
+  D:\c++\c++bigproject\moba\Resources\warrior\5_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\5_2.png
+  D:\c++\c++bigproject\moba\Resources\warrior\6.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\6.png
+  D:\c++\c++bigproject\moba\Resources\warrior\6a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\6a.png
+  D:\c++\c++bigproject\moba\Resources\warrior\6_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\6_1.png
+  D:\c++\c++bigproject\moba\Resources\warrior\6_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\6_2.png
+  D:\c++\c++bigproject\moba\Resources\warrior\7.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\7.png
+  D:\c++\c++bigproject\moba\Resources\warrior\7a.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\7a.png
+  D:\c++\c++bigproject\moba\Resources\warrior\7_1.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\7_1.png
+  D:\c++\c++bigproject\moba\Resources\warrior\7_2.png -> D:\c++\c++bigproject\moba\proj.win32\Release.win32\Resources\warrior\7_2.png
+  复制了 288 个文件
