@@ -11,6 +11,7 @@
 extern GameClient client;
 std::mutex gameLock;
 bool fight = false;
+extern std::string ipMessage;
 bool GameClient::init(Hero* h,Hero* e)
 {
 	hero = h;
@@ -28,8 +29,12 @@ bool GameClient::init(Hero* h,Hero* e)
 	ServerAddr.sin_family = PF_INET;
 	ServerAddr.sin_port = htons(PORTS);
 
-
-	ServerAddr.sin_addr.S_un.S_addr = inet_addr("192.168.43.168");
+	int len = ipMessage.size();
+	char ip[100] = { 0 };
+	for (int i = 0; i < len; i++) {
+		ip[i] = ipMessage[i];
+	}
+	ServerAddr.sin_addr.S_un.S_addr = inet_addr(ip);
 	ClientSocket = socket(PF_INET, SOCK_STREAM, 0);
 
 	if (ClientSocket == INVALID_SOCKET)

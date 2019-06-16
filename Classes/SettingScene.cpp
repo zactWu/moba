@@ -8,10 +8,10 @@
 #include "SettingScene.h"
 #include "GlobalVal.h"
 #include "ui/CocosGUI.h"
-
+#include <string>
 USING_NS_CC;
 using namespace cocos2d::ui;
-
+std::string ipMessage = "127.0.0.1";
 Scene* SettingScene::createScene()
 {
     // 'scene' is an autorelease object
@@ -71,8 +71,24 @@ bool SettingScene::init()
     addChild(side);
     addCheckBox();
     
-    
-    return true;
+	auto ip = cocos2d::ui::TextField::create("ip", "Arial", 30);
+	ip->setMaxLength(100);
+	//下面设置键盘Enter监听，用于聊天
+	this->addChild(ip, 10);
+	ip->setPosition(Vec2(150, 50));
+	ip->addTouchEventListener([&](Ref* sender, cocos2d::ui::Widget::TouchEventType type) {
+		});
+	auto ketboard_listener = EventListenerKeyboard::create();
+	ketboard_listener->onKeyPressed = [=](EventKeyboard::KeyCode keycode, Event* event) {
+		if (keycode == EventKeyboard::KeyCode::KEY_ENTER)
+		{
+			ipMessage = ip->getString();
+			
+			ip->setString("");
+		}
+		return true;
+	};
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(ketboard_listener, this);
 }
 
 cocos2d::Menu* SettingScene::createText() {
